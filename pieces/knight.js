@@ -11,7 +11,7 @@ class Knight extends Piece {
     }
 
     validMoves(pieces) {
-        let candidateMoves = [], validMoves = [];
+        let candidateMoves = [];
 
         if (this.coordinates.x > 1) {
             if (this.coordinates.y > 0)
@@ -39,14 +39,15 @@ class Knight extends Piece {
                 candidateMoves.push(this.coordinates.squareId + 17)
         }
 
+        let validMoves = new ValidMoves();
         for (let i of candidateMoves) {
             let otherPiece = pieces.find(i);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(i);
+                    validMoves.add(i, otherPiece);
                 }
             } else {
-                validMoves.push(i);
+                validMoves.add(i);
             }
         }
 

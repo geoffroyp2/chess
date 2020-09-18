@@ -11,8 +11,8 @@ class Square {
         square(this.position.x, this.position.y, 100);
 
         if (isAValidMove) {
-            fill(0, 0, 40);
-            circle(this.position.x + 50, this.position.y + 50, 20)
+            fill(0, 0, 40, 200);
+            circle(this.position.x + 50, this.position.y + 50, 25)
         }
 
         //DEBUG square ID

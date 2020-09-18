@@ -11,76 +11,20 @@ class Queen extends Piece {
     }
 
     validMoves(pieces) {
-        let validMoves = [];
-
-        // HORIZONTAL
-        let x = this.coordinates.squareId;
-        while (x % 8 != 7) {
-            x++;
-            let otherPiece = pieces.find(x);
-            if (otherPiece) {
-                if (otherPiece.team != this.team) {
-                    validMoves.push(x);
-                }
-                break;
-            } else {
-                validMoves.push(x);
-            }
-        }
-        x = this.coordinates.squareId;
-        while (x % 8 != 0) {
-            x--;
-            let otherPiece = pieces.find(x);
-            if (otherPiece) {
-                if (otherPiece.team != this.team) {
-                    validMoves.push(x);
-                }
-                break;
-            } else {
-                validMoves.push(x);
-            }
-        }
-
-        //VERTICAL
-        x = this.coordinates.squareId;
-        while (Math.floor(x / 8) < 8) {
-            x += 8;
-            let otherPiece = pieces.find(x);
-            if (otherPiece) {
-                if (otherPiece.team != this.team) {
-                    validMoves.push(x);
-                }
-                break;
-            } else {
-                validMoves.push(x);
-            }
-        }
-        x = this.coordinates.squareId;
-        while (Math.floor(x / 8) >= 0) {
-            x -= 8;
-            let otherPiece = pieces.find(x);
-            if (otherPiece) {
-                if (otherPiece.team != this.team) {
-                    validMoves.push(x);
-                }
-                break;
-            } else {
-                validMoves.push(x);
-            }
-        }
+        let validMoves = new ValidMoves();
 
         //DOWN RIGHT DIAGONAL
-        x = this.coordinates.squareId;
+        let x = this.coordinates.squareId;
         while (x % 8 != 0 && x >= 0) {
             x -= 9;
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
         x = this.coordinates.squareId;
@@ -89,11 +33,11 @@ class Queen extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
 
@@ -104,11 +48,11 @@ class Queen extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
         x = this.coordinates.squareId;
@@ -117,11 +61,67 @@ class Queen extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
+            }
+        }
+
+        // HORIZONTAL
+        x = this.coordinates.squareId;
+        while (x % 8 != 7) {
+            x++;
+            let otherPiece = pieces.find(x);
+            if (otherPiece) {
+                if (otherPiece.team != this.team) {
+                    validMoves.add(x, otherPiece);
+                }
+                break;
+            } else {
+                validMoves.add(x);
+            }
+        }
+        x = this.coordinates.squareId;
+        while (x % 8 != 0) {
+            x--;
+            let otherPiece = pieces.find(x);
+            if (otherPiece) {
+                if (otherPiece.team != this.team) {
+                    validMoves.add(x, otherPiece);
+                }
+                break;
+            } else {
+                validMoves.add(x);
+            }
+        }
+
+        //VERTICAL
+        x = this.coordinates.squareId;
+        while (Math.floor(x / 8) < 8) {
+            x += 8;
+            let otherPiece = pieces.find(x);
+            if (otherPiece) {
+                if (otherPiece.team != this.team) {
+                    validMoves.add(x, otherPiece);
+                }
+                break;
+            } else {
+                validMoves.add(x);
+            }
+        }
+        x = this.coordinates.squareId;
+        while (Math.floor(x / 8) >= 0) {
+            x -= 8;
+            let otherPiece = pieces.find(x);
+            if (otherPiece) {
+                if (otherPiece.team != this.team) {
+                    validMoves.add(x, otherPiece);
+                }
+                break;
+            } else {
+                validMoves.add(x);
             }
         }
 

@@ -11,7 +11,7 @@ class Bishop extends Piece {
     }
 
     validMoves(pieces) {
-        let validMoves = [];
+        let validMoves = new ValidMoves();
 
         //DOWN RIGHT DIAGONAL
         let x = this.coordinates.squareId;
@@ -20,11 +20,11 @@ class Bishop extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
         x = this.coordinates.squareId;
@@ -33,11 +33,11 @@ class Bishop extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
 
@@ -48,11 +48,11 @@ class Bishop extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
         x = this.coordinates.squareId;
@@ -61,11 +61,11 @@ class Bishop extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
         return validMoves;

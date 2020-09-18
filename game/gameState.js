@@ -5,17 +5,7 @@ class GameState {
         this.playerTurn = playerTurn;
         this.historyMode = false;
         this.pSelected = null;
-        this.validMoves = [];
-
-        // this.boardState = {
-        //     playerTurn: "W",
-        //     lastHighlight: 0,
-        //     pSelected: null,
-        //     validMoves: [],
-        //     historyMode: false,
-        //     historyIdx: -1,
-        //     historyLength: 0
-        // };
+        this.validMoves = new ValidMoves();
     }
 
     newGame() {
@@ -27,15 +17,16 @@ class GameState {
 
         let pieceClicked = this.pieces.find(squareId);
 
+        print(pieceClicked)
+
         if (this.pSelected) {
             if (this.validMoves.includes(squareId)) {
-                this.capture(pieceClicked);
-                this.pSelected.move(squareId);
-                this.nextPlayer();
+                this.move(squareId);
                 pieceMoved = true;
             }
             this.pSelected = null;
-            this.validMoves = [];
+            this.validMoves = new ValidMoves();
+
         } else {
             if (pieceClicked) {
                 if (pieceClicked.team == this.playerTurn) {
@@ -47,15 +38,27 @@ class GameState {
         return pieceMoved;
     }
 
-    capture(pieceClicked) {
-        if (pieceClicked) {
-            if (pieceClicked.type == "K") {
-
-                /* GAME OVER*/
-
+    move(squareId) {
+        let moveSelected = this.validMoves.find(squareId);
+        if (moveSelected.type == "X") {
+            //CAPTURE
+            if (moveSelected.capture.type == "K") {
+                /* GAME OVER */
             }
-            pieceClicked.remove();
+            moveSelected.capture.remove();
+            this.pSelected.move(moveSelected.to);
         }
+        else if (moveSelected.type == "O") {
+            print("castle")
+            //CASTLE
+            this.pSelected.move(moveSelected.to);
+            moveSelected.capture.castle()
+        } else {
+            //REGULAR MOVE
+            this.pSelected.move(moveSelected.to);
+        }
+
+        this.nextPlayer();
     }
 
     nextPlayer() {

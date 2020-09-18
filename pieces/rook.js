@@ -3,15 +3,22 @@ class Rook extends Piece {
     constructor(...args) {
         super(args)
         this.type = 'R';
+        this.canCastle = true;
     }
 
     copy() {
         let newPiece = new Rook(...super.getInfos());
+        newPiece.canCastle = this.canCastle;
         return newPiece;
     }
 
+    move(square) {
+        this.canCastle = false;
+        super.move(square)
+    }
+
     validMoves(pieces) {
-        let validMoves = [];
+        let validMoves = new ValidMoves();
 
         // HORIZONTAL
         let x = this.coordinates.squareId;
@@ -20,11 +27,11 @@ class Rook extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
         x = this.coordinates.squareId;
@@ -33,11 +40,11 @@ class Rook extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
 
@@ -48,11 +55,11 @@ class Rook extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
         x = this.coordinates.squareId;
@@ -61,15 +68,36 @@ class Rook extends Piece {
             let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.push(x);
+                    validMoves.add(x, otherPiece);
                 }
                 break;
             } else {
-                validMoves.push(x);
+                validMoves.add(x);
             }
         }
 
         return validMoves
+    }
+
+    castle() {
+        print(this)
+        let square;
+        switch (this.coordinates.squareId) {
+            case 0:
+                square = 3;
+                break;
+            case 7:
+                square = 5;
+                break;
+            case 56:
+                square = 59;
+                break;
+            case 63:
+                square = 61;
+                break;
+        }
+
+        this.move(square)
     }
 
 };

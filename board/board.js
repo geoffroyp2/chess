@@ -20,65 +20,14 @@ class Board {
     }
 
     keyPress(key) {
-        // this.boardState.historyMode = true;
-
-        // switch (key) {
-        //     case "ArrowRight":
-        //         if (this.boardState.historyIdx < this.boardState.historyLength - 1)
-        //             this.boardState.historyIdx++;
-        //         break;
-        //     case "ArrowLeft":
-        //         if (this.boardState.historyIdx > 0)
-        //             this.boardState.historyIdx--;
-        //         break;
-        //     case "ArrowUp":
-        //         this.boardState.historyIdx = 0;
-        //         break;
-        //     case "ArrowDown":
-        //         this.boardState.historyIdx = this.boardState.historyLength - 1;
-        //         break;
-        // }
-
-        // if (this.boardState.historyIdx == this.boardState.historyLength - 1) {
-        //     this.boardState.historyMode = false;
-        // }
-
-        // this.draw();
-    }
-
-    recordState() {
-        // this.state.record(this.pieces);
-        // for (let p of this.pieces) {
-        //     p.recordState();
-        // }
-        // this.boardState.historyLength++;
-        // this.boardState.historyIdx++;
+        this.game.keyPress(key);
+        this.draw();
     }
 
     draw() {
-
-        if (!this.game.historyMode()) {
-            for (let s of this.squares) {
-                s.draw(this.game.isAValidMove(s.id));
-            }
-            this.game.draw();
+        for (let s of this.squares) {
+            s.draw(this.game.historyMode() ? false : this.game.isAValidMove(s.id));
         }
-
-
-        // if (!this.boardState.historyMode) {
-        //     for (let s of this.squares) {
-        //         s.draw(this.boardState.validMoves.includes(s.id));
-        //     }
-        //     for (let p of this.pieces) {
-        //         p.draw(p == this.boardState.pSelected);
-        //     }
-        // } else {
-        //     for (let s of this.squares) {
-        //         s.draw(false);
-        //     }
-        //     for (let p of this.pieces) {
-        //         p.drawHistory(this.boardState.historyIdx);
-        //     }
-        // }
+        this.game.draw();
     }
 }
