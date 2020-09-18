@@ -5,6 +5,11 @@ class Knight extends Piece {
         this.type = 'N';
     }
 
+    copy() {
+        let newPiece = new Knight(...super.getInfos());
+        return newPiece;
+    }
+
     validMoves(pieces) {
         let candidateMoves = [], validMoves = [];
 
@@ -35,7 +40,7 @@ class Knight extends Piece {
         }
 
         for (let i of candidateMoves) {
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == i);
+            let otherPiece = pieces.find(i);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(i);

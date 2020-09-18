@@ -2,11 +2,16 @@ class Piece {
     constructor([team, id, square]) {
         this.team = team;
         this.color = team == "W" ? color(255, 255, 255) : color(0, 0, 0);
-        this.id = id;
+        this.id = id; //useless for now
         this.coordinates = { x: -1, y: -1, squareId: square };
         this.move(square);
 
-        this.history = [];
+        this.history = []; //To move
+    }
+
+    getInfos() {
+        //Used for deep copy of pieces, along with individual copy() methods
+        return [this.team, this.id, this.coordinates.squareId];
     }
 
     move(square) {

@@ -5,6 +5,11 @@ class Queen extends Piece {
         this.type = 'Q';
     }
 
+    copy() {
+        let newPiece = new Queen(...super.getInfos());
+        return newPiece;
+    }
+
     validMoves(pieces) {
         let validMoves = [];
 
@@ -12,7 +17,7 @@ class Queen extends Piece {
         let x = this.coordinates.squareId;
         while (x % 8 != 7) {
             x++;
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == x);
+            let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(x);
@@ -25,7 +30,7 @@ class Queen extends Piece {
         x = this.coordinates.squareId;
         while (x % 8 != 0) {
             x--;
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == x);
+            let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(x);
@@ -40,7 +45,7 @@ class Queen extends Piece {
         x = this.coordinates.squareId;
         while (Math.floor(x / 8) < 8) {
             x += 8;
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == x);
+            let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(x);
@@ -53,7 +58,7 @@ class Queen extends Piece {
         x = this.coordinates.squareId;
         while (Math.floor(x / 8) >= 0) {
             x -= 8;
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == x);
+            let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(x);
@@ -68,7 +73,7 @@ class Queen extends Piece {
         x = this.coordinates.squareId;
         while (x % 8 != 0 && x >= 0) {
             x -= 9;
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == x);
+            let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(x);
@@ -81,7 +86,7 @@ class Queen extends Piece {
         x = this.coordinates.squareId;
         while (x % 8 != 7 && x < 64) {
             x += 9;
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == x);
+            let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(x);
@@ -96,7 +101,7 @@ class Queen extends Piece {
         x = this.coordinates.squareId;
         while (x % 8 != 7 && x >= 0) {
             x -= 7;
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == x);
+            let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(x);
@@ -109,7 +114,7 @@ class Queen extends Piece {
         x = this.coordinates.squareId;
         while (x % 8 != 0 && x < 64) {
             x += 7;
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == x);
+            let otherPiece = pieces.find(x);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(x);

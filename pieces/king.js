@@ -6,6 +6,11 @@ class King extends Piece {
         this.type = 'K';
     }
 
+    copy() {
+        let newPiece = new King(...super.getInfos());
+        return newPiece;
+    }
+
     validMoves(pieces) {
         let candidateMoves = [], validMoves = [];
 
@@ -23,7 +28,7 @@ class King extends Piece {
         candidateMoves.push(this.coordinates.squareId - 8);
 
         for (let i of candidateMoves) {
-            let otherPiece = pieces.find(elem => elem.coordinates.squareId == i);
+            let otherPiece = pieces.find(i);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
                     validMoves.push(i);
