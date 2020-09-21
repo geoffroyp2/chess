@@ -36,9 +36,5 @@ function createButtons() {
     resetButton = createButton("reset");
     resetButton.position(850, 50);
     resetButton
-    resetButton.mousePressed(reset);
-}
-
-function reset() {
-    board.reset();
+    resetButton.mousePressed(() => board.reset());
 }

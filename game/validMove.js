@@ -1,13 +1,25 @@
 class ValidMoves {
-    constructor(destination, otherPiece) {
+    constructor() {
         this.moves = [];
     }
 
-    add(destination, otherPiece, rookCastle) {
-        this.moves.push(new ValidMove(destination, otherPiece, rookCastle));
+    erase() {
+        this.moves = [];
+    }
+
+    add(piece, destination, type, otherPiece) {
+        this.moves.push(new ValidMove(piece, destination, type, otherPiece));
     }
 
     includes(squareId) {
+        for (let m of this.moves) {
+            if (m.type != "D" && m.to == squareId)
+                return true;
+        }
+        return false;
+    }
+
+    isDefending(squareId) {
         for (let m of this.moves) {
             if (m.to == squareId)
                 return true;
@@ -25,19 +37,47 @@ class ValidMoves {
 };
 
 class ValidMove {
-    constructor(destination, otherPiece, rookCastle) {
+    constructor(piece, destination, type, otherPiece) {
+        this.piece = piece;
+        this.type = type
         this.to = destination;
-        this.type = "M";
-        this.capture = null;
+        this.otherPiece = otherPiece;
+    }
 
-        if (rookCastle) {
-            this.type = "O";
-            this.capture = rookCastle;
+    copyMove(newPieces) {
+        //Copy the move to another piece set
+        let newMove = new ValidMove(null, this.to, this.type, null);
+        for (let p of newPieces.pieces) {
+            if (p.id == this.piece.id) {
+                newMove.piece = p;
+            }
+            if (this.otherPiece)
+                if (p.id == this.otherPiece.id) {
+                    newMove.otherPiece = p;
+                }
         }
+        return newMove;
+    }
 
-        if (otherPiece) {
-            this.type = "X";
-            this.capture = otherPiece;
+    executeMove(simulationMode) {
+        switch (this.type) {
+            case "M":
+                this.piece.move(this.to);
+                if (!simulationMode) print(this.piece.id, "moving to", this.to);
+                break;
+            case "X":
+                this.otherPiece.remove();
+                this.piece.move(this.to);
+                if (!simulationMode) print(this.piece.id, "capturing", this.otherPiece.id, "on square", this.to);
+                break;
+            case "O":
+                this.piece.move(this.to);
+                this.otherPiece.castle();
+                if (!simulationMode) print(this.piece.id, "castling with", this.otherPiece.id, "towards square", this.to);
+                break;
+            case "D":
+                if (!simulationMode) print("case D Should never happen");
+                break;
         }
     }
 };

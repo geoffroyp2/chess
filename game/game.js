@@ -41,10 +41,11 @@ class Game {
         let newState = new GameState(this.state.playerTurn);
         newState.pieces = this.state.pieces.copy();
         this.state = newState;
+        this.state.calculateMoves();
     }
 
     isAValidMove(squareId) {
-        return this.state.validMoves.includes(squareId)
+        return this.state.isAValidMove(squareId);
     }
 
     historyMode() {

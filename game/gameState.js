@@ -5,11 +5,15 @@ class GameState {
         this.playerTurn = playerTurn;
         this.historyMode = false;
         this.pSelected = null;
-        this.validMoves = new ValidMoves();
+        // this.validMoves = new ValidMoves();
     }
 
     newGame() {
         this.pieces.newGame("STANDARD");
+    }
+
+    calculateMoves() {
+        this.pieces.calculateMoves();
     }
 
     click(squareId) {
@@ -17,48 +21,35 @@ class GameState {
 
         let pieceClicked = this.pieces.find(squareId);
 
-        print(pieceClicked)
+        // print(pieceClicked)
 
         if (this.pSelected) {
-            if (this.validMoves.includes(squareId)) {
-                this.move(squareId);
-                pieceMoved = true;
+            let moveSelected = this.pSelected.validMoves.find(squareId);
+            if (moveSelected) {
+                if (moveSelected.type != "D") {
+                    // Don't actually play protecting moves
+                    moveSelected.executeMove();
+                    this.nextPlayer();
+                    pieceMoved = true;
+                }
             }
             this.pSelected = null;
-            this.validMoves = new ValidMoves();
 
         } else {
             if (pieceClicked) {
                 if (pieceClicked.team == this.playerTurn) {
                     this.pSelected = pieceClicked;
-                    this.validMoves = this.pSelected.validMoves(this.pieces);
                 }
             }
         }
         return pieceMoved;
     }
 
-    move(squareId) {
-        let moveSelected = this.validMoves.find(squareId);
-        if (moveSelected.type == "X") {
-            //CAPTURE
-            if (moveSelected.capture.type == "K") {
-                /* GAME OVER */
-            }
-            moveSelected.capture.remove();
-            this.pSelected.move(moveSelected.to);
+    isAValidMove(squareId) {
+        if (this.pSelected) {
+            return this.pSelected.validMoves.includes(squareId);
         }
-        else if (moveSelected.type == "O") {
-            print("castle")
-            //CASTLE
-            this.pSelected.move(moveSelected.to);
-            moveSelected.capture.castle()
-        } else {
-            //REGULAR MOVE
-            this.pSelected.move(moveSelected.to);
-        }
-
-        this.nextPlayer();
+        return false;
     }
 
     nextPlayer() {

@@ -1,4 +1,4 @@
-// TODO : en passant, promotion
+// TODO : promotion
 
 
 class Peon extends Piece {
@@ -34,8 +34,8 @@ class Peon extends Piece {
         super.move(square);
     }
 
-    validMoves(pieces) {
-        let validMoves = new ValidMoves();
+    calculateMoves(pieces, nextTurn) {
+        this.validMoves.erase();
 
         if (this.team == "W") {
             //VERTICAL
@@ -43,18 +43,20 @@ class Peon extends Piece {
                 let otherPiece1 = pieces.find(this.coordinates.squareId - 16);
                 let otherPiece2 = pieces.find(this.coordinates.squareId - 8);
                 if (!otherPiece1 && !otherPiece2)
-                    validMoves.add(this.coordinates.squareId - 16);
+                    this.validMoves.add(this, this.coordinates.squareId - 16, "M", null);
             }
             let otherPiece = pieces.find(this.coordinates.squareId - 8);
             if (!otherPiece)
-                validMoves.add(this.coordinates.squareId - 8);
+                this.validMoves.add(this, this.coordinates.squareId - 8, "M", null);
 
             //CAPTURE NORMAL
             if (this.coordinates.x > 0 && this.coordinates.y > 0) {
                 let otherPiece = pieces.find(this.coordinates.squareId - 9);
                 if (otherPiece) {
                     if (otherPiece.team != this.team) {
-                        validMoves.add(this.coordinates.squareId - 9, otherPiece);
+                        this.validMoves.add(this, this.coordinates.squareId - 9, "X", otherPiece);
+                    } else {
+                        this.validMoves.add(this, this.coordinates.squareId - 9, "D", otherPiece);
                     }
                 }
             }
@@ -62,7 +64,10 @@ class Peon extends Piece {
                 let otherPiece = pieces.find(this.coordinates.squareId - 7);
                 if (otherPiece) {
                     if (otherPiece.team != this.team) {
-                        validMoves.add(this.coordinates.squareId - 7, otherPiece);
+                        this.validMoves.add(this, this.coordinates.squareId - 7, "X", otherPiece);
+                    }
+                    else {
+                        this.validMoves.add(this, this.coordinates.squareId - 7, "D", otherPiece);
                     }
                 }
             }
@@ -72,7 +77,7 @@ class Peon extends Piece {
                 let otherPiece = pieces.find(this.coordinates.squareId - 1);
                 if (otherPiece) {
                     if (otherPiece.team != this.team && otherPiece.type == "P" && otherPiece.enPassant > 0) {
-                        validMoves.add(this.coordinates.squareId - 9, otherPiece);
+                        this.validMoves.add(this, this.coordinates.squareId - 9, "X", otherPiece);
                     }
                 }
             }
@@ -80,33 +85,34 @@ class Peon extends Piece {
                 let otherPiece = pieces.find(this.coordinates.squareId + 1);
                 if (otherPiece) {
                     if (otherPiece.team != this.team && otherPiece.type == "P" && otherPiece.enPassant > 0) {
-                        validMoves.add(this.coordinates.squareId - 7, otherPiece);
+                        this.validMoves.add(this, this.coordinates.squareId - 7, "X", otherPiece);
                     }
                 }
             }
-
-
-
         } else if (this.team == "B") {
+
             //VERTICAL
             if (this.coordinates.y == 1) {
                 if (this.coordinates.y == 1) {
                     let otherPiece1 = pieces.find(this.coordinates.squareId + 16);
                     let otherPiece2 = pieces.find(this.coordinates.squareId + 8);
                     if (!otherPiece1 && !otherPiece2)
-                        validMoves.add(this.coordinates.squareId + 16);
+                        this.validMoves.add(this, this.coordinates.squareId + 16, "M", null);
                 }
             }
             let otherPiece = pieces.find(this.coordinates.squareId + 8);
             if (!otherPiece)
-                validMoves.add(this.coordinates.squareId + 8);
+                this.validMoves.add(this, this.coordinates.squareId + 8, "M", null);
 
             //CAPTURE NORMAL
             if (this.coordinates.x > 0 && this.coordinates.y < 7) {
                 let otherPiece = pieces.find(this.coordinates.squareId + 7);
                 if (otherPiece) {
                     if (otherPiece.team != this.team) {
-                        validMoves.add(this.coordinates.squareId + 7, otherPiece);
+                        this.validMoves.add(this, this.coordinates.squareId + 7, "X", otherPiece);
+                    }
+                    else {
+                        this.validMoves.add(this, this.coordinates.squareId + 7, "D", otherPiece);
                     }
                 }
             }
@@ -114,7 +120,10 @@ class Peon extends Piece {
                 let otherPiece = pieces.find(this.coordinates.squareId + 9);
                 if (otherPiece) {
                     if (otherPiece.team != this.team) {
-                        validMoves.add(this.coordinates.squareId + 9, otherPiece);
+                        this.validMoves.add(this, this.coordinates.squareId + 9, "X", otherPiece);
+                    }
+                    else {
+                        this.validMoves.add(this, this.coordinates.squareId + 9, "D", otherPiece);
                     }
                 }
             }
@@ -124,7 +133,7 @@ class Peon extends Piece {
                 let otherPiece = pieces.find(this.coordinates.squareId - 1);
                 if (otherPiece) {
                     if (otherPiece.team != this.team && otherPiece.type == "P" && otherPiece.enPassant > 0) {
-                        validMoves.add(this.coordinates.squareId + 7, otherPiece);
+                        this.validMoves.add(this, this.coordinates.squareId + 7, "X", otherPiece);
                     }
                 }
             }
@@ -132,12 +141,13 @@ class Peon extends Piece {
                 let otherPiece = pieces.find(this.coordinates.squareId + 1);
                 if (otherPiece) {
                     if (otherPiece.team != this.team && otherPiece.type == "P" && otherPiece.enPassant > 0) {
-                        validMoves.add(this.coordinates.squareId + 9, otherPiece);
+                        this.validMoves.add(this, this.coordinates.squareId + 9, "X", otherPiece);
                     }
                 }
             }
-
         }
-        return validMoves;
+
+        if (!nextTurn)
+            super.isCheck(pieces);
     }
 };

@@ -17,66 +17,39 @@ class Rook extends Piece {
         super.move(square)
     }
 
-    validMoves(pieces) {
-        let validMoves = new ValidMoves();
+    calculateMoves(pieces, nextTurn) {
+        this.validMoves.erase();
 
-        // HORIZONTAL
-        let x = this.coordinates.squareId;
-        while (x % 8 != 7) {
-            x++;
-            let otherPiece = pieces.find(x);
-            if (otherPiece) {
-                if (otherPiece.team != this.team) {
-                    validMoves.add(x, otherPiece);
+        let flags = [...Array(4)].fill(true),
+            x = this.coordinates.x,
+            y = this.coordinates.y;
+
+        let checkLine = (flag, comparison, squareID) => {
+            if (flags[flag]) {
+                if (comparison()) {
+                    flags[flag] = false;
+                } else {
+                    let otherPiece = pieces.find(squareID);
+                    if (otherPiece) {
+                        if (otherPiece.team != this.team) {
+                            this.validMoves.add(this, squareID, "X", otherPiece);
+                        }
+                        flags[flag] = false;
+                    }
+                    else this.validMoves.add(this, squareID, "M", null);
                 }
-                break;
-            } else {
-                validMoves.add(x);
-            }
-        }
-        x = this.coordinates.squareId;
-        while (x % 8 != 0) {
-            x--;
-            let otherPiece = pieces.find(x);
-            if (otherPiece) {
-                if (otherPiece.team != this.team) {
-                    validMoves.add(x, otherPiece);
-                }
-                break;
-            } else {
-                validMoves.add(x);
             }
         }
 
-        //VERTICAL
-        x = this.coordinates.squareId;
-        while (Math.floor(x / 8) < 8) {
-            x += 8;
-            let otherPiece = pieces.find(x);
-            if (otherPiece) {
-                if (otherPiece.team != this.team) {
-                    validMoves.add(x, otherPiece);
-                }
-                break;
-            } else {
-                validMoves.add(x);
-            }
-        }
-        x = this.coordinates.squareId;
-        while (Math.floor(x / 8) >= 0) {
-            x -= 8;
-            let otherPiece = pieces.find(x);
-            if (otherPiece) {
-                if (otherPiece.team != this.team) {
-                    validMoves.add(x, otherPiece);
-                }
-                break;
-            } else {
-                validMoves.add(x);
-            }
+        for (let i = 1; i < 8; ++i) {
+            checkLine(0, () => x - i < 0, this.ctoid(x - i, y));
+            checkLine(1, () => x + i > 7, this.ctoid(x + i, y));
+            checkLine(2, () => y - i < 0, this.ctoid(x, y - i));
+            checkLine(3, () => y + i > 7, this.ctoid(x, y + i));
         }
 
-        return validMoves
+        if (!nextTurn)
+            super.isCheck(pieces);
     }
 
     castle() {
@@ -96,7 +69,6 @@ class Rook extends Piece {
                 square = 61;
                 break;
         }
-
         this.move(square)
     }
 

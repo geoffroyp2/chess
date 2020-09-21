@@ -18,43 +18,57 @@ class King extends Piece {
         super.move(square);
     }
 
-    validMoves(pieces, antiLoop) {
+    calculateMoves(pieces, nextTurn) {
+        this.validMoves.erase();
         let candidateMoves = [];
 
-        if (this.coordinates.x > 0) {
+        // POSSIBLE MOVES
+        let LEFT = this.coordinates.x == 0;
+        let TOP = this.coordinates.y == 0;
+        let BOT = this.coordinates.y == 7;
+        let RIGHT = this.coordinates.x == 7;
+
+        if (!LEFT) {
             candidateMoves.push(this.coordinates.squareId - 1);
-            candidateMoves.push(this.coordinates.squareId - 9);
-            candidateMoves.push(this.coordinates.squareId + 7);
+            if (!TOP)
+                candidateMoves.push(this.coordinates.squareId - 9);
+            if (!BOT)
+                candidateMoves.push(this.coordinates.squareId + 7);
         }
-        if (this.coordinates.x < 7) {
+        if (!RIGHT) {
             candidateMoves.push(this.coordinates.squareId + 1);
-            candidateMoves.push(this.coordinates.squareId + 9);
-            candidateMoves.push(this.coordinates.squareId - 7);
+            if (!TOP)
+                candidateMoves.push(this.coordinates.squareId - 7);
+            if (!BOT)
+                candidateMoves.push(this.coordinates.squareId + 9);
         }
-        candidateMoves.push(this.coordinates.squareId + 8);
-        candidateMoves.push(this.coordinates.squareId - 8);
-
-        let validMoves = new ValidMoves();
-
-        if (!antiLoop && this.canCastle) {
-            this.validCastle(pieces, validMoves);
-        }
+        if (!TOP)
+            candidateMoves.push(this.coordinates.squareId - 8);
+        if (!BOT)
+            candidateMoves.push(this.coordinates.squareId + 8);
 
         for (let i of candidateMoves) {
-            if (i >= 0 && i < 64) {
-                let otherPiece = pieces.find(i);
-                if (otherPiece) {
-                    // TODO : AVOID CHECK
-                    if (otherPiece.team != this.team) {
-                        validMoves.add(i, otherPiece);
-                    }
+            let otherPiece = pieces.find(i);
+            if (otherPiece) {
+                if (otherPiece.team != this.team) {
+                    this.validMoves.add(this, i, "X", otherPiece);
                 } else {
-                    validMoves.add(i);
+                    this.validMoves.add(this, i, "D", otherPiece);
                 }
+            } else {
+                this.validMoves.add(this, i, "M", null);
             }
         }
-        return validMoves;
+
+
+        // let validMoves = new ValidMoves();
+        // if (!antiLoop && this.canCastle) {
+        //     this.validCastle(pieces, validMoves);
+        // }
+        if (!nextTurn)
+            super.isCheck(pieces);
     }
+
 
     validCastle(pieces, validMoves) {
         //CASTLE
@@ -71,7 +85,7 @@ class King extends Piece {
                                 // if (p.type == "K" && p.coordinates.y < 6)
                                 //     continue;
 
-                                let otherPieceValidMoves = p.validMoves(pieces, true);
+                                let otherPieceValidMoves = p.calculateMoves(pieces, true);
                                 if (otherPieceValidMoves.includes(60) || otherPieceValidMoves.includes(61) || otherPieceValidMoves.includes(62)) {
                                     isCheck = true;
                                 }
@@ -96,7 +110,7 @@ class King extends Piece {
                                 // if (p.type == "K" && p.coordinates.y < 6)
                                 //     continue;
 
-                                let otherPieceValidMoves = p.validMoves(pieces, true);
+                                let otherPieceValidMoves = p.calculateMoves(pieces, true);
                                 if (otherPieceValidMoves.includes(60) || otherPieceValidMoves.includes(59) || otherPieceValidMoves.includes(58)) {
                                     isCheck = true;
                                 }
@@ -123,7 +137,7 @@ class King extends Piece {
                                 // if (p.type == "K" && p.coordinates.y > 1)
                                 //     continue;
 
-                                let otherPieceValidMoves = p.validMoves(pieces, true);
+                                let otherPieceValidMoves = p.calculateMoves(pieces, true);
                                 if (otherPieceValidMoves.includes(4) || otherPieceValidMoves.includes(5) || otherPieceValidMoves.includes(6)) {
                                     isCheck = true;
                                 }
@@ -148,7 +162,7 @@ class King extends Piece {
                                 // if (p.type == "K" && p.coordinates.y > 1)
                                 //     continue;
 
-                                let otherPieceValidMoves = p.validMoves(pieces, true);
+                                let otherPieceValidMoves = p.calculateMoves(pieces, true);
                                 if (otherPieceValidMoves.includes(4) || otherPieceValidMoves.includes(3) || otherPieceValidMoves.includes(2)) {
                                     isCheck = true;
                                 }

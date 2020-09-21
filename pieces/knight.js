@@ -10,7 +10,8 @@ class Knight extends Piece {
         return newPiece;
     }
 
-    validMoves(pieces) {
+    calculateMoves(pieces, nextTurn) {
+        this.validMoves.erase();
         let candidateMoves = [];
 
         if (this.coordinates.x > 1) {
@@ -39,19 +40,20 @@ class Knight extends Piece {
                 candidateMoves.push(this.coordinates.squareId + 17)
         }
 
-        let validMoves = new ValidMoves();
         for (let i of candidateMoves) {
             let otherPiece = pieces.find(i);
             if (otherPiece) {
                 if (otherPiece.team != this.team) {
-                    validMoves.add(i, otherPiece);
+                    this.validMoves.add(this, i, "X", otherPiece);
+                } else {
+                    this.validMoves.add(this, i, "D", otherPiece);
                 }
             } else {
-                validMoves.add(i);
+                this.validMoves.add(this, i, "M", null);
             }
         }
 
-        return validMoves
+        if (!nextTurn)
+            super.isCheck(pieces);
     }
-
 };
