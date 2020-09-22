@@ -25,9 +25,10 @@ class Board {
     }
 
     draw() {
-        for (let s of this.squares) {
-            s.draw(this.game.historyMode() ? false : this.game.isAValidMove(s.id));
-        }
+        for (let s of this.squares)
+            s.drawSquare();
         this.game.draw();
+        for (let s of this.squares)
+            s.drawMove(this.game.historyMode() ? false : this.game.isAValidMove(s.id));
     }
 }

@@ -10,44 +10,36 @@ class Knight extends Piece {
         return newPiece;
     }
 
+
     calculateMoves(pieces, nextTurn) {
         this.validMoves.erase();
-        let candidateMoves = [];
 
-        if (this.coordinates.x > 1) {
-            if (this.coordinates.y > 0)
-                candidateMoves.push(this.coordinates.squareId - 10);
-            if (this.coordinates.y < 7)
-                candidateMoves.push(this.coordinates.squareId + 6);
-        }
-        if (this.coordinates.x > 0) {
-            if (this.coordinates.y > 1)
-                candidateMoves.push(this.coordinates.squareId - 17)
-            if (this.coordinates.y < 6)
-                candidateMoves.push(this.coordinates.squareId + 15)
-        }
+        let candidateMoves = [],
+            x = this.coordinates.x,
+            y = this.coordinates.y;
 
-        if (this.coordinates.x < 6) {
-            if (this.coordinates.y > 0)
-                candidateMoves.push(this.coordinates.squareId - 6);
-            if (this.coordinates.y < 7)
-                candidateMoves.push(this.coordinates.squareId + 10);
+        if (x > 1) {
+            if (y > 0) candidateMoves.push(this.coordinates.squareId - 10);
+            if (y < 7) candidateMoves.push(this.coordinates.squareId + 6);
         }
-        if (this.coordinates.x < 7) {
-            if (this.coordinates.y > 1)
-                candidateMoves.push(this.coordinates.squareId - 15)
-            if (this.coordinates.y < 6)
-                candidateMoves.push(this.coordinates.squareId + 17)
+        if (x > 0) {
+            if (y > 1) candidateMoves.push(this.coordinates.squareId - 17)
+            if (y < 6) candidateMoves.push(this.coordinates.squareId + 15)
+        }
+        if (x < 6) {
+            if (y > 0) candidateMoves.push(this.coordinates.squareId - 6);
+            if (y < 7) candidateMoves.push(this.coordinates.squareId + 10);
+        }
+        if (x < 7) {
+            if (y > 1) candidateMoves.push(this.coordinates.squareId - 15)
+            if (y < 6) candidateMoves.push(this.coordinates.squareId + 17)
         }
 
         for (let i of candidateMoves) {
             let otherPiece = pieces.find(i);
             if (otherPiece) {
-                if (otherPiece.team != this.team) {
+                if (otherPiece.team != this.team)
                     this.validMoves.add(this, i, "X", otherPiece);
-                } else {
-                    this.validMoves.add(this, i, "D", otherPiece);
-                }
             } else {
                 this.validMoves.add(this, i, "M", null);
             }

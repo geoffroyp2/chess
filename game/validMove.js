@@ -13,14 +13,6 @@ class ValidMoves {
 
     includes(squareId) {
         for (let m of this.moves) {
-            if (m.type != "D" && m.to == squareId)
-                return true;
-        }
-        return false;
-    }
-
-    isDefending(squareId) {
-        for (let m of this.moves) {
             if (m.to == squareId)
                 return true;
         }
@@ -74,9 +66,6 @@ class ValidMove {
                 this.piece.move(this.to);
                 this.otherPiece.castle();
                 if (!simulationMode) print(this.piece.id, "castling with", this.otherPiece.id, "towards square", this.to);
-                break;
-            case "D":
-                if (!simulationMode) print("case D Should never happen");
                 break;
         }
     }

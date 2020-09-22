@@ -40,7 +40,13 @@ class PieceSet {
 
     calculateMoves(nextTurn) {
         for (let p of this.pieces) {
-            p.calculateMoves(this, nextTurn);
+            if (p.type != "K")
+                p.calculateMoves(this, nextTurn);
+        }
+        //calculate King last for efficiency (looking for checks)
+        for (let p of this.pieces) {
+            if (p.type == "K")
+                p.calculateMoves(this, nextTurn);
         }
     }
 

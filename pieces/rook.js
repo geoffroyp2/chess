@@ -53,7 +53,6 @@ class Rook extends Piece {
     }
 
     castle() {
-        print(this)
         let square;
         switch (this.coordinates.squareId) {
             case 0:

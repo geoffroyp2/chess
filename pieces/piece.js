@@ -29,32 +29,34 @@ class Piece {
     }
 
     isCheck(pieces) {
-        // for (let idx in this.validMoves.moves) {
-        //     if (this.validMoves.moves[idx].type != "D") {
-        //         // print(this.validMoves.moves[idx])
+        // To eliminate moves that would result in a check. For each move, generate the resulting board state then look for checks
 
-        //         let isValid = true;
-        //         let pieceCopy = pieces.copy();
-        //         let newMove = this.validMoves.moves[idx].copyMove(pieceCopy);
 
-        //         newMove.executeMove(true);
-        //         let king = pieceCopy.findById(this.team == "W" ? "WK" : "BK");
+        let moves = this.validMoves.moves;
 
-        //         pieceCopy.calculateMoves(true);
+        //loop backwards to be able to work with splice
+        for (let i = moves.length - 1; i >= 0; i--) {
+            if (moves[i].type != "O") {
+                let isValid = true;
+                let pieceCopy = pieces.copy();
+                let newMove = moves[i].copyMove(pieceCopy);
+                newMove.executeMove(true);
+                pieceCopy.calculateMoves(true);
+                let king = pieceCopy.findById(this.team == "W" ? "WK" : "BK");
 
-        //         for (let p of pieces.pieces) {
-        //             if (p.team != this.team && p.validMoves.includes(king.coordinates.squareId)) {
-        //                 print(p)
-        //                 isValid = false;
-        //                 break;
-        //             }
-        //         }
-        //         if (!isValid) {
-        //             print(this.validMoves.moves[idx], "would be check");
-        //             this.validMoves.moves.splice(idx, 1);
-        //         }
-        //     }
-        // }
+                for (let p of pieceCopy.pieces) {
+                    if (p.team != this.team && p.validMoves.includes(king.coordinates.squareId)) {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                if (!isValid) {
+                    // print(moves[i], "would be check");
+                    moves.splice(i, 1);
+                }
+            }
+        }
     }
 
     remove() {
@@ -72,7 +74,10 @@ class Piece {
                 strokeWeight(3);
                 stroke(210, 0, 0);
             }
-            text(this.type, this.coordinates.x * 100 + 50, this.coordinates.y * 100 + 80);
+            // text(this.type, this.coordinates.x * 100 + 50, this.coordinates.y * 100 + 80);
+            // image(pieceIcons60px[`${this.id.substr(0, 2)}`], this.coordinates.x * 100 + 10, this.coordinates.y * 100 + 10, 80, 80)
+            image(pieceIconsHD[`${this.id.substr(0, 2)}`], this.coordinates.x * 100 + 5, this.coordinates.y * 100 + 5, 90, 90)
+
         }
     }
 };
