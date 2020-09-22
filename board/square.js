@@ -17,6 +17,7 @@ class Square {
 
     drawMove(isAValidMove) {
         if (isAValidMove) {
+            noStroke();
             fill(10, 10, 150, 200);
             circle(this.position.x + 50, this.position.y + 50, 30)
         }

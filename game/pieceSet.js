@@ -1,6 +1,7 @@
 class PieceSet {
     constructor() {
         this.pieces = [];
+        this.isCheckMate = false;
     };
 
     newGame(setupId) {
@@ -10,6 +11,7 @@ class PieceSet {
     fillboard(setupId) {
         this.pieces = [];
         if (setupId == "STANDARD") {
+
             //white set
             this.pieces.push(new King("W", "WK", 60));
             this.pieces.push(new Queen("W", "WQ", 59));
@@ -23,7 +25,7 @@ class PieceSet {
                 this.pieces.push(new Peon("W", `WP${i - 47}`, i));
             }
 
-            // Black set
+            // // Black set
             this.pieces.push(new King("B", "BK", 4));
             this.pieces.push(new Queen("B", "BQ", 3));
             this.pieces.push(new Bishop("B", "BB1", 2));
@@ -38,17 +40,29 @@ class PieceSet {
         }
     }
 
-    calculateMoves(nextTurn) {
+    calculateMoves(playerTurn, nextTurn) {
         for (let p of this.pieces) {
-            if (p.type != "K")
+            if (!p.removed && p.team == playerTurn && p.type != "K")
                 p.calculateMoves(this, nextTurn);
         }
         //calculate King last for efficiency (looking for checks)
         for (let p of this.pieces) {
-            if (p.type == "K")
+            if (p.team == playerTurn && p.type == "K")
                 p.calculateMoves(this, nextTurn);
         }
+        //look for checkmate
+        let atLeastOneValidMove = false;
+        for (let p of this.pieces) {
+            if (p.validMoves.size() > 0) {
+                atLeastOneValidMove = true;
+                break;
+            }
+        }
+        if (!atLeastOneValidMove) {
+            this.isCheckMate = true;
+        }
     }
+
 
     find(squareId) {
         return this.pieces.find(elem => elem.coordinates.squareId == squareId);
@@ -56,6 +70,12 @@ class PieceSet {
 
     findById(id) {
         return this.pieces.find(elem => elem.id == id);
+    }
+
+    splice(id) {
+        let piece = this.findById(id);
+        this.pieces.splice(this.pieces.indexOf(piece), 1);
+        return piece;
     }
 
     copy() {

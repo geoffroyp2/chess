@@ -19,12 +19,21 @@ class Game {
         this.copyState();
     }
 
-    click(squareId) {
+    click(x, y) {
+        let pieceMoved = false;
+
+        if (this.state.promotionMove) {
+            pieceMoved = this.state.promotion(x, y)
+        } else if (!this.state.historyMode) {
+            pieceMoved = this.state.click(Math.floor(y / 100) * 8 + Math.floor(x / 100));
+        }
+
         //if a piece moved, record current state
-        if (this.state.click(squareId)) {
+        if (pieceMoved) {
             this.history.record(this.state);
             this.copyState();
-        };
+        }
+        return pieceMoved;
     }
 
     keyPress(key) {
@@ -48,13 +57,8 @@ class Game {
         return this.state.isAValidMove(squareId);
     }
 
-    historyMode() {
-        return this.state.historyMode;
-    }
-
     draw() {
-
-        if (!this.historyMode())
+        if (!this.state.historyMode)
             this.state.draw();
         else
             this.history.displayState().draw();

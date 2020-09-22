@@ -12,11 +12,8 @@ class Board {
     }
 
     click(x, y) {
-        if (!this.game.historyMode()) {
-            let squareId = (Math.floor(y / 100) * 8 + Math.floor(x / 100));
-            this.game.click(squareId);
-            this.draw();
-        }
+        this.game.click(x, y);
+        this.draw();
     }
 
     keyPress(key) {
@@ -27,8 +24,13 @@ class Board {
     draw() {
         for (let s of this.squares)
             s.drawSquare();
+
         this.game.draw();
+
         for (let s of this.squares)
-            s.drawMove(this.game.historyMode() ? false : this.game.isAValidMove(s.id));
+            s.drawMove(this.game.state.historyMode ? false : this.game.isAValidMove(s.id));
+
+        if (this.game.state.promotionMove)
+            this.game.state.drawPromotion();
     }
 }

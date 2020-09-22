@@ -19,12 +19,25 @@ class ValidMoves {
         return false;
     }
 
+    canCapture(squareId) {
+        for (let m of this.moves) {
+            if (m.to == squareId && (m.type == "X" || m.type == "PX")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     find(squareId) {
         for (let m of this.moves) {
             if (m.to == squareId)
                 return m;
         }
         return null;
+    }
+
+    size() {
+        return this.moves.length;
     }
 };
 
@@ -67,6 +80,17 @@ class ValidMove {
                 this.otherPiece.castle();
                 if (!simulationMode) print(this.piece.id, "castling with", this.otherPiece.id, "towards square", this.to);
                 break;
+            case "P":
+                // Promotion is handled as a normal move then the peon is changed into another one by GameState
+                this.piece.move(this.to);
+                if (!simulationMode) print(this.piece.id, "promoted on square", this.to);
+                break;
+            case "PX":
+                this.otherPiece.remove();
+                this.piece.move(this.to);
+                print(this.piece.id, "promoted on square", this.to, "capturing ", this.otherPiece.id);
+                break;
+
         }
     }
 };

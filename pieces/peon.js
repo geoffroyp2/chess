@@ -43,8 +43,16 @@ class Peon extends Piece {
 
         // NORMAL MOVE
         let otherPiece1 = pieces.find(this.ctoid(x, y + team));
-        if (!otherPiece1)
-            this.validMoves.add(this, this.ctoid(x, y + team), "M", null);
+        if (!otherPiece1) {
+            //PROMOTION
+            if (this.team == "W" && y == 1) {
+                this.validMoves.add(this, this.ctoid(x, y + team), "P", null);
+            } else if (this.team == "B" && y == 6) {
+                this.validMoves.add(this, this.ctoid(x, y + team), "P", null);
+            } else {
+                this.validMoves.add(this, this.ctoid(x, y + team), "M", null);
+            }
+        }
         // MOVE 2 SQUARES
         if (y == (this.team == "W" ? 6 : 1)) {
             let otherPiece2 = pieces.find(this.ctoid(x, y + 2 * team));
@@ -56,8 +64,16 @@ class Peon extends Piece {
         if (x > 0) {
             let otherPiece = pieces.find(this.ctoid(x - 1, y + team));
             if (otherPiece)
-                if (otherPiece.team != this.team)
-                    this.validMoves.add(this, this.ctoid(x - 1, y + team), "X", otherPiece);
+                if (otherPiece.team != this.team) {
+                    // CAPTURE + PROMOTION 
+                    if (this.team == "W" && y == 1) {
+                        this.validMoves.add(this, this.ctoid(x - 1, y + team), "PX", otherPiece);
+                    } else if (this.team == "B" && y == 6) {
+                        this.validMoves.add(this, this.ctoid(x - 1, y + team), "PX", otherPiece);
+                    } else {
+                        this.validMoves.add(this, this.ctoid(x - 1, y + team), "X", otherPiece);
+                    }
+                }
             //EN PASSANT
             if (y == (this.team == "W" ? 3 : 4)) {
                 let otherPiece = pieces.find(this.ctoid(x - 1, y));
@@ -66,12 +82,20 @@ class Peon extends Piece {
                         this.validMoves.add(this, this.ctoid(x - 1, y + team), "X", otherPiece);
             }
         }
-        //CAPTUR RIGHT
+        //CAPTURE RIGHT
         if (x < 7) {
             let otherPiece = pieces.find(this.ctoid(x + 1, y + team));
             if (otherPiece)
-                if (otherPiece.team != this.team)
-                    this.validMoves.add(this, this.ctoid(x + 1, y + team), "X", otherPiece);
+                if (otherPiece.team != this.team) {
+                    // CAPTURE + PROMOTION 
+                    if (this.team == "W" && y == 1) {
+                        this.validMoves.add(this, this.ctoid(x + 1, y + team), "PX", otherPiece);
+                    } else if (this.team == "B" && y == 6) {
+                        this.validMoves.add(this, this.ctoid(x + 1, y + team), "PX", otherPiece);
+                    } else {
+                        this.validMoves.add(this, this.ctoid(x + 1, y + team), "X", otherPiece);
+                    }
+                }
             //EN PASSANT
             if (y == (this.team == "W" ? 3 : 4)) {
                 let otherPiece = pieces.find(this.ctoid(x + 1, y));
