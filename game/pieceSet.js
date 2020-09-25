@@ -2,6 +2,9 @@ class PieceSet {
     constructor() {
         this.pieces = [];
         this.isCheckMate = false;
+        this.isStaleMate = false;
+        this.isCheck = false;
+        this.isSelfCheck = false;
     };
 
     newGame(setupId) {
@@ -40,26 +43,35 @@ class PieceSet {
         }
     }
 
-    calculateMoves(playerTurn, nextTurn) {
-        for (let p of this.pieces) {
-            if (!p.removed && p.team == playerTurn && p.type != "K")
-                p.calculateMoves(this, nextTurn);
-        }
-        //calculate King last for efficiency (looking for checks)
-        for (let p of this.pieces) {
-            if (p.team == playerTurn && p.type == "K")
-                p.calculateMoves(this, nextTurn);
-        }
-        //look for checkmate
+    calculateMoves(playerTurn, loopAmount) {
+        for (let p of this.pieces)
+            if (!p.removed)
+                p.calculateMoves(this, loopAmount);
+
+
+        //look for check and checkmate
+        let selfKing = this.findById(playerTurn + "K");
+        let opponentKing = this.findById((playerTurn == "W" ? "B" : "W") + "K");
         let atLeastOneValidMove = false;
+
         for (let p of this.pieces) {
-            if (p.validMoves.size() > 0) {
-                atLeastOneValidMove = true;
-                break;
+            if (p.team == playerTurn) {
+                if (p.validMoves.size() > 0) {
+                    atLeastOneValidMove = true;
+                    if (p.validMoves.find(opponentKing.coordinates.squareId))
+                        this.isSelfCheck = true;
+                }
+            } else {
+                if (p.validMoves.find(selfKing.coordinates.squareId))
+                    this.isCheck = true;
             }
         }
+
         if (!atLeastOneValidMove) {
-            this.isCheckMate = true;
+            if (this.isCheck)
+                this.isCheckMate = true;
+            else
+                this.isStaleMate = true;
         }
     }
 
@@ -76,6 +88,18 @@ class PieceSet {
         let piece = this.findById(id);
         this.pieces.splice(this.pieces.indexOf(piece), 1);
         return piece;
+    }
+
+    getMoves(playerTurn, pieceType) {
+        let moves = [];
+        for (let p of this.pieces)
+            if (p.team == playerTurn && p.type == pieceType) {
+                if (p.validMoves.moves.length > 0) {
+                    for (let m of p.validMoves.moves)
+                        moves.push(m)
+                }
+            }
+        return moves;
     }
 
     copy() {

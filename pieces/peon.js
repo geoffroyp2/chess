@@ -34,7 +34,7 @@ class Peon extends Piece {
         super.move(square);
     }
 
-    calculateMoves(pieces, nextTurn) {
+    calculateMoves(pieces, loopAmount) {
         this.validMoves.erase();
 
         let x = this.coordinates.x,
@@ -105,7 +105,7 @@ class Peon extends Piece {
             }
         }
 
-        if (!nextTurn)
-            super.isCheck(pieces);
+        // if (!nextTurn)
+        super.isCheck(pieces, loopAmount);
     }
 };

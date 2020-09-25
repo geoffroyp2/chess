@@ -47,6 +47,68 @@ class ValidMove {
         this.type = type
         this.to = destination;
         this.otherPiece = otherPiece;
+        this.resultingState = null;
+        this.isCheck = false;
+        this.isCheckMate = false;
+    }
+
+    makePGN(allValidMoves, isCheck, promotionChosen) {
+        let pgnString = "";
+        if (this.type == "O") {
+            if (this.to % 8 == 6)
+                pgnString = "O-O";
+            if (this.to % 8 == 2)
+                pgnString = "O-O-O";
+        } else {
+
+            if (this.piece.type != "P") pgnString += this.piece.type;
+
+            //separate same move from 2 different pieces
+            if (this.piece.type != "P") {
+                for (let p of allValidMoves) {
+                    if (p != this)
+                        if (p.to == this.to)
+                            if (p.piece.type == this.piece.type) {
+                                //if same file, separate by rank
+                                if (p.piece.coordinates.x == this.piece.coordinates.x)
+                                    pgnString += this.idToPGN(false, true);
+                                // separate by file by default
+                                else
+                                    pgnString += this.idToPGN(true, false);
+                                break;
+                            }
+                }
+            }
+
+            if (this.type == "X" || this.type == "PX") {
+                if (this.piece.type == "P")
+                    pgnString += this.idToPGN(true, false, true)
+                pgnString += "x";
+            }
+            pgnString += this.idToPGN(true, true);
+
+            if (this.type == "P" || this.type == "PX") {
+                pgnString += "=";
+                pgnString += promotionChosen;
+            }
+        }
+
+        if (isCheck)
+            pgnString += "+";
+
+        return pgnString;
+    }
+
+    idToPGN(needX, needY, from) {
+        let x, y;
+        if (from) {
+            x = needX ? String.fromCharCode(this.piece.previousSquare % 8 + + 97) : '';
+            y = needY ? String.fromCharCode(8 - Math.floor(this.piece.previousSquare / 8) + 48) : '';
+        } else {
+            x = needX ? String.fromCharCode(this.to % 8 + + 97) : '';
+            y = needY ? String.fromCharCode(8 - Math.floor(this.to / 8) + 48) : '';
+        }
+        return x + y;
     }
 
     copyMove(newPieces) {
@@ -65,32 +127,33 @@ class ValidMove {
     }
 
     executeMove(simulationMode) {
+        this.piece.previousSquare = this.piece.coordinates.squareId;
         switch (this.type) {
             case "M":
                 this.piece.move(this.to);
-                if (!simulationMode) print(this.piece.id, "moving to", this.to);
+                // if (!simulationMode) print(this.piece.id, "moving to", this.to);
                 break;
             case "X":
                 this.otherPiece.remove();
                 this.piece.move(this.to);
-                if (!simulationMode) print(this.piece.id, "capturing", this.otherPiece.id, "on square", this.to);
+                // if (!simulationMode) print(this.piece.id, "capturing", this.otherPiece.id, "on square", this.to);
                 break;
             case "O":
                 this.piece.move(this.to);
                 this.otherPiece.castle();
-                if (!simulationMode) print(this.piece.id, "castling with", this.otherPiece.id, "towards square", this.to);
+                // if (!simulationMode) print(this.piece.id, "castling with", this.otherPiece.id, "towards square", this.to);
                 break;
             case "P":
                 // Promotion is handled as a normal move then the peon is changed into another one by GameState
+                // in simulation mode, every possible promotion is added (TODO)
                 this.piece.move(this.to);
-                if (!simulationMode) print(this.piece.id, "promoted on square", this.to);
+                // if (!simulationMode) print(this.piece.id, "promoted on square", this.to);
                 break;
             case "PX":
                 this.otherPiece.remove();
                 this.piece.move(this.to);
-                print(this.piece.id, "promoted on square", this.to, "capturing ", this.otherPiece.id);
+                // if (!simulationMode) print(this.piece.id, "promoted on square", this.to, "capturing ", this.otherPiece.id);
                 break;
-
         }
     }
 };

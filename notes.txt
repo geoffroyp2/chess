@@ -1,0 +1,23 @@
+TODO
+    - PGN : duplicate moves & isCheckMate
+    - Each move has his owqn resulting state, use that one when move is selected
+
+
+
+
+logique de calcul par tour:
+
+
+1. crée un nouveau state
+2. calcule tous les coups possible pour les deux joueurs
+    a. regarder si le joueur dont c'est le tour est en check
+    b. set 'isCheck', 'isCheckMate', 'isStaleMate'.
+    c. pour chacun des coups, vérifier si c'est un self-check ou un check pour l'autre joueur
+3. Quand un click arrive
+    a. Soit selection d'un pièce
+        - afficher les coups possibles sur l'échiquier
+    b. Soit sélection d'un coup
+        - jouer le coup
+            -- Bouger la pièce
+            -- générer le pgn
+    c. Soit sélection d'une pièce à promouvoir

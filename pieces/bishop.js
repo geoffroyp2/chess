@@ -10,7 +10,7 @@ class Bishop extends Piece {
         return newPiece;
     }
 
-    calculateMoves(pieces, nextTurn) {
+    calculateMoves(pieces, loopAmount) {
         this.validMoves.erase();
 
         let flags = [...Array(4)].fill(true),
@@ -41,7 +41,7 @@ class Bishop extends Piece {
             checkLine(3, () => x + i > 7 || y + i > 7, this.ctoid(x + i, y + i));
         }
 
-        if (!nextTurn)
-            super.isCheck(pieces);
+        // if (!nextTurn)
+        super.isCheck(pieces, loopAmount);
     }
 };

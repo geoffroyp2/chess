@@ -6,9 +6,10 @@ class GameState {
         this.historyMode = false;
         this.pSelected = null;
         this.waitingForPromotion = false;
-
         this.promotionMove = null;
         this.promotionArea = [];
+        this.movePlayedPGN = null;
+        this.movePlayed = null;
     }
 
     newGame() {
@@ -16,17 +17,30 @@ class GameState {
     }
 
     calculateMoves() {
-        this.pieces.calculateMoves(this.playerTurn);
-        if (this.pieces.isCheckMate) {
-            this.checkMate();
-        }
+        this.pieces.calculateMoves(this.playerTurn, 1);
+
+        // if (this.pieces.isStaleMate)
+        //     this.staleMate();
+        // else if (this.pieces.isCheckMate)
+        //     this.checkMate();
+        // else if (this.pieces.isCheck)
+        //     this.check();
     }
 
-    checkMate() {
-        print("Checkmate");
-    }
+    // check() {
+    //     print("check");
+    // }
+
+    // checkMate() {
+    //     print("Checkmate");
+    // }
+
+    // staleMate() {
+    //     print("stalemate")
+    // }
 
     click(squareId) {
+
         let pieceMoved = false;
         let pieceClicked = this.pieces.find(squareId);
 
@@ -37,6 +51,11 @@ class GameState {
                     this.promotionMove = moveSelected;
                 } else {
                     moveSelected.executeMove();
+
+                    this.movePlayed = moveSelected;
+
+                    this.movePlayedPGN = moveSelected.makePGN(this.pieces.getMoves(this.playerTurn, this.movePlayed.piece.type), moveSelected.isCheck, null);
+
                     this.nextPlayer();
                     pieceMoved = true;
                     this.promotionMove = null;
@@ -53,7 +72,6 @@ class GameState {
                 }
             }
         }
-
         return pieceMoved;
     }
 
@@ -108,6 +126,7 @@ class GameState {
                     break;
             }
 
+            this.movePlayed = this.promotionMove.makePGN(this.pieces.getMoves(this.playerTurn, this.promotionMove.piece.type), this.promotionMove.isCheck, promoteTo);
             pieceMoved = true;
             this.nextPlayer();
         }

@@ -2,6 +2,9 @@ class Game {
     constructor() {
         this.state = new GameState("W");
         this.history = new GameHistory();
+        this.pgn = new PGN();
+
+
         this.displayState = null;
 
         this.state.newGame("STANDARD");
@@ -30,9 +33,9 @@ class Game {
 
         //if a piece moved, record current state
         if (pieceMoved) {
-            this.history.record(this.state);
             this.copyState();
         }
+
         return pieceMoved;
     }
 
@@ -47,10 +50,14 @@ class Game {
 
 
     copyState() {
+        this.history.record(this.state);
         let newState = new GameState(this.state.playerTurn);
         newState.pieces = this.state.pieces.copy();
+        newState.calculateMoves();
+
+        this.pgn.movePlayed(this.state.movePlayedPGN, newState.pieces.isCheckMate);
+
         this.state = newState;
-        this.state.calculateMoves();
     }
 
     isAValidMove(squareId) {
@@ -62,5 +69,7 @@ class Game {
             this.state.draw();
         else
             this.history.displayState().draw();
+
+        this.pgn.draw();
     }
 }

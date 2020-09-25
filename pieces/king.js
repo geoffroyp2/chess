@@ -18,7 +18,7 @@ class King extends Piece {
         super.move(square);
     }
 
-    calculateMoves(pieces, nextTurn) {
+    calculateMoves(pieces, loopAmount) {
         this.validMoves.erase();
 
         let candidateMoves = [],
@@ -58,8 +58,8 @@ class King extends Piece {
             this.validCastle(pieces);
         }
 
-        if (!nextTurn)
-            super.isCheck(pieces);
+        // if (!nextTurn)
+        super.isCheck(pieces, loopAmount);
     }
 
 

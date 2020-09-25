@@ -40,11 +40,11 @@ function setup() {
     angleMode(DEGREES);
     colorMode(RGB);
     rectMode(CORNER);
-    textAlign(CENTER);
+    textAlign(LEFT);
 
 
-    createCanvas(800, 800);
-    background(10, 10, 10);
+    createCanvas(1200, 800);
+    background(40, 40, 40);
     frameRate(0);
 
     board = new Board();

@@ -11,7 +11,7 @@ class Knight extends Piece {
     }
 
 
-    calculateMoves(pieces, nextTurn) {
+    calculateMoves(pieces, loopAmount) {
         this.validMoves.erase();
 
         let candidateMoves = [],
@@ -45,7 +45,7 @@ class Knight extends Piece {
             }
         }
 
-        if (!nextTurn)
-            super.isCheck(pieces);
+        // if (!nextTurn)
+        super.isCheck(pieces, loopAmount);
     }
 };

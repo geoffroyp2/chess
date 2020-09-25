@@ -17,7 +17,7 @@ class Rook extends Piece {
         super.move(square)
     }
 
-    calculateMoves(pieces, nextTurn) {
+    calculateMoves(pieces, loopAmount) {
         this.validMoves.erase();
 
         let flags = [...Array(4)].fill(true),
@@ -48,8 +48,8 @@ class Rook extends Piece {
             checkLine(3, () => y + i > 7, this.ctoid(x, y + i));
         }
 
-        if (!nextTurn)
-            super.isCheck(pieces);
+        // if (!nextTurn)
+        super.isCheck(pieces, loopAmount);
     }
 
     castle() {
