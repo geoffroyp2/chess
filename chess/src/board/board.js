@@ -1,14 +1,16 @@
-import React from 'react';
-import Square from './square'
+import React from "react";
+import "./board.css";
 
+import Piece from "../Sprites/pieces";
+import BoardImg from "../assets/chesscom/board_blue.png";
 
-function Board() {
-    return (
-        <>
-            Board
-            <Square />
-        </>
-    )
+const Board = () => {
+  return (
+    <div className="Board">
+      <img src={BoardImg} alt="" />
+      <Piece />
+    </div>
+  );
 };
 
 export default Board;
