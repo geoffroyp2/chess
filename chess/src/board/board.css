@@ -1,7 +1,11 @@
 .Board {
-  color: aquamarine;
+  position: absolute;
 }
 
-.Pieces {
-  background-color: darkgray;
+.Piece {
+  position: absolute;
+}
+
+.Highlight {
+  position: absolute;
 }
