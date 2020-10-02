@@ -25,9 +25,10 @@ export default class Rook extends Piece {
     const x = this.coord.x;
     const y = this.coord.y;
 
-    const checkLine = (flagNumber, comparison, coord) => {
+    // Expand "vision" from the piece to the oustide in each direction
+    const checkSquare = (flagNumber, coord) => {
       if (flags[flagNumber]) {
-        if (comparison()) {
+        if (!coord.isValid()) {
           flags[flagNumber] = false;
         } else {
           let otherPiece = pieces.findByCoord(coord);
@@ -42,10 +43,10 @@ export default class Rook extends Piece {
     };
 
     for (let i = 1; i < 8; i++) {
-      checkLine(0, () => x - i < 0, new Coord(x - i, y));
-      checkLine(1, () => x + i > 7, new Coord(x + i, y));
-      checkLine(2, () => y - i < 0, new Coord(x, y - i));
-      checkLine(3, () => y + i > 7, new Coord(x, y + i));
+      checkSquare(0, new Coord(x - i, y));
+      checkSquare(1, new Coord(x + i, y));
+      checkSquare(2, new Coord(x, y - i));
+      checkSquare(3, new Coord(x, y + i));
     }
 
     if (needToVerify) super.verifyMoves(pieces);

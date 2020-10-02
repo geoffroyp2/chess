@@ -16,21 +16,13 @@ export default class Pawn extends Piece {
     )
       this.enPassant = 2;
     else this.enPassant = 0;
-    // if (this.team == "W") {
-    //   if (this.coordinates.squareId - 16 == square) {
-    //     this.enPassant = 2;
-    //   } else this.enPassant = 0;
-    // } else if (this.team == "B") {
-    //   if (this.coordinates.squareId + 16 == square) {
-    //     this.enPassant = 2;
-    //   } else this.enPassant = 0;
-    // }
 
     super.move(destination);
   }
 
   copy() {
     const newPiece = new Pawn(...super.getInfos());
+    // En passant status is handled as a decreasing count : because pieces are copied each turn, the count decreased and is only equal to 1 when en-passant is possible
     newPiece.enPassant = this.enPassant > 0 ? this.enPassant - 1 : 0;
     return newPiece;
   }
@@ -40,6 +32,10 @@ export default class Pawn extends Piece {
     const x = this.coord.x;
     const y = this.coord.y;
     const teamDirection = this.team === "W" ? -1 : +1;
+
+    // ----------------- //
+    // THIS IS A MESS ;) //
+    // ----------------- //
 
     const checkStraight = (coord) => {
       if (pieces.findByCoord(coord)) return false;
@@ -120,9 +116,9 @@ export default class Pawn extends Piece {
               this.moves.add(this, destinationRight, "X", otherPieceEP);
           }
         }
-
-        if (needToVerify) super.verifyMoves(pieces);
       }
     }
+
+    if (needToVerify) super.verifyMoves(pieces);
   }
 }

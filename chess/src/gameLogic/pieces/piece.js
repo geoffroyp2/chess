@@ -17,12 +17,16 @@ export default class Piece {
   }
 
   move(destination) {
+    //update piece coordinates
     this.coord = destination;
   }
 
-  verifyMoves(pieces) {}
+  verifyMoves(pieces) {
+    // for each previously found move (in each individual computeMoves() method), verify if it is legal (not self-check)
+  }
 
   isAttacking(otherPiece) {
+    // simple check for a move that can capture otherPiece
     this.moves.moves.forEach((m) => {
       if (m.destination.equals(otherPiece.coord)) return true;
     });

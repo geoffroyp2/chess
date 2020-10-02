@@ -93,6 +93,7 @@ export default class PieceSet {
     return newPieceSet;
   }
 
+  // ACCESS METHODS
   findById(id) {
     return this.pieces.find((p) => p.id === id);
   }
@@ -106,6 +107,7 @@ export default class PieceSet {
   }
 
   getFormattedPieces() {
+    // Format pieces in a simpler way for the UI
     let pieces = [];
     this.pieces.forEach((p) => {
       pieces.push({ type: p.type + p.team, coord: p.coord, id: p.id });

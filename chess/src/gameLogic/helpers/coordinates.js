@@ -1,3 +1,5 @@
+// Simple class to handle coordinates
+
 export default class Coord {
   constructor(x, y) {
     this.x = x;

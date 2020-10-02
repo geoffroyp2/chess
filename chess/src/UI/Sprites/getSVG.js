@@ -16,6 +16,8 @@ import BishopWhite from "../assets/lichess/bishop_white.svg";
 import KnightWhite from "../assets/lichess/knight_white.svg";
 import PawnWhite from "../assets/lichess/pawn_white.svg";
 
+// Get SVG files form id
+
 export default function getSVG(id) {
   switch (id) {
     case "KB":

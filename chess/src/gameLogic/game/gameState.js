@@ -7,6 +7,7 @@ export default class gameState {
       this.playerTurn = "W";
       this.computeMoves();
     } else if (mode === "EMPTY") {
+      // USED FOR DEEP COPY
       this.pieces = null;
       this.playerTurn = null;
     }

@@ -1,5 +1,6 @@
 import Coord from "../helpers/coordinates";
 
+// ValidMoves is a simple container for ValidMove with access methods
 export default class ValidMoves {
   constructor() {
     this.moves = [];
@@ -37,20 +38,25 @@ class ValidMove {
     this.piece.lastCoord = this.piece.coord;
 
     switch (this.type) {
+      //SIMPLE MOVE
       case "M":
         this.piece.move(this.destination);
         break;
+      //SIMPLE CAPTURE
       case "X":
         this.piece.move(this.destination);
         return this.otherPiece;
+      //CASTLE
       case "O":
         this.piece.move(this.destination); // need to be reworked to be more understandable
         this.otherPiece.castle(); //
         break;
+      //PROMOTION
       case "P":
         // Promotion is handled as a normal move then the peon is changed into another one by GameLogic
         this.piece.move(this.destination);
         break;
+      //PROMOTION + CAPTURE
       case "PX":
         this.piece.move(this.destination);
         return this.otherPiece;

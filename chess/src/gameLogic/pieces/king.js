@@ -24,7 +24,8 @@ export default class King extends Piece {
     const x = this.coord.x;
     const y = this.coord.y;
 
-    const checkMove = (coord) => {
+    // Check every adjacent square
+    const checkSquare = (coord) => {
       if (coord.isValid()) {
         let otherPiece = pieces.findByCoord(coord);
         if (otherPiece) {
@@ -37,10 +38,11 @@ export default class King extends Piece {
 
     for (let i = -1; i < 2; i++) {
       for (let j = -1; j < 2; j++) {
-        if (!(i === 0 && j === 0)) checkMove(new Coord(x + i, y + j));
+        if (!(i === 0 && j === 0)) checkSquare(new Coord(x + i, y + j));
       }
     }
 
+    // Add valid castle moves
     if (this.canCastle) {
       this.getCastleMoves(pieces);
     }
@@ -48,5 +50,7 @@ export default class King extends Piece {
     if (needToVerify) super.verifyMoves(pieces);
   }
 
-  getCastleMoves(pieces) {}
+  getCastleMoves(pieces) {
+    // Check for valid castle moves
+  }
 }

@@ -13,6 +13,13 @@ import Highlight from "./helpers/highlight";
 - verify moves (remove illegal)
 - promotion
 
+- Ideas for better handling of each turn :
+  -- instead of copying the state itself, generate a smaller "save file" of each position that can be parsed
+  -- that method would need to keep in memory :
+    --- the position of each piece
+    --- the castling right for kings and rooks
+    --- the en-passant status of each pawn
+
 */
 
 export default class GameLogic {

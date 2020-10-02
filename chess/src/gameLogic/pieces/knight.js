@@ -16,7 +16,8 @@ export default class Knight extends Piece {
     const x = this.coord.x;
     const y = this.coord.y;
 
-    const checkMove = (coord) => {
+    // check each valid move
+    const checkSquare = (coord) => {
       if (coord.isValid()) {
         let otherPiece = pieces.findByCoord(coord);
         if (otherPiece) {
@@ -27,14 +28,14 @@ export default class Knight extends Piece {
       }
     };
 
-    checkMove(new Coord(x - 1, y - 2));
-    checkMove(new Coord(x - 2, y - 1));
-    checkMove(new Coord(x + 1, y - 2));
-    checkMove(new Coord(x + 2, y - 1));
-    checkMove(new Coord(x - 1, y + 2));
-    checkMove(new Coord(x - 2, y + 1));
-    checkMove(new Coord(x + 1, y + 2));
-    checkMove(new Coord(x + 2, y + 1));
+    checkSquare(new Coord(x - 1, y - 2));
+    checkSquare(new Coord(x - 2, y - 1));
+    checkSquare(new Coord(x + 1, y - 2));
+    checkSquare(new Coord(x + 2, y - 1));
+    checkSquare(new Coord(x - 1, y + 2));
+    checkSquare(new Coord(x - 2, y + 1));
+    checkSquare(new Coord(x + 1, y + 2));
+    checkSquare(new Coord(x + 2, y + 1));
 
     if (needToVerify) super.verifyMoves(pieces);
   }

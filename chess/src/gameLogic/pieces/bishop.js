@@ -17,9 +17,10 @@ export default class Bishop extends Piece {
     const x = this.coord.x;
     const y = this.coord.y;
 
-    const checkLine = (flagNumber, comparison, coord) => {
+    // Expand "vision" from the piece to the oustide in each direction
+    const checkSquare = (flagNumber, coord) => {
       if (flags[flagNumber]) {
-        if (comparison()) {
+        if (!coord.isValid()) {
           flags[flagNumber] = false;
         } else {
           let otherPiece = pieces.findByCoord(coord);
@@ -34,10 +35,10 @@ export default class Bishop extends Piece {
     };
 
     for (let i = 1; i < 8; i++) {
-      checkLine(0, () => x - i < 0 || y - i < 0, new Coord(x - i, y - i));
-      checkLine(1, () => x + i > 7 || y - i < 0, new Coord(x + i, y - i));
-      checkLine(2, () => x - i < 0 || y + i > 7, new Coord(x - i, y + i));
-      checkLine(3, () => x + i > 7 || y + i > 7, new Coord(x + i, y + i));
+      checkSquare(0, new Coord(x - i, y - i));
+      checkSquare(1, new Coord(x + i, y - i));
+      checkSquare(2, new Coord(x - i, y + i));
+      checkSquare(3, new Coord(x + i, y + i));
     }
 
     if (needToVerify) super.verifyMoves(pieces);
