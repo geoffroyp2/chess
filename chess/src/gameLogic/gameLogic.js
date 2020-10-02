@@ -1,20 +1,93 @@
-import PieceSet from "./pieceSet.js";
+import GameState from "./game/gameState";
+import Coord from "./helpers/coordinates";
+import Highlight from "./helpers/highlight";
 
-class GameLogic {
+/*
+
+------ TODO ------
+- Use coord.isValid() for queen rook and bishop
+- Only return piece changes
+
+
+
+*/
+
+export default class GameLogic {
   constructor() {
-    this.pieceSet = new PieceSet("DEFAULT");
+    this.currentState = new GameState("INIT");
+    this.gameHistory = [];
+
+    this.pieceSelected = null;
+    this.lastMove = null;
+
+    this.gameHistory.push(this.currentState);
   }
 
-  click(x, y) {}
-  getPieces() {
-    return this.pieceSet.p;
+  click(x, y) {
+    // Process clicks
+    // only return changes (pieces and highlights)
+
+    const pieceClicked = this.currentState.pieces.findByCoord(new Coord(x, y));
+    if (pieceClicked)
+      if (pieceClicked.team === this.currentState.playerTurn)
+        this.pieceSelected = pieceClicked;
+
+    if (this.pieceSelected) {
+      const moveSelected = this.pieceSelected.moves.find(x, y);
+      if (moveSelected) {
+        //TODO: handle promotion moves
+        this.playMove(moveSelected);
+      }
+    }
+
+    return [this.getPieces(), this.getHighlights()];
   }
+
+  playMove(move) {
+    this.currentState = this.currentState.getNextState(move);
+    this.gameHistory.push(this.currentState);
+
+    this.lastMove = move;
+    this.pieceSelected = null;
+  }
+
+  getInitPieces() {
+    return this.currentState.pieces.getFormattedPieces();
+  }
+
+  getPieces() {
+    //TODO: only return changes
+    return this.currentState.pieces.getFormattedPieces();
+  }
+
   getHighlights() {
-    return [
-      { type: "M", coord: { x: 3, y: 3 }, id: "M1" },
-      { type: "X", coord: { x: 0, y: 1 }, id: "X1" },
-    ];
+    let highlights = [];
+    // If a piece is selected, highlight that piece and it's valid moves
+    if (this.pieceSelected) {
+      highlights.push(new Highlight("HS", this.pieceSelected.coord, "S"));
+      this.pieceSelected.getMoves().forEach((m) => {
+        if (m.type === "X") {
+          highlights.push(
+            new Highlight(
+              "HX",
+              m.destination,
+              m.piece.id + m.destination.getString()
+            )
+          );
+        } else if (m.type === "M") {
+          highlights.push(
+            new Highlight(
+              "HM",
+              m.destination,
+              m.piece.id + m.destination.getString()
+            )
+          );
+        }
+      });
+    }
+
+    // Highlight last move played (TODO)
+
+    return highlights;
   }
 }
-
-export default GameLogic;

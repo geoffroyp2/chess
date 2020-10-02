@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
+import getSVG from "./getSVG";
 
-import HLSVG from "../assets/highlights/hl_green.svg";
-
-const SquareHighlight = ({ size, coord }) => {
+const Highlight = ({ size, type, coord }) => {
   return (
     <img
       className="Highlight"
-      src={HLSVG}
+      src={getSVG(type)}
       style={{
-        zIndex: 2,
+        zIndex: 3,
         height: size,
         width: size,
         top: `${coord.y * size}px`,
@@ -18,4 +17,4 @@ const SquareHighlight = ({ size, coord }) => {
     />
   );
 };
-export default SquareHighlight;
+export default Highlight;
