@@ -51,6 +51,45 @@ export default class King extends Piece {
   }
 
   getCastleMoves(pieces) {
-    // Check for valid castle moves
+    // find castle moves
+    const checkCastle = (
+      kingEndSquare,
+      rookSquare,
+      blockSquares,
+      checkSquares,
+      type
+    ) => {
+      let blocked = false;
+      blockSquares.forEach((x) => {
+        if (pieces.findByCoord(new Coord(x, this.coord.y))) blocked = true;
+      });
+
+      if (!blocked) {
+        let check = false;
+        const rook = pieces.findByCoord(new Coord(rookSquare, this.coord.y));
+        if (rook)
+          if (rook.type === "R" && rook.team === this.team && rook.canCastle) {
+            pieces.pieces.forEach((p) => {
+              if (p.team !== this.team) {
+                checkSquares.forEach((x) => {
+                  if (p.moves.includes(new Coord(x, this.coord.y)))
+                    check = true;
+                });
+              }
+            });
+            if (!check) {
+              this.moves.add(
+                this,
+                new Coord(kingEndSquare, this.coord.y),
+                type,
+                rook
+              );
+            }
+          }
+      }
+    };
+
+    checkCastle(2, 0, [1, 2, 3], [2, 3, 4], "OO");
+    checkCastle(6, 7, [5, 6], [4, 5, 6], "O");
   }
 }

@@ -14,6 +14,13 @@ export default class ValidMoves {
     return this.moves.find((m) => m.destination.equals(new Coord(x, y)));
   }
 
+  includes(coord) {
+    this.moves.forEach((m) => {
+      if (m.destination.equals(coord)) return true;
+    });
+    return false;
+  }
+
   size() {
     return this.moves.length;
   }
@@ -46,10 +53,19 @@ class ValidMove {
       case "X":
         this.piece.move(this.destination);
         return this.otherPiece;
-      //CASTLE
+      //SHORT CASTLE
       case "O":
-        this.piece.move(this.destination); // need to be reworked to be more understandable
-        this.otherPiece.castle(); //
+        this.piece.move(this.destination);
+        this.otherPiece.move(
+          new Coord(this.destination.x - 1, this.destination.y)
+        );
+        break;
+      //LONG CASTLE
+      case "OO":
+        this.piece.move(this.destination);
+        this.otherPiece.move(
+          new Coord(this.destination.x + 1, this.destination.y)
+        );
         break;
       //PROMOTION
       case "P":

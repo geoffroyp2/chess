@@ -5,11 +5,8 @@ import Highlight from "./helpers/highlight";
 /*
 
 ------ TODO ------
-- Use coord.isValid() for queen rook and bishop
 - Only return piece changes ?
-
 - EN PASSANT correct highlights
-- CASTLE moves
 - verify moves (remove illegal)
 - promotion
 
@@ -76,7 +73,7 @@ export default class GameLogic {
     if (this.pieceSelected) {
       highlights.push(new Highlight("HS", this.pieceSelected.coord, "S"));
       this.pieceSelected.getMoves().forEach((m) => {
-        if (m.type === "X") {
+        if (m.type === "X" || m.type === "PX") {
           highlights.push(
             new Highlight(
               "HX",
@@ -84,7 +81,7 @@ export default class GameLogic {
               m.piece.id + m.destination.getString()
             )
           );
-        } else if (m.type === "M") {
+        } else if (m.type === "M" || m.type === "O" || m.type === "OO") {
           highlights.push(
             new Highlight(
               "HM",
