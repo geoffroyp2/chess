@@ -18,10 +18,11 @@ export default class gameState {
   }
 
   getGameStatus() {
-    if (this.pieces.isCheckMate) return "CheckMate";
-    if (this.pieces.isStaleMate) return "StaleMate";
-    if (this.pieces.isCheck) return "Check";
-    return null;
+    return {
+      checkmate: this.pieces.isCheckmate,
+      stalemate: this.pieces.isStalemate,
+      check: this.pieces.isCheck,
+    };
   }
 
   copy() {

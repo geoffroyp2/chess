@@ -6,9 +6,9 @@ import Highlight from "./helpers/highlight";
 
 ------ TODO ------
 - Only return piece changes ?
-- EN PASSANT correct highlights
-- check, checkmate, stalemate, etc. => UI feedback
 - promotion
+- game history
+- PGN
 
 - Ideas for better handling of each turn :
   -- instead of copying the state itself, generate a smaller "save file" of each position that can be parsed
@@ -26,6 +26,7 @@ export default class GameLogic {
 
     this.pieceSelected = null;
     this.lastMove = null;
+    this.gameStatus = {};
 
     this.gameHistory.push(this.currentState);
   }
@@ -54,8 +55,11 @@ export default class GameLogic {
     this.currentState = this.currentState.getNextState(move);
     this.gameHistory.push(this.currentState);
 
-    let gameStatus = this.currentState.getGameStatus();
-    if (gameStatus) console.log(gameStatus);
+    // TODO: handle game status
+    this.gameStatus = this.currentState.getGameStatus();
+    if (this.gameStatus.checkmate) console.log("checkmate");
+    else if (this.gameStatus.stalemate) console.log("stalemate");
+    else if (this.gameStatus.check) console.log("check");
 
     this.lastMove = move;
     this.pieceSelected = null;
@@ -84,7 +88,13 @@ export default class GameLogic {
               m.piece.id + m.destination.getString()
             )
           );
-        } else if (m.type === "M" || m.type === "O" || m.type === "OO") {
+        } else if (
+          m.type === "M" ||
+          m.type === "P" ||
+          m.type === "O" ||
+          m.type === "OO" ||
+          m.type === "XEP"
+        ) {
           highlights.push(
             new Highlight(
               "HM",
@@ -94,6 +104,19 @@ export default class GameLogic {
           );
         }
       });
+    }
+
+    //Highlight check
+    if (this.gameStatus.check) {
+      highlights.push(
+        new Highlight(
+          "HC",
+          this.currentState.pieces.findById(
+            this.currentState.playerTurn + "K"
+          ).coord,
+          "HC"
+        )
+      );
     }
 
     // Highlight last move played

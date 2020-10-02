@@ -2,6 +2,7 @@ import HMove from "../assets/highlights/hl_move_green.svg";
 import HCapture from "../assets/highlights/hl_capture_green.svg";
 import HSelection from "../assets/highlights/hl_green.svg";
 import HLastMove from "../assets/highlights/hl_yellow.svg";
+import HCheck from "../assets/highlights/hl_check_red.svg";
 
 import KingBlack from "../assets/lichess/king_black.svg";
 import QueenBlack from "../assets/lichess/queen_black.svg";
@@ -52,6 +53,8 @@ export default function getSVG(id) {
       return HSelection;
     case "HLM":
       return HLastMove;
+    case "HC":
+      return HCheck;
 
     default:
       return null;

@@ -11,21 +11,17 @@ export default class ValidMoves {
   }
 
   find(coord) {
-    return this.moves.find((m) => {
-      if (m.destination.equals(coord)) return m;
+    let move = null;
+    this.moves.forEach((m) => {
+      if (m.destination.equals(coord)) move = m;
     });
+    return move;
   }
-
-  // includes(coord) {
-  //   this.moves.find((m) => {
-  //     if (m.destination.equals(coord)) return true;
-  //   });
-  //   return false;
-  // }
 
   size() {
     return this.moves.length;
   }
+
   erase() {
     this.moves = [];
   }
@@ -37,13 +33,10 @@ class ValidMove {
     this.type = type;
     this.destination = destination;
     this.otherPiece = otherPiece;
-    // this.resultingState = null;
-    // this.isCheck = false;
-    // this.isCheckMate = false;
   }
 
   copyMove(newPieces) {
-    //return a copy of the move with references to a new piece set
+    //returns a copy of the move with correct references in the new piece set
     const newMove = new ValidMove(null, this.destination, this.type, null);
     newPieces.pieces.forEach((p) => {
       if (p.id === this.piece.id) newMove.piece = p;
@@ -62,8 +55,9 @@ class ValidMove {
       case "M":
         this.piece.move(this.destination);
         break;
-      //SIMPLE CAPTURE
+      //SIMPLE CAPTURE && EN-PASSANT (en-passant case is only used for highlights)
       case "X":
+      case "XEP":
         this.piece.move(this.destination);
         return this.otherPiece;
       //SHORT CASTLE
@@ -82,7 +76,7 @@ class ValidMove {
         break;
       //PROMOTION
       case "P":
-        // Promotion is handled as a normal move then the peon is changed into another one by GameLogic
+        // Promotion is handled as a normal move then the pawn is changed into another piece by GameState
         this.piece.move(this.destination);
         break;
       //PROMOTION + CAPTURE

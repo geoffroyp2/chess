@@ -22,7 +22,8 @@ export default class Pawn extends Piece {
 
   copy() {
     const newPiece = new Pawn(...super.getInfos());
-    // En passant status is handled as a decreasing count : because pieces are copied each turn, the count decreased and is only equal to 1 when en-passant is possible
+    // En passant status is handled as a decreasing count :
+    // because pieces are copied each turn, the count decreased and is only equal to 1 when en-passant is possible
     newPiece.enPassant = this.enPassant > 0 ? this.enPassant - 1 : 0;
     return newPiece;
   }
@@ -82,7 +83,7 @@ export default class Pawn extends Piece {
             otherPieceEP.type === "P" &&
             otherPieceEP.enPassant > 0
           )
-            this.moves.add(this, destinationLeft, "X", otherPieceEP);
+            this.moves.add(this, destinationLeft, "XEP", otherPieceEP);
         }
       }
 
@@ -113,7 +114,7 @@ export default class Pawn extends Piece {
               otherPieceEP.type === "P" &&
               otherPieceEP.enPassant > 0
             )
-              this.moves.add(this, destinationRight, "X", otherPieceEP);
+              this.moves.add(this, destinationRight, "XEP", otherPieceEP);
           }
         }
       }

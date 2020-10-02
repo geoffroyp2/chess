@@ -28,24 +28,18 @@ export default class Piece {
 
     //loop backwards to be able to work with splice
     for (let i = moves.length - 1; i >= 0; i--) {
-      //create a copy of the state to simulate moves
+      //create a copy of the state and simulate current move
       const pieceCopy = pieces.copy();
       const newMove = moves[i].copyMove(pieceCopy);
+
       const pieceToRemove = newMove.playMove();
       if (pieceToRemove) pieceCopy.remove(pieceToRemove);
 
       pieceCopy.computeOponentMoves(this.team);
+
       //if the move results in a check, remove it
       if (pieceCopy.isCheck) moves.splice(i, 1);
     }
-  }
-
-  isAttacking(otherPiece) {
-    // simple check for a move that can capture otherPiece
-    this.moves.moves.forEach((m) => {
-      if (m.destination.equals(otherPiece.coord)) return true;
-    });
-    return false;
   }
 
   getMoves() {

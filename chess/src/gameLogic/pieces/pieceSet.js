@@ -13,20 +13,12 @@ export default class PieceSet {
     this.initPieces(mode);
 
     this.isCheck = false;
-    this.isCheckMate = false;
-    this.isStaleMate = false;
+    this.isCheckmate = false;
+    this.isStalemate = false;
   }
 
   initPieces(mode) {
     if (mode === "STANDARD") {
-      //tests
-      // this.pieces.push(new King("W", "WK", new Coord(4, 7)));
-      // this.pieces.push(new Rook("W", "WR1", new Coord(0, 7)));
-      // this.pieces.push(new Rook("W", "WR2", new Coord(7, 7)));
-      // this.pieces.push(new King("B", "BK", new Coord(4, 0)));
-      // this.pieces.push(new Rook("B", "BR1", new Coord(3, 0)));
-      // this.pieces.push(new Rook("B", "BR2", new Coord(5, 0)));
-
       // White set
       this.pieces.push(new King("W", "WK", new Coord(4, 7)));
       this.pieces.push(new Queen("W", "WQ", new Coord(3, 7)));
@@ -71,8 +63,8 @@ export default class PieceSet {
         if (p.moves.size() > 0) atLeastOneValidMove = true;
     });
     if (!atLeastOneValidMove) {
-      if (this.isCheck) this.isCheckMate = true;
-      else this.isStaleMate = true;
+      if (this.isCheck) this.isCheckmate = true;
+      else this.isStalemate = true;
     }
   }
 
