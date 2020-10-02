@@ -34,6 +34,7 @@ class ValidMove {
 
   playMove() {
     //Update position of the pieces that need to move and return pieces that need to be removed
+    this.piece.lastCoord = this.piece.coord;
 
     switch (this.type) {
       case "M":
@@ -53,6 +54,8 @@ class ValidMove {
       case "PX":
         this.piece.move(this.destination);
         return this.otherPiece;
+      default:
+        break;
     }
     return null;
   }

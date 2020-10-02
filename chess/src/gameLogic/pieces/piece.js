@@ -1,11 +1,12 @@
 import ValidMoves from "../game/validMoves";
-import Coord from "../helpers/coordinates";
+// import Coord from "../helpers/coordinates";
 
 export default class Piece {
   constructor([team, id, coord]) {
     this.team = team;
     this.coord = coord;
     this.id = id;
+    this.lastCoord = null;
 
     this.moves = new ValidMoves();
   }

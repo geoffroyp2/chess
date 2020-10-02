@@ -6,9 +6,12 @@ import Highlight from "./helpers/highlight";
 
 ------ TODO ------
 - Use coord.isValid() for queen rook and bishop
-- Only return piece changes
+- Only return piece changes ?
 
-
+- EN PASSANT correct highlights
+- CASTLE moves
+- verify moves (remove illegal)
+- promotion
 
 */
 
@@ -25,7 +28,7 @@ export default class GameLogic {
 
   click(x, y) {
     // Process clicks
-    // only return changes (pieces and highlights)
+    // return new pieces and highlights
 
     const pieceClicked = this.currentState.pieces.findByCoord(new Coord(x, y));
     if (pieceClicked)
@@ -86,7 +89,13 @@ export default class GameLogic {
       });
     }
 
-    // Highlight last move played (TODO)
+    // Highlight last move played
+    if (this.lastMove) {
+      highlights.push(
+        new Highlight("HLM", this.lastMove.piece.lastCoord, "HLM1")
+      );
+      highlights.push(new Highlight("HLM", this.lastMove.destination, "HLM2"));
+    }
 
     return highlights;
   }

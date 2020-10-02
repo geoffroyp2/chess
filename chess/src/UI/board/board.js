@@ -24,19 +24,13 @@ const Board = ({ game }) => {
     handleNewHighlights(newHighlights);
   };
 
-  const handleNewPieces = useCallback(
-    (newPiecesPositions) => {
-      changePieces(newPiecesPositions);
-    },
-    [pieces]
-  );
+  const handleNewPieces = useCallback((newPiecesPositions) => {
+    changePieces(newPiecesPositions);
+  }, []);
 
-  const handleNewHighlights = useCallback(
-    (newHighlights) => {
-      changeHighlights(newHighlights);
-    },
-    [highlights]
-  );
+  const handleNewHighlights = useCallback((newHighlights) => {
+    changeHighlights(newHighlights);
+  }, []);
 
   return (
     <div
@@ -54,7 +48,6 @@ const Board = ({ game }) => {
       //onDragEnter
       //onDrop
     >
-      {/* {HLSquare ? <SquareHighlight size={PieceSize} coord={HLSquare} /> : null} */}
       {highlights.map((h) => (
         <Highlight size={PieceSize} type={h.type} coord={h.coord} key={h.id} />
       ))}
