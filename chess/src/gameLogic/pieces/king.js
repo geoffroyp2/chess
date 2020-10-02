@@ -42,8 +42,8 @@ export default class King extends Piece {
       }
     }
 
-    // Add valid castle moves
-    if (this.canCastle) {
+    // Add valid castle moves (only if it's a primary move)
+    if (this.canCastle && needToVerify) {
       this.getCastleMoves(pieces);
     }
 
@@ -72,8 +72,9 @@ export default class King extends Piece {
             pieces.pieces.forEach((p) => {
               if (p.team !== this.team) {
                 checkSquares.forEach((x) => {
-                  if (p.moves.includes(new Coord(x, this.coord.y)))
+                  if (p.moves.find(new Coord(x, this.coord.y))) {
                     check = true;
+                  }
                 });
               }
             });

@@ -19,6 +19,14 @@ export default class PieceSet {
 
   initPieces(mode) {
     if (mode === "STANDARD") {
+      //tests
+      // this.pieces.push(new King("W", "WK", new Coord(4, 7)));
+      // this.pieces.push(new Rook("W", "WR1", new Coord(0, 7)));
+      // this.pieces.push(new Rook("W", "WR2", new Coord(7, 7)));
+      // this.pieces.push(new King("B", "BK", new Coord(4, 0)));
+      // this.pieces.push(new Rook("B", "BR1", new Coord(3, 0)));
+      // this.pieces.push(new Rook("B", "BR2", new Coord(5, 0)));
+
       // White set
       this.pieces.push(new King("W", "WK", new Coord(4, 7)));
       this.pieces.push(new Queen("W", "WQ", new Coord(3, 7)));
@@ -49,10 +57,7 @@ export default class PieceSet {
 
   computeMoves(playerTurn) {
     // 1. Compute oponent's move to see if the current state is check (used to look for checkmate)
-    this.pieces.forEach((p) => {
-      if (p.team !== playerTurn) p.computeMoves(this, false);
-    });
-    this.check(playerTurn);
+    this.computeOponentMoves(playerTurn);
 
     // 2. Compute current player's move, and eliminate illegal moves (2nd arg of p.computeMoves())
     this.pieces.forEach((p) => {
@@ -62,8 +67,8 @@ export default class PieceSet {
     // 3. Look for checkmate and stalemate
     let atLeastOneValidMove = false;
     this.pieces.forEach((p) => {
-      if (p.team === playerTurn && p.moves.size() > 0)
-        atLeastOneValidMove = true;
+      if (p.team === playerTurn)
+        if (p.moves.size() > 0) atLeastOneValidMove = true;
     });
     if (!atLeastOneValidMove) {
       if (this.isCheck) this.isCheckMate = true;
@@ -71,12 +76,20 @@ export default class PieceSet {
     }
   }
 
+  computeOponentMoves(playerTurn) {
+    // called from the general computeMoves() and from each individual move to eliminate invalid ones
+    this.pieces.forEach((p) => {
+      if (p.team !== playerTurn) p.computeMoves(this, false);
+    });
+    this.check(playerTurn);
+  }
+
   check(playerTurn) {
     // Look for checks from oponent
     const king = this.findById(playerTurn + "K");
     this.pieces.forEach((p) => {
       if (p.team !== playerTurn) {
-        if (p.isAttacking(king)) {
+        if (p.moves.find(king.coord)) {
           this.isCheck = true;
           return;
         }

@@ -7,7 +7,7 @@ import Highlight from "./helpers/highlight";
 ------ TODO ------
 - Only return piece changes ?
 - EN PASSANT correct highlights
-- verify moves (remove illegal)
+- check, checkmate, stalemate, etc. => UI feedback
 - promotion
 
 - Ideas for better handling of each turn :
@@ -40,7 +40,7 @@ export default class GameLogic {
         this.pieceSelected = pieceClicked;
 
     if (this.pieceSelected) {
-      const moveSelected = this.pieceSelected.moves.find(x, y);
+      const moveSelected = this.pieceSelected.moves.find(new Coord(x, y));
       if (moveSelected) {
         //TODO: handle promotion moves
         this.playMove(moveSelected);
@@ -53,6 +53,9 @@ export default class GameLogic {
   playMove(move) {
     this.currentState = this.currentState.getNextState(move);
     this.gameHistory.push(this.currentState);
+
+    let gameStatus = this.currentState.getGameStatus();
+    if (gameStatus) console.log(gameStatus);
 
     this.lastMove = move;
     this.pieceSelected = null;

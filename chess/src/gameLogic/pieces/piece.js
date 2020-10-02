@@ -6,7 +6,8 @@ export default class Piece {
     this.team = team;
     this.coord = coord;
     this.id = id;
-    this.lastCoord = null;
+
+    this.lastCoord = null; // to highlight last move played
 
     this.moves = new ValidMoves();
   }
@@ -23,6 +24,20 @@ export default class Piece {
 
   verifyMoves(pieces) {
     // for each previously found move (in each individual computeMoves() method), verify if it is legal (not self-check)
+    const moves = this.moves.moves;
+
+    //loop backwards to be able to work with splice
+    for (let i = moves.length - 1; i >= 0; i--) {
+      //create a copy of the state to simulate moves
+      const pieceCopy = pieces.copy();
+      const newMove = moves[i].copyMove(pieceCopy);
+      const pieceToRemove = newMove.playMove();
+      if (pieceToRemove) pieceCopy.remove(pieceToRemove);
+
+      pieceCopy.computeOponentMoves(this.team);
+      //if the move results in a check, remove it
+      if (pieceCopy.isCheck) moves.splice(i, 1);
+    }
   }
 
   isAttacking(otherPiece) {

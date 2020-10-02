@@ -17,6 +17,13 @@ export default class gameState {
     this.pieces.computeMoves(this.playerTurn);
   }
 
+  getGameStatus() {
+    if (this.pieces.isCheckMate) return "CheckMate";
+    if (this.pieces.isStaleMate) return "StaleMate";
+    if (this.pieces.isCheck) return "Check";
+    return null;
+  }
+
   copy() {
     // Deep Copy
     const newState = new gameState("EMPTY");

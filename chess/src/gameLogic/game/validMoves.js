@@ -10,16 +10,18 @@ export default class ValidMoves {
     this.moves.push(new ValidMove(piece, destination, type, otherPiece));
   }
 
-  find(x, y) {
-    return this.moves.find((m) => m.destination.equals(new Coord(x, y)));
+  find(coord) {
+    return this.moves.find((m) => {
+      if (m.destination.equals(coord)) return m;
+    });
   }
 
-  includes(coord) {
-    this.moves.forEach((m) => {
-      if (m.destination.equals(coord)) return true;
-    });
-    return false;
-  }
+  // includes(coord) {
+  //   this.moves.find((m) => {
+  //     if (m.destination.equals(coord)) return true;
+  //   });
+  //   return false;
+  // }
 
   size() {
     return this.moves.length;
@@ -38,6 +40,17 @@ class ValidMove {
     // this.resultingState = null;
     // this.isCheck = false;
     // this.isCheckMate = false;
+  }
+
+  copyMove(newPieces) {
+    //return a copy of the move with references to a new piece set
+    const newMove = new ValidMove(null, this.destination, this.type, null);
+    newPieces.pieces.forEach((p) => {
+      if (p.id === this.piece.id) newMove.piece = p;
+      if (this.otherPiece)
+        if (p.id === this.otherPiece.id) newMove.otherPiece = p;
+    });
+    return newMove;
   }
 
   playMove() {
