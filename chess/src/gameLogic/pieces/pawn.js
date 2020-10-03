@@ -86,36 +86,32 @@ export default class Pawn extends Piece {
             this.moves.add(this, destinationLeft, "XEP", otherPieceEP);
         }
       }
+    }
 
-      // CAPTURE RIGHT
-      const destinationRight = new Coord(x + 1, y + teamDirection);
-
-      if (destinationRight.isValid()) {
-        const otherPiece = pieces.findByCoord(destinationRight);
-        if (otherPiece) {
-          if (otherPiece.team !== this.team) {
-            //PROMOTION
-            if (
-              (this.team === "W" && y === 1) ||
-              (this.team === "B" && y === 6)
-            )
-              this.moves.add(this, destinationRight, "PX", otherPiece);
-            //NORMAL
-            else this.moves.add(this, destinationRight, "X", otherPiece);
-          }
+    // CAPTURE RIGHT
+    const destinationRight = new Coord(x + 1, y + teamDirection);
+    if (destinationRight.isValid()) {
+      const otherPiece = pieces.findByCoord(destinationRight);
+      if (otherPiece) {
+        if (otherPiece.team !== this.team) {
+          //PROMOTION
+          if ((this.team === "W" && y === 1) || (this.team === "B" && y === 6))
+            this.moves.add(this, destinationRight, "PX", otherPiece);
+          //NORMAL
+          else this.moves.add(this, destinationRight, "X", otherPiece);
         }
+      }
 
-        //EN PASSANT
-        if ((this.team === "W" && y === 3) || (this.team === "B" && y === 4)) {
-          const otherPieceEP = pieces.findByCoord(new Coord(x + 1, y));
-          if (otherPieceEP) {
-            if (
-              otherPieceEP.team !== this.team &&
-              otherPieceEP.type === "P" &&
-              otherPieceEP.enPassant > 0
-            )
-              this.moves.add(this, destinationRight, "XEP", otherPieceEP);
-          }
+      //EN PASSANT
+      if ((this.team === "W" && y === 3) || (this.team === "B" && y === 4)) {
+        const otherPieceEP = pieces.findByCoord(new Coord(x + 1, y));
+        if (otherPieceEP) {
+          if (
+            otherPieceEP.team !== this.team &&
+            otherPieceEP.type === "P" &&
+            otherPieceEP.enPassant > 0
+          )
+            this.moves.add(this, destinationRight, "XEP", otherPieceEP);
         }
       }
     }

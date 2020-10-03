@@ -6,9 +6,10 @@ import Highlight from "./helpers/highlight";
 
 ------ TODO ------
 - Only return piece changes ?
-- promotion
+- detect draws: 3-moves repetition, insufficient material, 50 moves rule
 - game history
 - PGN
+
 
 - Ideas for better handling of each turn :
   -- instead of copying the state itself, generate a smaller "save file" of each position that can be parsed
@@ -16,6 +17,8 @@ import Highlight from "./helpers/highlight";
     --- the position of each piece
     --- the castling right for kings and rooks
     --- the en-passant status of each pawn
+    --- the player turn
+    --- other stats (50 moves rule)
 
 */
 
@@ -25,34 +28,79 @@ export default class GameLogic {
     this.gameHistory = [];
 
     this.pieceSelected = null;
+    this.promotionMove = null;
     this.lastMove = null;
     this.gameStatus = {};
 
     this.gameHistory.push(this.currentState);
   }
 
-  click(x, y) {
-    // Process clicks
-    // return new pieces and highlights
-
-    const pieceClicked = this.currentState.pieces.findByCoord(new Coord(x, y));
-    if (pieceClicked)
-      if (pieceClicked.team === this.currentState.playerTurn)
-        this.pieceSelected = pieceClicked;
-
-    if (this.pieceSelected) {
-      const moveSelected = this.pieceSelected.moves.find(new Coord(x, y));
-      if (moveSelected) {
-        //TODO: handle promotion moves
-        this.playMove(moveSelected);
-      }
-    }
-
-    return [this.getPieces(), this.getHighlights()];
+  reset() {
+    this.currentState = new GameState("INIT");
+    this.gameHistory = [];
+    this.pieceSelected = null;
+    this.promotionMove = false;
+    this.lastMove = null;
+    this.gameStatus = {};
+    this.gameHistory.push(this.currentState);
   }
 
-  playMove(move) {
-    this.currentState = this.currentState.getNextState(move);
+  click(x, y) {
+    // Process clicks, returns pieces, highlights and promotion area if necessary
+
+    if (this.promotionMove) {
+      this.handlePromotion(x, y);
+    } else {
+      const pieceClicked = this.currentState.pieces.findByCoord(
+        new Coord(x, y)
+      );
+
+      if (this.pieceSelected) {
+        const moveSelected = this.pieceSelected.moves.find(new Coord(x, y));
+        if (moveSelected) {
+          if (moveSelected.type === "P" || moveSelected.type === "PX") {
+            this.promotionMove = moveSelected;
+          } else {
+            this.playMove(moveSelected);
+            this.pieceSelected = null;
+          }
+        } else if (pieceClicked) {
+          if (pieceClicked.team === this.currentState.playerTurn)
+            this.pieceSelected = pieceClicked;
+          else this.pieceSelected = null;
+        } else this.pieceSelected = null;
+      } else {
+        if (pieceClicked)
+          if (pieceClicked.team === this.currentState.playerTurn)
+            this.pieceSelected = pieceClicked;
+      }
+    }
+    return [this.getPieces(), this.getHighlights(), this.getPromotionArea()];
+  }
+
+  handlePromotion(x, y) {
+    // detect which valid piece has been selected
+    const targetX = this.promotionMove.destination.x;
+    const targetY = this.promotionMove.destination.y;
+    if (
+      x === targetX &&
+      y >= (targetY === 0 ? 0 : 4) &&
+      y < (targetY === 0 ? 4 : 8)
+    ) {
+      let promotionTarget;
+      if (y === 0 || y === 7) promotionTarget = "Q";
+      else if (y === 1 || y === 6) promotionTarget = "R";
+      else if (y === 2 || y === 5) promotionTarget = "N";
+      else if (y === 3 || y === 4) promotionTarget = "B";
+      this.playMove(this.promotionMove, promotionTarget);
+    }
+
+    this.promotionMove = null;
+    this.pieceSelected = null;
+  }
+
+  playMove(move, promotionTarget) {
+    this.currentState = this.currentState.getNextState(move, promotionTarget);
     this.gameHistory.push(this.currentState);
 
     // TODO: handle game status
@@ -62,7 +110,6 @@ export default class GameLogic {
     else if (this.gameStatus.check) console.log("check");
 
     this.lastMove = move;
-    this.pieceSelected = null;
   }
 
   getInitPieces() {
@@ -128,5 +175,13 @@ export default class GameLogic {
     }
 
     return highlights;
+  }
+
+  getPromotionArea() {
+    if (this.promotionMove) {
+      return {
+        coord: this.promotionMove.destination,
+      };
+    } else return null;
   }
 }

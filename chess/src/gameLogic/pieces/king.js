@@ -42,7 +42,8 @@ export default class King extends Piece {
       }
     }
 
-    // Add valid castle moves (only if it's a primary move)
+    // Add valid castle moves
+    // (not when looking for direct checks because a king can't capture the other king anyways)
     if (this.canCastle && needToVerify) {
       this.getCastleMoves(pieces);
     }
@@ -90,7 +91,7 @@ export default class King extends Piece {
       }
     };
 
-    checkCastle(2, 0, [1, 2, 3], [2, 3, 4], "OO");
-    checkCastle(6, 7, [5, 6], [4, 5, 6], "O");
+    checkCastle(2, 0, [1, 2, 3], [2, 3, 4], "OO"); // long castle
+    checkCastle(6, 7, [5, 6], [4, 5, 6], "O"); // short castle
   }
 }

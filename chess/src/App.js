@@ -7,7 +7,7 @@ import GameLogic from "./gameLogic/gameLogic";
 const App = () => {
   const game = new GameLogic();
   return (
-    <div className="App">
+    <div className="App noselect">
       <Board game={game} />
     </div>
   );

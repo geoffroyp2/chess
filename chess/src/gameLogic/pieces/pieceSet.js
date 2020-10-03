@@ -98,6 +98,25 @@ export default class PieceSet {
     return newPieceSet;
   }
 
+  promotePawn(pawnToPromote, targetPiece) {
+    switch (targetPiece) {
+      case "Q":
+        this.pieces.push(new Queen(...pawnToPromote.getInfos()));
+        break;
+      case "R":
+        this.pieces.push(new Rook(...pawnToPromote.getInfos()));
+        break;
+      case "B":
+        this.pieces.push(new Bishop(...pawnToPromote.getInfos()));
+        break;
+      case "N":
+        this.pieces.push(new Knight(...pawnToPromote.getInfos()));
+        break;
+      default:
+        break;
+    }
+  }
+
   // ACCESS METHODS
   findById(id) {
     return this.pieces.find((p) => p.id === id);

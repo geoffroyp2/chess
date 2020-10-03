@@ -1,5 +1,6 @@
 import React from "react";
 import getSVG from "./getSVG";
+import "./style.css";
 
 const Highlight = ({ size, type, coord }) => {
   return (
@@ -7,7 +8,6 @@ const Highlight = ({ size, type, coord }) => {
       className="Highlight"
       src={getSVG(type)}
       style={{
-        zIndex: 3,
         height: size,
         width: size,
         top: `${coord.y * size}px`,

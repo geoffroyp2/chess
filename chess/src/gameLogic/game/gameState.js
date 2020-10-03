@@ -25,6 +25,13 @@ export default class gameState {
     };
   }
 
+  promote(move, targetPiece) {
+    //change the pawn into another piece (remove the pawn and add a new piece)
+    const pawnToPromote = this.pieces.findById(move.piece.id);
+    this.pieces.remove(pawnToPromote);
+    this.pieces.promotePawn(pawnToPromote, targetPiece);
+  }
+
   copy() {
     // Deep Copy
     const newState = new gameState("EMPTY");
@@ -34,10 +41,11 @@ export default class gameState {
     return newState;
   }
 
-  getNextState(move) {
+  getNextState(move, promotionTarget) {
     //play move then deep copy the state
     const pieceToRemove = move.playMove();
     if (pieceToRemove) this.pieces.remove(pieceToRemove);
+    if (promotionTarget) this.promote(move, promotionTarget);
     return this.copy();
   }
 }

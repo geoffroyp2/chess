@@ -4,7 +4,10 @@ import "./board.css";
 
 import Piece from "../Sprites/pieceReact";
 import Highlight from "../Sprites/highlightReact";
+import PromotionArea from "../Sprites/promotionArea";
 import BoardSVG from "../assets/svgboard/board_darkBlue.svg";
+
+//TODO : handle coordinates conversion when board is flipped
 
 const Board = ({ game }) => {
   const boardSize = 744;
@@ -13,15 +16,17 @@ const Board = ({ game }) => {
 
   const [pieces, changePieces] = useState(game.getInitPieces());
   const [highlights, changeHighlights] = useState([]);
+  const [promotionArea, changePromotionArea] = useState(null);
 
   const handleClick = (e) => {
     // Need to rework mouse coords
-    const [newPiecesPositions, newHighlights] = game.click(
+    const [newPiecesPositions, newHighlights, newPromotionArea] = game.click(
       Math.floor((e.nativeEvent.clientX - boardOffset) / PieceSize),
       Math.floor((e.nativeEvent.clientY - boardOffset) / PieceSize)
     );
     handleNewPieces(newPiecesPositions);
     handleNewHighlights(newHighlights);
+    handleNewPromotionArea(newPromotionArea);
   };
 
   const handleNewPieces = useCallback((newPiecesPositions) => {
@@ -32,29 +37,52 @@ const Board = ({ game }) => {
     changeHighlights(newHighlights);
   }, []);
 
+  const handleNewPromotionArea = useCallback((newPromotionArea) => {
+    changePromotionArea(newPromotionArea);
+  }, []);
+
+  const resetBoard = (e) => {
+    game.reset();
+    handleNewPieces(game.getInitPieces());
+    handleNewHighlights([]);
+  };
+
   return (
-    <div
-      className="Board"
-      style={{
-        top: boardOffset,
-        left: boardOffset,
-        width: boardSize,
-        height: boardSize,
-        backgroundImage: `url(${BoardSVG})`,
-        zIndex: 1,
-      }}
-      // onMouseMove={handleMove}
-      onClick={handleClick}
-      //onDragEnter
-      //onDrop
-    >
-      {highlights.map((h) => (
-        <Highlight size={PieceSize} type={h.type} coord={h.coord} key={h.id} />
-      ))}
-      {pieces.map((p) => (
-        <Piece size={PieceSize} type={p.type} coord={p.coord} key={p.id} />
-      ))}
-    </div>
+    <>
+      <button className="ResetButton" onClick={resetBoard}>
+        RESET
+      </button>
+      <div
+        className="Board"
+        style={{
+          top: boardOffset,
+          left: boardOffset,
+          width: boardSize,
+          height: boardSize,
+          backgroundImage: `url(${BoardSVG})`,
+          zIndex: 1,
+        }}
+        // onMouseMove={handleMove}
+        onClick={handleClick}
+        //onDragEnter
+        //onDrop
+      >
+        {highlights.map((h) => (
+          <Highlight
+            size={PieceSize}
+            type={h.type}
+            coord={h.coord}
+            key={h.id}
+          />
+        ))}
+        {pieces.map((p) => (
+          <Piece size={PieceSize} type={p.type} coord={p.coord} key={p.id} />
+        ))}
+        {promotionArea ? (
+          <PromotionArea coord={promotionArea.coord} size={PieceSize} />
+        ) : null}
+      </div>
+    </>
   );
 };
 

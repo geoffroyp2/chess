@@ -28,13 +28,13 @@ export default class Piece {
 
     //loop backwards to be able to work with splice
     for (let i = moves.length - 1; i >= 0; i--) {
-      //create a copy of the state and simulate current move
+      //create a copy of the state and create a copy of the move with updated pieces references
       const pieceCopy = pieces.copy();
       const newMove = moves[i].copyMove(pieceCopy);
 
+      // play the move and evaluate resulting state
       const pieceToRemove = newMove.playMove();
       if (pieceToRemove) pieceCopy.remove(pieceToRemove);
-
       pieceCopy.computeOponentMoves(this.team);
 
       //if the move results in a check, remove it
