@@ -1,0 +1,16 @@
+.Piece {
+  position: absolute;
+  z-index: 5;
+}
+
+.Highlight {
+  position: absolute;
+  z-index: 3;
+}
+
+.PromotionArea {
+  position: absolute;
+  z-index: 6;
+  height: "100%";
+  width: "100%";
+}
