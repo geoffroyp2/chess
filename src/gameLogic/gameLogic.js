@@ -5,6 +5,7 @@ import Highlight from "./helpers/highlight";
 /*
 
 ------ TODO ------
+
 - Only return piece changes ?
 - detect draws: 3-moves repetition, insufficient material, 50 moves rule
 - game history
@@ -45,7 +46,7 @@ export default class GameLogic {
     this.gameHistory.push(this.currentState);
   }
 
-  click(x, y) {
+  click({ x, y }) {
     // Process clicks, returns pieces, highlights and promotion area if necessary
 
     if (this.promotionMove) {
@@ -54,21 +55,23 @@ export default class GameLogic {
       const pieceClicked = this.currentState.pieces.findByCoord(
         new Coord(x, y)
       );
-
       if (this.pieceSelected) {
-        const moveSelected = this.pieceSelected.moves.find(new Coord(x, y));
-        if (moveSelected) {
-          if (moveSelected.type === "P" || moveSelected.type === "PX") {
-            this.promotionMove = moveSelected;
-          } else {
-            this.playMove(moveSelected);
-            this.pieceSelected = null;
-          }
-        } else if (pieceClicked) {
-          if (pieceClicked.team === this.currentState.playerTurn)
-            this.pieceSelected = pieceClicked;
-          else this.pieceSelected = null;
-        } else this.pieceSelected = null;
+        if (pieceClicked === this.pieceSelected) this.pieceSelected = null;
+        else {
+          const moveSelected = this.pieceSelected.moves.find(new Coord(x, y));
+          if (moveSelected) {
+            if (moveSelected.type === "P" || moveSelected.type === "PX") {
+              this.promotionMove = moveSelected;
+            } else {
+              this.playMove(moveSelected);
+              this.pieceSelected = null;
+            }
+          } else if (pieceClicked) {
+            if (pieceClicked.team === this.currentState.playerTurn)
+              this.pieceSelected = pieceClicked;
+            else this.pieceSelected = null;
+          } else this.pieceSelected = null;
+        }
       } else {
         if (pieceClicked)
           if (pieceClicked.team === this.currentState.playerTurn)
@@ -117,7 +120,7 @@ export default class GameLogic {
   }
 
   getPieces() {
-    //TODO: only return changes
+    //TODO: only return changes ?
     return this.currentState.pieces.getFormattedPieces();
   }
 

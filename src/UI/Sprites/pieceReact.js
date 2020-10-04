@@ -1,5 +1,5 @@
 import React from "react";
-import getSVG from "./getSVG";
+import getSVG from "./helpers/getSVG";
 import "./style.css";
 
 const Piece = ({ size, type, coord }) => {
@@ -10,8 +10,6 @@ const Piece = ({ size, type, coord }) => {
       style={{
         height: size,
         width: size,
-        top: `${coord.y * size}px`,
-        left: `${coord.x * size}px`,
       }}
       alt=""
     />

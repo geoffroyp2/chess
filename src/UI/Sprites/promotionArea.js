@@ -1,39 +1,41 @@
 import React from "react";
 
-import generateOverlaySVG from "./generateOverlaySVG.js";
+import generateOverlaySVG from "./helpers/generateOverlaySVG.js";
 
-import Piece from "../Sprites/pieceReact";
+import Piece from "./pieceReact";
 import "./style.css";
 
-const PromotionArea = ({ coord, size }) => {
-  const team = coord.y === 0 ? "W" : "B";
-  const direction = coord.y === 0 ? +1 : -1;
+//TODO : rework with Square system
+
+const PromotionArea = ({ pieceCoord, graphicsCoord, size }) => {
+  const team = pieceCoord.y === 0 ? "W" : "B";
+  const direction = graphicsCoord.y === 0 ? +1 : -1;
 
   return (
     <div className="PromotionArea">
-      {generateOverlaySVG(coord.x, coord.y === 0 ? 0 : 4)}
+      {generateOverlaySVG(graphicsCoord.x, graphicsCoord.y === 0 ? 0 : 4)}
       <Piece
         size={size}
         type={"Q" + team}
-        coord={{ x: coord.x, y: coord.y }}
+        coord={{ x: graphicsCoord.x, y: graphicsCoord.y }}
         key={"PQ" + team}
       />
       <Piece
         size={size}
         type={"R" + team}
-        coord={{ x: coord.x, y: coord.y + direction }}
+        coord={{ x: graphicsCoord.x, y: graphicsCoord.y + direction }}
         key={"PR" + team}
       />
       <Piece
         size={size}
         type={"N" + team}
-        coord={{ x: coord.x, y: coord.y + 2 * direction }}
+        coord={{ x: graphicsCoord.x, y: graphicsCoord.y + 2 * direction }}
         key={"PN" + team}
       />
       <Piece
         size={size}
         type={"B" + team}
-        coord={{ x: coord.x, y: coord.y + 3 * direction }}
+        coord={{ x: graphicsCoord.x, y: graphicsCoord.y + 3 * direction }}
         key={"PB" + team}
       />
     </div>

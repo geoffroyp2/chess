@@ -1,20 +1,20 @@
 import React from "react";
-import getSVG from "./getSVG";
-import "./style.css";
 
-const Highlight = ({ size, type, coord }) => {
+import getSVG from "./helpers/getSVG";
+import getZIndex from "./helpers/getZIndex";
+
+const Highlight = ({ size, type }) => {
   return (
     <img
-      className="Highlight"
       src={getSVG(type)}
+      alt=""
       style={{
+        position: "absolute",
         height: size,
         width: size,
-        top: `${coord.y * size}px`,
-        left: `${coord.x * size}px`,
+        zIndex: getZIndex(type),
       }}
-      alt=""
-    />
+    ></img>
   );
 };
 export default Highlight;

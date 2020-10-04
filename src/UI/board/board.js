@@ -1,33 +1,45 @@
 import React, { useState, useCallback } from "react";
 
+import getCoord from "./helpers/getCoord";
 import "./board.css";
 
-import Piece from "../Sprites/pieceReact";
-import Highlight from "../Sprites/highlightReact";
+import populateSquares from "./helpers/populateSquares";
+// import Piece from "../Sprites/pieceReact";
+// import Highlight from "../Sprites/highlightReact";
 import PromotionArea from "../Sprites/promotionArea";
 import BoardSVG from "../assets/svgboard/board_darkBlue.svg";
 
-//TODO : handle coordinates conversion when board is flipped
+//TODO : update highlights correctly when there was already one on the square
 
 const Board = ({ game }) => {
   const boardSize = 744;
-  const PieceSize = boardSize / 8;
-  const boardOffset = 50; // rework that && mouse coords
+  const pieceSize = boardSize / 8;
+  const boardOffset = 50; // rework needed
 
   const [pieces, changePieces] = useState(game.getInitPieces());
   const [highlights, changeHighlights] = useState([]);
   const [promotionArea, changePromotionArea] = useState(null);
+  const [boardOrientation, changeBoardOrientation] = useState(true);
 
-  const handleClick = (e) => {
-    // Need to rework mouse coords
+  const resetBoard = (e) => {
+    game.reset();
+    handleNewPieces(game.getInitPieces());
+    handleNewHighlights([]);
+    handleNewPromotionArea(null);
+  };
+
+  const squareClick = (coord) => {
     const [newPiecesPositions, newHighlights, newPromotionArea] = game.click(
-      Math.floor((e.nativeEvent.clientX - boardOffset) / PieceSize),
-      Math.floor((e.nativeEvent.clientY - boardOffset) / PieceSize)
+      getCoord(coord, boardOrientation)
     );
     handleNewPieces(newPiecesPositions);
     handleNewHighlights(newHighlights);
     handleNewPromotionArea(newPromotionArea);
   };
+
+  const flipBoard = useCallback(() => {
+    changeBoardOrientation(!boardOrientation);
+  }, [boardOrientation]);
 
   const handleNewPieces = useCallback((newPiecesPositions) => {
     changePieces(newPiecesPositions);
@@ -41,17 +53,16 @@ const Board = ({ game }) => {
     changePromotionArea(newPromotionArea);
   }, []);
 
-  const resetBoard = (e) => {
-    game.reset();
-    handleNewPieces(game.getInitPieces());
-    handleNewHighlights([]);
-  };
-
   return (
     <>
-      <button className="ResetButton" onClick={resetBoard}>
-        RESET
-      </button>
+      <div className="Buttons">
+        <button className="ResetButton" onClick={resetBoard}>
+          RESET
+        </button>
+        <button className="FlipButton" onClick={flipBoard}>
+          Flip Board
+        </button>
+      </div>
       <div
         className="Board"
         style={{
@@ -62,31 +73,134 @@ const Board = ({ game }) => {
           backgroundImage: `url(${BoardSVG})`,
           zIndex: 1,
         }}
-        // onMouseMove={handleMove}
-        onClick={handleClick}
-        //onDragEnter
-        //onDrop
       >
-        {highlights.map((h) => (
-          <Highlight
-            size={PieceSize}
-            type={h.type}
-            coord={h.coord}
-            key={h.id}
+        {populateSquares(
+          pieceSize,
+          boardOrientation,
+          pieces,
+          highlights,
+          squareClick
+        )}
+        {promotionArea && (
+          <PromotionArea
+            pieceCoord={promotionArea.coord}
+            graphicsCoord={getCoord(promotionArea.coord, boardOrientation)}
+            size={pieceSize}
           />
-        ))}
-        {pieces.map((p) => (
-          <Piece size={PieceSize} type={p.type} coord={p.coord} key={p.id} />
-        ))}
-        {promotionArea ? (
-          <PromotionArea coord={promotionArea.coord} size={PieceSize} />
-        ) : null}
+        )}
       </div>
     </>
   );
 };
 
 export default Board;
+
+// const Board = ({ game }) => {
+//   const boardSize = 744;
+//   const pieceSize = boardSize / 8;
+//   const boardOffset = 50; // rework that && mouse coords
+
+//   const [pieces, changePieces] = useState(game.getInitPieces());
+//   const [highlights, changeHighlights] = useState([]);
+//   const [promotionArea, changePromotionArea] = useState(null);
+//   const [boardOrientation, changeBoardOrientation] = useState(true);
+
+//   const handleClick = (e) => {
+//     const [newPiecesPositions, newHighlights, newPromotionArea] = game.click(
+//       getCoord(
+//         {
+//           // Need to rework mouse coords
+//           x: Math.floor((e.nativeEvent.clientX - boardOffset) / pieceSize),
+//           y: Math.floor((e.nativeEvent.clientY - boardOffset) / pieceSize),
+//         },
+//         boardOrientation
+//       )
+//     );
+//     handleNewPieces(newPiecesPositions);
+//     handleNewHighlights(newHighlights);
+//     handleNewPromotionArea(newPromotionArea);
+//   };
+
+//   const resetBoard = (e) => {
+//     game.reset();
+//     handleNewPieces(game.getInitPieces());
+//     handleNewHighlights([]);
+//     handleNewPromotionArea(null);
+//   };
+
+//   const flipBoard = useCallback(
+//     (e) => {
+//       changeBoardOrientation(!boardOrientation);
+//     },
+//     [boardOrientation]
+//   );
+
+//   const handleNewPieces = useCallback((newPiecesPositions) => {
+//     changePieces(newPiecesPositions);
+//   }, []);
+
+//   const handleNewHighlights = useCallback((newHighlights) => {
+//     changeHighlights(newHighlights);
+//   }, []);
+
+//   const handleNewPromotionArea = useCallback((newPromotionArea) => {
+//     changePromotionArea(newPromotionArea);
+//   }, []);
+
+//   return (
+//     <>
+//       <div className="Buttons">
+//         <button className="ResetButton" onClick={resetBoard}>
+//           RESET
+//         </button>
+//         <button className="FlipButton" onClick={flipBoard}>
+//           Flip Board
+//         </button>
+//       </div>
+//       <div
+//         className="Board"
+//         style={{
+//           top: boardOffset,
+//           left: boardOffset,
+//           width: boardSize,
+//           height: boardSize,
+//           backgroundImage: `url(${BoardSVG})`,
+//           zIndex: 1,
+//         }}
+//         // onMouseMove={handleMove}
+//         onClick={handleClick}
+//         //onDragEnter
+//         //onDrop
+//       >
+//         {pieces.map((p) => (
+//           <Piece
+//             size={pieceSize}
+//             type={p.type}
+//             coord={getCoord(p.coord, boardOrientation)}
+//             key={p.id}
+//           />
+//         ))}
+//         {highlights.map((h) => (
+//           <Highlight
+//             size={pieceSize}
+//             type={h.type}
+//             coord={getCoord(h.coord, boardOrientation)}
+//             key={h.id}
+//           />
+//         ))}
+//         {promotionArea ? (
+//           <PromotionArea
+//             pieceCoord={promotionArea.coord}
+//             graphicsCoord={getCoord(promotionArea.coord, boardOrientation)}
+//             size={pieceSize}
+//           />
+//         ) : null}
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Board;
 
 // const [mouseLocation, mouseMove] = useState({
 //   absX: 0,
@@ -101,17 +215,17 @@ export default Board;
 //     mouseMove({
 //       absX: e.nativeEvent.offsetX,
 //       absY: e.nativeEvent.offsetY,
-//       squareX: Math.floor(e.nativeEvent.offsetX / PieceSize),
-//       squareY: Math.floor(e.nativeEvent.offsetY / PieceSize),
+//       squareX: Math.floor(e.nativeEvent.offsetX / pieceSize),
+//       squareY: Math.floor(e.nativeEvent.offsetY / pieceSize),
 //     });
 //   },
-//   [PieceSize]
+//   [pieceSize]
 // );
 
 // const handleClick = useCallback(
 //   (e) => {
-//     const x = Math.floor((e.nativeEvent.clientX - boardOffset) / PieceSize);
-//     const y = Math.floor((e.nativeEvent.clientY - boardOffset) / PieceSize);
+//     const x = Math.floor((e.nativeEvent.clientX - boardOffset) / pieceSize);
+//     const y = Math.floor((e.nativeEvent.clientY - boardOffset) / pieceSize);
 
 //     if (HLSquare)
 //       if (HLSquare.x === x && HLSquare.y === y) {
@@ -124,5 +238,5 @@ export default Board;
 //       y: y,
 //     });
 //   },
-//   [HLSquare, PieceSize]
+//   [HLSquare, pieceSize]
 // );

@@ -69,7 +69,7 @@ export default class PieceSet {
   }
 
   computeOponentMoves(playerTurn) {
-    // called from the general computeMoves() and from each individual move to eliminate invalid ones
+    // called from the general computeMoves() and from each piece's verifyMove() to eliminate invalid ones
     this.pieces.forEach((p) => {
       if (p.team !== playerTurn) p.computeMoves(this, false);
     });
