@@ -5,8 +5,6 @@ import generateOverlaySVG from "./helpers/generateOverlaySVG.js";
 import Piece from "./pieceReact";
 import "./style.css";
 
-//TODO : rework with Square system
-
 const PromotionArea = ({ pieceCoord, graphicsCoord, size }) => {
   const team = pieceCoord.y === 0 ? "W" : "B";
   const direction = graphicsCoord.y === 0 ? +1 : -1;
