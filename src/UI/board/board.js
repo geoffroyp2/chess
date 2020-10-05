@@ -20,6 +20,7 @@ import MouseControl from "./mouseControls";
             if other square, register as a click 
 - mouseMove : always : change hoverable highlights
               if mouseDown && pieceSelected : start dragging
+- change cursor if hovered piece is selectable (maybe mouse move also sends current hovered square)
 
 need to remember : isMouseDown, lastMouseDownCoord (in terms of square)
 need to receive from gameLogic : pieceSelected
@@ -36,22 +37,10 @@ const Board = ({ game }) => {
   const [promotionArea, changePromotionArea] = useState(null);
   const [boardOrientation, changeBoardOrientation] = useState(true);
   const [isMouseDown, changeIsMouseDown] = useState(false);
+  const [lastMouseDown, changeLastMouseDown] = useState([]);
+  const [mouseLocation, changeMouseLocation] = useState({});
 
-  // const handleClick = (e) => {
-  //   const [newPiecesPositions, newHighlights, newPromotionArea] = game.click(
-  //     getCoord(
-  //       {
-  //         // Need to rework mouse coords
-  //         x: Math.floor((e.nativeEvent.clientX - boardOffset) / pieceSize),
-  //         y: Math.floor((e.nativeEvent.clientY - boardOffset) / pieceSize),
-  //       },
-  //       boardOrientation
-  //     )
-  //   );
-  //   handleNewPieces(newPiecesPositions);
-  //   handleNewHighlights(newHighlights);
-  //   handleNewPromotionArea(newPromotionArea);
-  // };
+  const [pieceSelected, changePieceSelected] = useState(null);
 
   const resetBoard = (e) => {
     game.reset();
@@ -79,25 +68,59 @@ const Board = ({ game }) => {
     changePromotionArea(newPromotionArea);
   }, []);
 
-  const handleMouseDown = (x, y) => {
-    changeIsMouseDown(true);
-    const [newPiecesPositions, newHighlights, newPromotionArea] = game.click(
-      getCoord({ x, y }, boardOrientation)
-    );
+  const handleNewPieceSelected = useCallback(
+    (newPieceSelected) => {
+      console.log(pieceSelected, newPieceSelected);
+      changePieceSelected(
+        newPieceSelected && pieces.find((p) => p.id === newPieceSelected.id)
+      );
+      console.log(pieceSelected, newPieceSelected);
+    },
+    [pieces, pieceSelected]
+  );
+
+  const click = (x, y) => {
+    const [
+      newPiecesPositions,
+      newHighlights,
+      newPromotionArea,
+      newPieceSelected,
+    ] = game.click(getCoord({ x, y }, boardOrientation));
+    console.log(newPieceSelected);
     handleNewPieces(newPiecesPositions);
     handleNewHighlights(newHighlights);
     handleNewPromotionArea(newPromotionArea);
+    handleNewPieceSelected(newPieceSelected);
   };
+
+  const handleMouseDown = (x, y) => {
+    changeIsMouseDown(true);
+    changeLastMouseDown([x, y]);
+    click(x, y);
+    if (pieceSelected) {
+      // console.log(pieceSelected);
+    }
+  };
+
   const handleMouseUp = (x, y) => {
     changeIsMouseDown(false);
+    changeLastMouseDown([]);
+
+    if (lastMouseDown[0] !== x || lastMouseDown[1] !== y) {
+      click(x, y);
+    }
+
     // console.log("mouse up", x, y);
   };
   const handleMouseMove = (x, y) => {
     if (isMouseDown) {
-      console.log("drag", x, y);
+      changeMouseLocation({ x: x, y: y });
     }
-    // console.log("mouse move", x, y);
   };
+
+  // const getCurrentMouseLocation = () => {
+  //   return mous
+  // };
 
   return (
     <>
@@ -119,7 +142,6 @@ const Board = ({ game }) => {
           backgroundImage: `url(${BoardSVG})`,
           zIndex: 1,
         }}
-        // onClick={handleClick}
       >
         <MouseControl
           size={boardSize}
@@ -131,7 +153,11 @@ const Board = ({ game }) => {
           <Piece
             size={pieceSize}
             type={p.type}
-            coord={getCoord(p.coord, boardOrientation)}
+            coord={
+              p === pieceSelected
+                ? mouseLocation
+                : getCoord(p.coord, boardOrientation)
+            }
             key={p.id}
           />
         ))}
@@ -156,126 +182,3 @@ const Board = ({ game }) => {
 };
 
 export default Board;
-
-// const Board = ({ game }) => {
-//   const boardSize = 744;
-//   const pieceSize = boardSize / 8;
-//   const boardOffset = 50; // rework needed
-
-//   const [pieces, changePieces] = useState(game.getInitPieces());
-//   const [highlights, changeHighlights] = useState([]);
-//   const [promotionArea, changePromotionArea] = useState(null);
-//   const [boardOrientation, changeBoardOrientation] = useState(true);
-
-//   const resetBoard = (e) => {
-//     game.reset();
-//     handleNewPieces(game.getInitPieces());
-//     handleNewHighlights([]);
-//     handleNewPromotionArea(null);
-//   };
-
-//   const squareClick = (coord) => {
-//     const [newPiecesPositions, newHighlights, newPromotionArea] = game.click(
-//       getCoord(coord, boardOrientation)
-//     );
-//     handleNewPieces(newPiecesPositions);
-//     handleNewHighlights(newHighlights);
-//     handleNewPromotionArea(newPromotionArea);
-//   };
-
-//   const flipBoard = useCallback(() => {
-//     changeBoardOrientation(!boardOrientation);
-//   }, [boardOrientation]);
-
-//   const handleNewPieces = useCallback((newPiecesPositions) => {
-//     changePieces(newPiecesPositions);
-//   }, []);
-
-//   const handleNewHighlights = useCallback((newHighlights) => {
-//     changeHighlights(newHighlights);
-//   }, []);
-
-//   const handleNewPromotionArea = useCallback((newPromotionArea) => {
-//     changePromotionArea(newPromotionArea);
-//   }, []);
-
-//   return (
-//     <>
-//       <div className="Buttons">
-//         <button className="ResetButton" onClick={resetBoard}>
-//           RESET
-//         </button>
-//         <button className="FlipButton" onClick={flipBoard}>
-//           Flip Board
-//         </button>
-//       </div>
-//       <div
-//         className="Board"
-//         style={{
-//           top: boardOffset,
-//           left: boardOffset,
-//           width: boardSize,
-//           height: boardSize,
-//           backgroundImage: `url(${BoardSVG})`,
-//           zIndex: 1,
-//         }}
-//       >
-//         {populateSquares(
-//           pieceSize,
-//           boardOrientation,
-//           pieces,
-//           highlights,
-//           squareClick
-//         )}
-//         {promotionArea && (
-//           <PromotionArea
-//             pieceCoord={promotionArea.coord}
-//             graphicsCoord={getCoord(promotionArea.coord, boardOrientation)}
-//             size={pieceSize}
-//           />
-//         )}
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Board;
-
-// const [mouseLocation, mouseMove] = useState({
-//   absX: 0,
-//   absY: 0,
-//   squareX: 0,
-//   squareY: 0,
-// });
-// const [HLSquare, changeHLSquare] = useState(null);
-
-// const handleMove = useCallback(
-//   (e) => {
-//     mouseMove({
-//       absX: e.nativeEvent.offsetX,
-//       absY: e.nativeEvent.offsetY,
-//       squareX: Math.floor(e.nativeEvent.offsetX / pieceSize),
-//       squareY: Math.floor(e.nativeEvent.offsetY / pieceSize),
-//     });
-//   },
-//   [pieceSize]
-// );
-
-// const handleClick = useCallback(
-//   (e) => {
-//     const x = Math.floor((e.nativeEvent.clientX - boardOffset) / pieceSize);
-//     const y = Math.floor((e.nativeEvent.clientY - boardOffset) / pieceSize);
-
-//     if (HLSquare)
-//       if (HLSquare.x === x && HLSquare.y === y) {
-//         changeHLSquare(null);
-//         return;
-//       }
-
-//     changeHLSquare({
-//       x: x,
-//       y: y,
-//     });
-//   },
-//   [HLSquare, pieceSize]
-// );

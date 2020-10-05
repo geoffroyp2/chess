@@ -78,7 +78,12 @@ export default class GameLogic {
             this.pieceSelected = pieceClicked;
       }
     }
-    return [this.getPieces(), this.getHighlights(), this.getPromotionArea()];
+    return [
+      this.getPieces(),
+      this.getHighlights(),
+      this.getPromotionArea(),
+      this.pieceSelected,
+    ];
   }
 
   handlePromotion(x, y) {
