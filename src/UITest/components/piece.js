@@ -1,5 +1,5 @@
 import React from "react";
-import getSVG from "./helpers/getSVG";
+import getSVG from "../helpers/getSVG";
 
 const Piece = ({ size, type, coord }) => {
   return (

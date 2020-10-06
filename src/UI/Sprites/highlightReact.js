@@ -13,8 +13,7 @@ const Highlight = ({ size, type, coord }) => {
         position: "absolute",
         height: size,
         width: size,
-        left: `${coord.x * size}px`,
-        top: `${coord.y * size}px`,
+        transform: `translate(${coord.x * size}px, ${coord.y * size}px)`,
         zIndex: getZIndex(type),
       }}
     ></img>

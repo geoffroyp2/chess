@@ -120,6 +120,15 @@ export default class GameLogic {
     this.lastMove = move;
   }
 
+  getInitialData() {
+    return [
+      this.getPieces(),
+      this.getHighlights(),
+      this.getPromotionArea(),
+      this.pieceSelected,
+    ];
+  }
+
   getInitPieces() {
     return this.currentState.pieces.getFormattedPieces();
   }

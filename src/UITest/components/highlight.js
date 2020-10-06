@@ -1,20 +1,22 @@
 import React from "react";
-import getSVG from "./helpers/getSVG";
 
-const Piece = ({ size, type, coord }) => {
+import getSVG from "../helpers/getSVG";
+import getZIndex from "../helpers/getZIndex";
+
+const Highlight = ({ size, type, coord }) => {
   return (
     <img
-      className="Piece"
+      className="Highlight"
       src={getSVG(type)}
+      alt=""
       style={{
         position: "absolute",
         height: size,
         width: size,
         transform: `translate(${coord.x * size}px, ${coord.y * size}px)`,
-        zIndex: 16,
+        zIndex: getZIndex(type),
       }}
-      alt=""
-    />
+    ></img>
   );
 };
-export default Piece;
+export default Highlight;

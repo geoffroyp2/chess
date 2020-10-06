@@ -70,13 +70,11 @@ const Board = ({ game }) => {
 
   const handleNewPieceSelected = useCallback(
     (newPieceSelected) => {
-      console.log(pieceSelected, newPieceSelected);
       changePieceSelected(
         newPieceSelected && pieces.find((p) => p.id === newPieceSelected.id)
       );
-      console.log(pieceSelected, newPieceSelected);
     },
-    [pieces, pieceSelected]
+    [pieces]
   );
 
   const click = (x, y) => {
@@ -86,7 +84,7 @@ const Board = ({ game }) => {
       newPromotionArea,
       newPieceSelected,
     ] = game.click(getCoord({ x, y }, boardOrientation));
-    console.log(newPieceSelected);
+
     handleNewPieces(newPiecesPositions);
     handleNewHighlights(newHighlights);
     handleNewPromotionArea(newPromotionArea);
@@ -97,9 +95,10 @@ const Board = ({ game }) => {
     changeIsMouseDown(true);
     changeLastMouseDown([x, y]);
     click(x, y);
-    if (pieceSelected) {
-      // console.log(pieceSelected);
-    }
+
+    // if (pieceSelected) {
+    console.log(pieceSelected);
+    // }
   };
 
   const handleMouseUp = (x, y) => {
