@@ -32,20 +32,17 @@ export default class gameState {
     this.pieces.promotePawn(pawnToPromote, targetPiece);
   }
 
-  copy() {
-    // Deep Copy
+  getNextState(move, promotionTarget) {
+    //play move
+    const pieceToRemove = move.playMove();
+    if (pieceToRemove) this.pieces.remove(pieceToRemove);
+    if (promotionTarget) this.promote(move, promotionTarget);
+
+    // create next state (deep copy current one, change playerTurn and compute possible moves)
     const newState = new gameState("EMPTY");
     newState.pieces = this.pieces.copy();
     newState.playerTurn = this.playerTurn === "W" ? "B" : "W";
     newState.computeMoves();
     return newState;
-  }
-
-  getNextState(move, promotionTarget) {
-    //play move then deep copy the state
-    const pieceToRemove = move.playMove();
-    if (pieceToRemove) this.pieces.remove(pieceToRemove);
-    if (promotionTarget) this.promote(move, promotionTarget);
-    return this.copy();
   }
 }

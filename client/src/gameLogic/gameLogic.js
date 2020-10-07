@@ -156,6 +156,7 @@ export default class GameLogic {
       highlights.push(new Highlight("HS", this.pieceSelected.coord, "S"));
       this.pieceSelected.getMoves().forEach((m) => {
         if (m.type === "X" || m.type === "PX") {
+          // CAPTURES
           highlights.push(
             new Highlight(
               "HX",
@@ -164,6 +165,7 @@ export default class GameLogic {
             )
           );
         } else if (
+          // NORMAL MOVES
           m.type === "M" ||
           m.type === "P" ||
           m.type === "O" ||

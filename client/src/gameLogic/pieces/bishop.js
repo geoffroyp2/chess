@@ -13,7 +13,7 @@ export default class Bishop extends Piece {
 
   computeMoves(pieces, needToVerify) {
     this.moves.erase();
-    let flags = [...Array(4)].fill(true);
+    let flags = Array(4).fill(true);
     const x = this.coord.x;
     const y = this.coord.y;
 
