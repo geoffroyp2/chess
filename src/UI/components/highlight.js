@@ -1,22 +1,23 @@
-import React from "react";
+import React, { memo } from "react";
 
 import getSVG from "../helpers/getSVG";
 import getZIndex from "../helpers/getZIndex";
 
-const Highlight = ({ size, type, coord }) => {
+const Highlight = memo(({ size, type, x, y, hover }) => {
   return (
     <img
       className="Highlight"
-      src={getSVG(type)}
+      src={getSVG(hover ? "HS" : type)}
       alt=""
       style={{
         position: "absolute",
         height: size,
         width: size,
-        transform: `translate(${coord.x * size}px, ${coord.y * size}px)`,
+        top: `${y * size}px`,
+        left: `${x * size}px`,
         zIndex: getZIndex(type),
       }}
     ></img>
   );
-};
+});
 export default Highlight;

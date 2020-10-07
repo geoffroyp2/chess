@@ -83,6 +83,7 @@ export default class GameLogic {
       this.getHighlights(),
       this.getPromotionArea(),
       this.pieceSelected,
+      this.currentState.playerTurn,
     ];
   }
 
@@ -126,6 +127,7 @@ export default class GameLogic {
       this.getHighlights(),
       this.getPromotionArea(),
       this.pieceSelected,
+      this.currentState.playerTurn,
     ];
   }
 

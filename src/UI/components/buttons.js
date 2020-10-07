@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 
-const Buttons = ({ reset, flip }) => {
+const Buttons = memo(({ reset, flip }) => {
   return (
     <div className="Buttons">
       <button className="ResetButton" onClick={() => reset()}>
@@ -11,6 +11,6 @@ const Buttons = ({ reset, flip }) => {
       </button>
     </div>
   );
-};
+});
 
 export default Buttons;

@@ -1,9 +1,0 @@
-.Piece {
-  position: absolute;
-  z-index: 15;
-}
-
-.PromotionArea {
-  position: absolute;
-  z-index: 16;
-}
