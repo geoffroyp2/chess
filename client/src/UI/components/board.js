@@ -30,7 +30,7 @@ const Board = ({ data, sendClick, boardOrientation }) => {
         h.coord.y === y &&
         (h.type === "HM" || h.type === "HX")
     );
-    setHighlightHovered(hovered && x && y ? hovered.id : null);
+    setHighlightHovered(hovered && x >= 0 && y >= 0 ? hovered.id : null);
   };
 
   const getDragPosition = (x, y) => {
@@ -74,8 +74,8 @@ const Board = ({ data, sendClick, boardOrientation }) => {
       }}
     >
       <MouseControl
-        click={processClick}
         size={boardSize}
+        click={processClick}
         hoverSquare={getHoverSquare}
         dragPosition={getDragPosition}
       />

@@ -2,6 +2,8 @@ import GameState from "./game/gameState";
 import Coord from "./helpers/coordinates";
 import Highlight from "./helpers/highlight";
 
+import Client from "../client/client";
+
 /*
 
 ------ TODO ------
@@ -26,6 +28,7 @@ import Highlight from "./helpers/highlight";
 export default class GameLogic {
   constructor() {
     this.currentState = new GameState("INIT");
+    this.client = Client;
     this.gameHistory = [];
 
     this.pieceSelected = null;
@@ -109,6 +112,12 @@ export default class GameLogic {
   }
 
   playMove(move, promotionTarget) {
+    /* TODO : send move to API and wait for condirmation */
+    this.client.sendMove(
+      move.piece.coord.getString() + move.destination.getString(),
+      (res) => console.log(res)
+    );
+
     this.currentState = this.currentState.getNextState(move, promotionTarget);
     this.gameHistory.push(this.currentState);
 

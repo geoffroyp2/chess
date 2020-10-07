@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ChessGame from "./UI/components/chessGame";
 import "./App.css";
 
