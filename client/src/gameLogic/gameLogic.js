@@ -112,7 +112,7 @@ export default class GameLogic {
   }
 
   playMove(move, promotionTarget) {
-    /* TODO : send move to API and wait for condirmation */
+    /* TODO : send move to API and wait for confirmation */
     this.client.sendMove(
       move.piece.coord.getString() + move.destination.getString(),
       (res) => console.log(res)

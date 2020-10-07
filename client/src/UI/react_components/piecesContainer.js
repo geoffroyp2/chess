@@ -2,7 +2,7 @@ import React, { memo } from "react";
 
 import Piece from "./piece";
 
-const Pieces = memo(({ data, size, pieceDragged, dragPosition }) => {
+const PiecesContainer = memo(({ data, size, pieceDragged, dragPosition }) => {
   return (
     <>
       {data.map((p) => (
@@ -20,4 +20,4 @@ const Pieces = memo(({ data, size, pieceDragged, dragPosition }) => {
   );
 });
 
-export default Pieces;
+export default PiecesContainer;

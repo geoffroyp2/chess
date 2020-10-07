@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ChessGame from "./UI/components/chessGame";
+import ChessGame from "./UI/react_components/chessGame";
 import "./App.css";
 
 const App = () => {

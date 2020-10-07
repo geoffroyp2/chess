@@ -28,8 +28,8 @@ const Piece = memo(({ size, type, x, y, dragging, dragPosition }) => {
             position: "absolute",
             height: size,
             width: size,
-            top: `${dragPosition[1] - 0.5 * size}px`,
-            left: `${dragPosition[0] - 0.5 * size}px`,
+            top: `${dragPosition[1]}px`,
+            left: `${dragPosition[0]}px`,
             zIndex: 17,
           }}
           alt=""

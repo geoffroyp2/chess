@@ -2,7 +2,7 @@ import React, { memo } from "react";
 
 import Highlight from "./highlight";
 
-const Highlights = memo(({ data, size, highlightHovered }) => {
+const HighlightsContainer = memo(({ data, size, highlightHovered }) => {
   return (
     <>
       {data.map((h) => (
@@ -19,4 +19,4 @@ const Highlights = memo(({ data, size, highlightHovered }) => {
   );
 });
 
-export default Highlights;
+export default HighlightsContainer;

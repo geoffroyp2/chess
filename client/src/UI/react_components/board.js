@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 import MouseControl from "./mouseControls";
-import Pieces from "./pieces";
-import Highlights from "./highlights";
+import PiecesContainer from "./piecesContainer";
+import HighlightsContainer from "./highlightsContainer";
 import PromotionArea from "./promotionArea";
 
 import BoardSVG from "../assets/svgboard/board_darkBlue.svg";
@@ -34,7 +34,7 @@ const Board = ({ data, sendClick, boardOrientation }) => {
   };
 
   const getDragPosition = (x, y) => {
-    if (isDragging) setDragPosition([x, y]);
+    if (isDragging) setDragPosition([x - 0.5 * pieceSize, y - 0.5 * pieceSize]);
   };
 
   const processClick = (x, y, sX, sY, mouseAction) => {
@@ -47,7 +47,7 @@ const Board = ({ data, sendClick, boardOrientation }) => {
       if (pieceToDrag) {
         //begin drag
         setIsDragging(true);
-        setDragPosition([x, y]);
+        setDragPosition([x - 0.5 * pieceSize, y - 0.5 * pieceSize]);
         setPieceDragged(pieceToDrag.id);
       }
       sendClick(sX, sY);
@@ -79,13 +79,13 @@ const Board = ({ data, sendClick, boardOrientation }) => {
         hoverSquare={getHoverSquare}
         dragPosition={getDragPosition}
       />
-      <Pieces
+      <PiecesContainer
         data={pieces}
         size={pieceSize}
         pieceDragged={pieceDragged}
         dragPosition={dragPosition}
       />
-      <Highlights
+      <HighlightsContainer
         data={highlights}
         size={pieceSize}
         highlightHovered={highlightHovered}
