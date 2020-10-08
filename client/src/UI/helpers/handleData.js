@@ -1,7 +1,7 @@
 import getCoord from "../helpers/getCoord";
 
 export default function handleData(
-  [pieces, highlights, promotionArea, pieceSelected, playerTurn],
+  { pieces, highlights, promotionArea, playerTurn },
   boardOrientation
 ) {
   const newPieces = pieces.map((p) => ({

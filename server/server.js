@@ -3,6 +3,8 @@ const favicon = require("serve-favicon");
 const path = require("path");
 const app = express();
 
+const gameHandler = require("./API/APIHandler");
+
 app.set("port", process.env.PORT || 3001);
 
 // Express only serves static assets in production
@@ -12,8 +14,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.get("/api/chess", (req, res) => {
-  console.log(req.query);
-  res.json(req.query);
+  const answer = gameHandler.request(req.query.q);
+  res.json(answer);
 });
 
 app.listen(app.get("port"), () => {

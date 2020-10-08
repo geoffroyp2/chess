@@ -2,7 +2,8 @@ import GameState from "./game/gameState";
 import Coord from "./helpers/coordinates";
 import Highlight from "./helpers/highlight";
 
-import Client from "../client/client";
+import ClientHandler from "../client/clientHandler";
+import Timer from "./helpers/timer";
 
 /*
 
@@ -28,8 +29,9 @@ import Client from "../client/client";
 export default class GameLogic {
   constructor() {
     this.currentState = new GameState("INIT");
-    this.client = Client;
+    this.client = new ClientHandler();
     this.gameHistory = [];
+    this.time = new Timer(300 * 1000);
 
     this.pieceSelected = null;
     this.promotionMove = null;
@@ -41,6 +43,7 @@ export default class GameLogic {
 
   reset() {
     this.currentState = new GameState("INIT");
+    this.time = new Timer(300 * 1000);
     this.gameHistory = [];
     this.pieceSelected = null;
     this.promotionMove = false;
@@ -49,11 +52,11 @@ export default class GameLogic {
     this.gameHistory.push(this.currentState);
   }
 
-  click({ x, y }) {
-    // Process clicks, returns pieces, highlights and promotion area if necessary
+  click({ x, y }, UIUpdate) {
+    // Process clicks and calls the UIUpdate function provided by the UI
 
     if (this.promotionMove) {
-      this.handlePromotion(x, y);
+      this.handlePromotion(x, y, UIUpdate);
     } else {
       const pieceClicked = this.currentState.pieces.findByCoord(
         new Coord(x, y)
@@ -66,7 +69,7 @@ export default class GameLogic {
             if (moveSelected.type === "P" || moveSelected.type === "PX") {
               this.promotionMove = moveSelected;
             } else {
-              this.playMove(moveSelected);
+              this.playMove(moveSelected, null, UIUpdate);
               this.pieceSelected = null;
             }
           } else if (pieceClicked) {
@@ -81,16 +84,12 @@ export default class GameLogic {
             this.pieceSelected = pieceClicked;
       }
     }
-    return [
-      this.getPieces(),
-      this.getHighlights(),
-      this.getPromotionArea(),
-      this.pieceSelected,
-      this.currentState.playerTurn,
-    ];
+
+    // Refresh after each click even if nothing changed to deal with highlights and other elements
+    UIUpdate();
   }
 
-  handlePromotion(x, y) {
+  handlePromotion(x, y, UIUpdate) {
     // detect which valid piece has been selected
     const targetX = this.promotionMove.destination.x;
     const targetY = this.promotionMove.destination.y;
@@ -104,40 +103,61 @@ export default class GameLogic {
       else if (y === 1 || y === 6) promotionTarget = "R";
       else if (y === 2 || y === 5) promotionTarget = "N";
       else if (y === 3 || y === 4) promotionTarget = "B";
-      this.playMove(this.promotionMove, promotionTarget);
+      this.playMove(this.promotionMove, promotionTarget, UIUpdate);
     }
 
     this.promotionMove = null;
     this.pieceSelected = null;
   }
 
-  playMove(move, promotionTarget) {
+  playMove(move, promotionTarget, UIUpdate) {
     /* TODO : send move to API and wait for confirmation */
+
+    // Callback for API answer
+    const handleAnswer = (id, gameId, time) => {
+      if (id) {
+        this.currentState = this.currentState.getNextState(
+          move,
+          promotionTarget
+        );
+        this.time.switchPlayer();
+        this.gameHistory.push(this.currentState);
+
+        // TODO: handle game status
+        this.gameStatus = this.currentState.getGameStatus();
+        if (this.gameStatus.checkmate) console.log("checkmate");
+        else if (this.gameStatus.stalemate) console.log("stalemate");
+        else if (this.gameStatus.check) console.log("check");
+
+        this.lastMove = move;
+
+        // Call the UIUpdate to refresh UI when the API answers
+        UIUpdate();
+      }
+    };
+
     this.client.sendMove(
-      move.piece.coord.getString() + move.destination.getString(),
-      (res) => console.log(res)
+      { move: move, promotion: promotionTarget || null },
+      handleAnswer
     );
+  }
 
-    this.currentState = this.currentState.getNextState(move, promotionTarget);
-    this.gameHistory.push(this.currentState);
+  getGameInfos() {
+    return {
+      pieces: this.getPieces(),
+      highlights: this.getHighlights(),
+      promotionArea: this.getPromotionArea(),
+      playerTurn: this.currentState.playerTurn,
+      time: this.getTime(),
+    };
+  }
 
-    // TODO: handle game status
-    this.gameStatus = this.currentState.getGameStatus();
-    if (this.gameStatus.checkmate) console.log("checkmate");
-    else if (this.gameStatus.stalemate) console.log("stalemate");
-    else if (this.gameStatus.check) console.log("check");
-
-    this.lastMove = move;
+  getTime() {
+    return this.time.getTime();
   }
 
   getInitialData() {
-    return [
-      this.getPieces(),
-      this.getHighlights(),
-      this.getPromotionArea(),
-      this.pieceSelected,
-      this.currentState.playerTurn,
-    ];
+    return this.getGameInfos();
   }
 
   getInitPieces() {

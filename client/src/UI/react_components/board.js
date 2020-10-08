@@ -8,13 +8,13 @@ import PromotionArea from "./promotionArea";
 import BoardSVG from "../assets/svgboard/board_darkBlue.svg";
 import handleData from "../helpers/handleData";
 
-const Board = ({ data, sendClick, boardOrientation }) => {
+const Board = ({ size, data, sendClick, boardOrientation }) => {
   const [pieces, highlights, promotionArea, playerTurn] = handleData(
     data,
     boardOrientation
   );
 
-  const boardSize = 744;
+  const boardSize = size;
   const pieceSize = boardSize / 8;
 
   const [highlightHovered, setHighlightHovered] = useState(null);
