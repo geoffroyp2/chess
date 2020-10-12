@@ -9,7 +9,6 @@ import Timer from "./helpers/timer";
 
 ------ TODO ------
 
-- Only return piece changes ?
 - detect draws: 3-moves repetition, insufficient material, 50 moves rule
 - game history
 - PGN
