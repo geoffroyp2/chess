@@ -9,7 +9,7 @@ $ cd ../server
 $ npm install  
 $ cd ..
 
-## RUN
+# RUN
 
 \$ npm start
 
@@ -17,7 +17,7 @@ or separately
 $ node start-client  
 $ node start-server
 
-## INFOS
+# INFOS
 
 client created with create-react-app  
 server created with Express  

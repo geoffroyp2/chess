@@ -1,4 +1,7 @@
-import React, { useState, useCallback } from "react";
+// game is the only instance of GameLogic()
+import game from "../../globalInstances";
+
+import React, { useState, useCallback, useEffect } from "react";
 
 import Board from "./board";
 import Buttons from "./buttons";
@@ -6,24 +9,29 @@ import Timer from "./timer";
 import PGN from "./pgn";
 
 import getCoord from "../helpers/getCoord";
-import GameLogic from "../../gameLogic/gameLogic";
 
 import materialClasses from "./css/materialClasses.js";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import Card from "@material-ui/core/Card";
-import Paper from "@material-ui/core/Paper";
+// import Card from "@material-ui/core/Card";
+// import Paper from "@material-ui/core/Paper";
 
 const ChessGame = () => {
-  const [game] = useState(new GameLogic());
+  // Give the UIUpdate callback to the GameLogic instance
+  useEffect(() => {
+    game.giveUICallback(() => setGameData(game.getGameInfos()));
+  }, []);
 
+  //UI data
+  // TODO: make boardSize scale with the window size (+ rescalable by hand ?)
   const [boardOrientation, setBoardOrientation] = useState(true);
   const [gameData, setGameData] = useState(game.getInitialData());
-
   const boardSize = 744;
 
+  // TODO css with material-ui
   const styles = materialClasses();
 
+  // Actions that are triggered by user interaction
   const resetGame = useCallback(() => {
     game.reset();
     setGameData(game.getInitialData());
@@ -57,7 +65,11 @@ const ChessGame = () => {
       </Grid>
 
       <Grid item>
-        <Timer game={game} />
+        <Timer
+          game={game}
+          boardSize={boardSize}
+          boardOrientation={boardOrientation}
+        />
         <PGN />
       </Grid>
     </Grid>

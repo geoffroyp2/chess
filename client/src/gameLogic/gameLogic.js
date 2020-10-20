@@ -1,15 +1,15 @@
 import GameState from "./game/gameState";
+
 import Coord from "./helpers/coordinates";
 import Highlight from "./helpers/highlight";
-
-import ClientHandler from "../client/clientHandler";
 import Timer from "./helpers/timer";
 
 /*
 
 ------ TODO ------
 
-- detect draws: 3-moves repetition, insufficient material, 50 moves rule
+- break down the responsibility of GameLogic into simpler components
+- detect draws: 3-moves repetition, insufficient material, 50 moves rule (maybe do that on server's side ?)
 - game history
 - PGN
 
@@ -26,36 +26,53 @@ import Timer from "./helpers/timer";
 */
 
 export default class GameLogic {
-  constructor() {
-    this.currentState = new GameState("INIT");
-    this.client = new ClientHandler();
-    this.gameHistory = [];
-    this.time = new Timer(300 * 1000);
-
-    this.pieceSelected = null;
-    this.promotionMove = null;
-    this.lastMove = null;
-    this.gameStatus = {};
-
-    this.gameHistory.push(this.currentState);
+  constructor(client) {
+    this.client = client;
+    this.newGame();
   }
 
-  reset() {
+  initValues() {
     this.currentState = new GameState("INIT");
-    this.time = new Timer(300 * 1000);
+    this.time = new Timer();
     this.gameHistory = [];
     this.pieceSelected = null;
     this.promotionMove = false;
     this.lastMove = null;
     this.gameStatus = {};
-    this.gameHistory.push(this.currentState);
   }
 
-  click({ x, y }, UIUpdate) {
-    // Process clicks and calls the UIUpdate function provided by the UI
+  reset() {
+    this.newGame();
+  }
+
+  giveUICallback(callback) {
+    this.UIUpdate = callback;
+  }
+
+  newGame() {
+    this.initValues();
+    this.gameHistory.push(this.currentState);
+
+    // Callback for API answer
+    const handleAnswer = (id, gameId, time) => {
+      console.log("new Game");
+      if (id) {
+        this.time.synchronize(time);
+        this.UIUpdate();
+      }
+    };
+
+    this.client.newGame(
+      { mode: "D", totalTime: 300, increment: 5 },
+      handleAnswer
+    );
+  }
+
+  click({ x, y }) {
+    // Process clicks
 
     if (this.promotionMove) {
-      this.handlePromotion(x, y, UIUpdate);
+      this.handlePromotion(x, y);
     } else {
       const pieceClicked = this.currentState.pieces.findByCoord(
         new Coord(x, y)
@@ -68,7 +85,7 @@ export default class GameLogic {
             if (moveSelected.type === "P" || moveSelected.type === "PX") {
               this.promotionMove = moveSelected;
             } else {
-              this.playMove(moveSelected, null, UIUpdate);
+              this.playMove(moveSelected, null);
               this.pieceSelected = null;
             }
           } else if (pieceClicked) {
@@ -85,10 +102,10 @@ export default class GameLogic {
     }
 
     // Refresh after each click even if nothing changed to deal with highlights and other elements
-    UIUpdate();
+    this.UIUpdate();
   }
 
-  handlePromotion(x, y, UIUpdate) {
+  handlePromotion(x, y) {
     // detect which valid piece has been selected
     const targetX = this.promotionMove.destination.x;
     const targetY = this.promotionMove.destination.y;
@@ -102,14 +119,14 @@ export default class GameLogic {
       else if (y === 1 || y === 6) promotionTarget = "R";
       else if (y === 2 || y === 5) promotionTarget = "N";
       else if (y === 3 || y === 4) promotionTarget = "B";
-      this.playMove(this.promotionMove, promotionTarget, UIUpdate);
+      this.playMove(this.promotionMove, promotionTarget);
     }
 
     this.promotionMove = null;
     this.pieceSelected = null;
   }
 
-  playMove(move, promotionTarget, UIUpdate) {
+  playMove(move, promotionTarget) {
     /* TODO : send move to API and wait for confirmation */
 
     // Callback for API answer
@@ -120,6 +137,7 @@ export default class GameLogic {
           promotionTarget
         );
         this.time.switchPlayer();
+        this.time.synchronize(time);
         this.gameHistory.push(this.currentState);
 
         // TODO: handle game status
@@ -131,7 +149,7 @@ export default class GameLogic {
         this.lastMove = move;
 
         // Call the UIUpdate to refresh UI when the API answers
-        UIUpdate();
+        this.UIUpdate();
       }
     };
 

@@ -15,7 +15,10 @@ if (process.env.NODE_ENV === "production") {
 
 app.get("/api/chess", (req, res) => {
   const answer = gameHandler.request(req.query.q);
-  res.json(answer);
+
+  // answer after a random delay of 20-50ms
+  //res.json(answer);
+  setTimeout(() => res.json(answer), Math.floor(Math.random() * 30) + 20);
 });
 
 app.listen(app.get("port"), () => {

@@ -5,7 +5,7 @@ import Client from "./client";
 export default class ClientHandler {
   newGame({ mode, totalTime, increment }, callback) {
     const receiveAnswer = ({ id, args }) => {
-      console.log("API answer status", id, "\nargs:", args);
+      console.log("API answer status", id, "    args:", args);
       callback(id, args.gameId, args.time);
     };
 
