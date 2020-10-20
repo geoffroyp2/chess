@@ -48,8 +48,8 @@ export default class PieceSet {
   }
 
   computeMoves(playerTurn) {
-    // 1. Compute oponent's move to see if the current state is check (used to look for checkmate)
-    this.computeOponentMoves(playerTurn);
+    // 1. Compute opponent's move to see if the current state is check (used to look for checkmate)
+    this.computeOpponentMoves(playerTurn);
 
     // 2. Compute current player's move, and eliminate illegal moves (2nd arg of p.computeMoves())
     this.pieces.forEach((p) => {
@@ -68,7 +68,7 @@ export default class PieceSet {
     }
   }
 
-  computeOponentMoves(playerTurn) {
+  computeOpponentMoves(playerTurn) {
     // called from the general computeMoves() and from each piece's verifyMove() to eliminate invalid ones
     this.pieces.forEach((p) => {
       if (p.team !== playerTurn) p.computeMoves(this, false);
@@ -77,7 +77,7 @@ export default class PieceSet {
   }
 
   check(playerTurn) {
-    // Look for checks from oponent
+    // Look for checks from opponent
     const king = this.findById(playerTurn + "K");
     this.pieces.forEach((p) => {
       if (p.team !== playerTurn) {

@@ -8,6 +8,7 @@ import Timer from "./helpers/timer";
 
 ------ TODO ------
 
+- handle problems of communication with server
 - break down the responsibility of GameLogic into simpler components
 - detect draws: 3-moves repetition, insufficient material, 50 moves rule (maybe do that on server's side ?)
 - game history
@@ -127,8 +128,6 @@ export default class GameLogic {
   }
 
   playMove(move, promotionTarget) {
-    /* TODO : send move to API and wait for confirmation */
-
     // Callback for API answer
     const handleAnswer = (id, gameId, time) => {
       if (id) {
@@ -165,7 +164,6 @@ export default class GameLogic {
       highlights: this.getHighlights(),
       promotionArea: this.getPromotionArea(),
       playerTurn: this.currentState.playerTurn,
-      time: this.getTime(),
     };
   }
 

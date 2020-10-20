@@ -35,7 +35,7 @@ export default class Piece {
       // play the move and evaluate resulting state
       const pieceToRemove = newMove.playMove();
       if (pieceToRemove) pieceCopy.remove(pieceToRemove);
-      pieceCopy.computeOponentMoves(this.team);
+      pieceCopy.computeOpponentMoves(this.team);
 
       //if the move results in a check, remove it
       if (pieceCopy.isCheck) moves.splice(i, 1);

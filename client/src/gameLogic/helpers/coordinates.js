@@ -15,6 +15,8 @@ export default class Coord {
   }
 
   getString() {
-    return String.fromCharCode(this.x + 97) + String.fromCharCode(this.y + 49);
+    return (
+      String.fromCharCode(this.x + 97) + String.fromCharCode(7 - this.y + 49)
+    );
   }
 }
