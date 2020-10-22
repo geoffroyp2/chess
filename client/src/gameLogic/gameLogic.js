@@ -8,6 +8,8 @@ import Timer from "./helpers/timer";
 
 ------ TODO ------
 
+- Move 2 squares black/white pawn ???
+
 - handle problems of communication with server
 - break down the responsibility of GameLogic into simpler components
 - detect draws: 3-moves repetition, insufficient material, 50 moves rule (maybe do that on server's side ?)

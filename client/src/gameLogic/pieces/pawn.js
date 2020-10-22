@@ -22,7 +22,7 @@ export default class Pawn extends Piece {
 
   copy() {
     const newPiece = new Pawn(...super.getInfos());
-    // En passant status is handled as a decreasing count :
+    // En-passant status is handled as a decreasing count :
     // because pieces are copied each turn, the count decreased and is only equal to 1 when en-passant is possible
     newPiece.enPassant = this.enPassant > 0 ? this.enPassant - 1 : 0;
     return newPiece;
@@ -52,12 +52,11 @@ export default class Pawn extends Piece {
       else {
         this.moves.add(this, new Coord(x, y + teamDirection), "M", null);
       }
-    }
-
-    // 2 SQUARE FORWARD
-    if ((this.team === "W" && y === 6) || (this.team === "B" && y === 1)) {
-      if (checkStraight(new Coord(x, y + 2 * teamDirection)))
-        this.moves.add(this, new Coord(x, y + 2 * teamDirection), "M", null);
+      // 2 SQUARE FORWARD
+      if ((this.team === "W" && y === 6) || (this.team === "B" && y === 1)) {
+        if (checkStraight(new Coord(x, y + 2 * teamDirection)))
+          this.moves.add(this, new Coord(x, y + 2 * teamDirection), "M", null);
+      }
     }
 
     //CAPTURE LEFT

@@ -1,9 +1,13 @@
 const express = require("express");
+const https = require("https");
 const favicon = require("serve-favicon");
 const path = require("path");
 const app = express();
 
 const gameHandler = require("./API/APIHandler");
+const iaHandler = require("./ia/IAHandler");
+
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 app.set("port", process.env.PORT || 3001);
 
@@ -14,11 +18,27 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.get("/api/chess", (req, res) => {
-  const answer = gameHandler.request(req.query.q);
+  const APIanswer = gameHandler.request(req.query.q);
 
-  // answer after a random delay of 20-50ms
-  //res.json(answer);
-  setTimeout(() => res.json(answer), Math.floor(Math.random() * 30) + 20);
+  const cb = (api, ai) => {
+    const answer = {
+      id: APIanswer.id,
+      args: APIanswer.args,
+      ai: ai,
+    };
+    res.json(answer);
+  };
+
+  iaHandler.getBoard((r) => {
+    let AIanswer = "";
+    r.on("data", (d) => {
+      AIanswer += d;
+    });
+    r.on("end", () => {
+      AIanswer = JSON.parse(AIanswer);
+      cb(APIanswer, AIanswer);
+    });
+  });
 });
 
 app.listen(app.get("port"), () => {
