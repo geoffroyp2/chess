@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ChessEngine
+{
+    public class FEN
+    {
+        public string txt { get; set; }
+    }
+}
