@@ -3,7 +3,6 @@ import GameState from "./game/gameState";
 import Coord from "./helpers/coordinates";
 import Highlight from "./helpers/highlight";
 import Timer from "./helpers/timer";
-import FENHandler from "./helpers/FEN";
 
 /*
 
@@ -67,15 +66,7 @@ export default class GameLogic {
     };
 
     this.client.newGame(
-      {
-        mode: "D",
-        totalTime: 300,
-        increment: 5,
-        FEN: FENHandler.createFEN(
-          this.currentState.pieces.getFormattedPieces(),
-          this.currentState.playerTurn
-        ),
-      },
+      { mode: "D", totalTime: 300, increment: 5 },
       handleAnswer
     );
   }
@@ -164,14 +155,7 @@ export default class GameLogic {
     };
 
     this.client.sendMove(
-      {
-        move: move,
-        promotion: promotionTarget || null,
-        FEN: FENHandler.createFEN(
-          this.currentState.pieces.getFormattedPieces(),
-          this.currentState.playerTurn
-        ),
-      },
+      { move: move, promotion: promotionTarget || null },
       handleAnswer
     );
   }
