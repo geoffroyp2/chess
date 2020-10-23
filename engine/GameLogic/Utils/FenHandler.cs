@@ -7,7 +7,7 @@ namespace ChessEngine.GameLogic.Utils
 {
     public class FenHandler
     {
-        public BoardState parseFEN(string fen)
+        public BoardState ParseFEN(string fen)
         {
             string[] rows = fen.Split("/");
             string[] infos = rows[7].Split(" ");
@@ -61,10 +61,11 @@ namespace ChessEngine.GameLogic.Utils
                     }
                 }
             }
+
             return state;
         }
 
-        public string getFEN(BoardState state)
+        public string GetFEN(BoardState state)
         {
             return "";
         }

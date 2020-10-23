@@ -13,10 +13,10 @@ namespace ChessEngine.GameLogic
 
         public bool verifyMove(string fen, string move)
         {
-            System.Diagnostics.Debug.WriteLine(fen);
-            System.Diagnostics.Debug.WriteLine(move);
+            //System.Diagnostics.Debug.WriteLine(fen);
+            //System.Diagnostics.Debug.WriteLine(move);
 
-            BoardState newState = fenHandler.parseFEN(fen);
+            BoardState newState = fenHandler.ParseFEN(fen);
             newState.ComputeMoves();
             bool valid = newState.ValidateMove(move);
 

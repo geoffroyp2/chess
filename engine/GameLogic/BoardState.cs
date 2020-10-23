@@ -13,13 +13,15 @@ namespace ChessEngine.GameLogic
         {
             Fen = fen;
             PlayerTurn = playerTurn;
-            Pieces = new List<Piece>();
+            WPieces = new Dictionary<Coord, Piece>();
+            BPieces = new Dictionary<Coord, Piece>();
         }
 
         // params
         public string Fen { get; }
         public bool PlayerTurn { get; }
-        public List<Piece> Pieces { get; set; }
+        public Dictionary<Coord, Piece> BPieces { get; set; }
+        public Dictionary<Coord, Piece> WPieces { get; set; }
         public bool Check { get; set; }
         public bool CheckMate { get; set; }
         public bool StaleMate { get; set; }
@@ -30,22 +32,28 @@ namespace ChessEngine.GameLogic
             switch (type)
             {
                 case 'K':
-                    Pieces.Add(new King(team, coord, extraParam));
+                    if (team) WPieces.Add(coord, new King(team, coord, extraParam));
+                    else BPieces.Add(coord, new King(team, coord, extraParam));
                     break;
                 case 'Q':
-                    Pieces.Add(new Queen(team, coord));
+                    if (team) WPieces.Add(coord, new Queen(team, coord));
+                    else BPieces.Add(coord, new Queen(team, coord));
                     break;
                 case 'R':
-                    Pieces.Add(new Rook(team, coord, extraParam));
+                    if (team) WPieces.Add(coord, new Rook(team, coord, extraParam));
+                    else BPieces.Add(coord, new Rook(team, coord, extraParam));
                     break;
                 case 'N':
-                    Pieces.Add(new Knight(team, coord));
+                    if (team) WPieces.Add(coord, new Knight(team, coord));
+                    else BPieces.Add(coord, new Knight(team, coord));
                     break;
                 case 'B':
-                    Pieces.Add(new Bishop(team, coord));
+                    if (team) WPieces.Add(coord, new Bishop(team, coord));
+                    else BPieces.Add(coord, new Bishop(team, coord));
                     break;
                 case 'P':
-                    Pieces.Add(new Pawn(team, coord, extraParam));
+                    if (team) WPieces.Add(coord, new Pawn(team, coord, extraParam));
+                    else BPieces.Add(coord, new Pawn(team, coord, extraParam));
                     break;
             }
         }
@@ -57,12 +65,22 @@ namespace ChessEngine.GameLogic
 
             // 2. Compute Current player's moves and eliminate illegal moves. If there is no moves, it's either checkmate or stalemate
             bool atLeastOneMove = false;
-            foreach (Piece p in Pieces)
+            if (PlayerTurn)
             {
-                if (p.Team == PlayerTurn)
+                foreach (KeyValuePair<Coord, Piece> entry in WPieces)
                 {
-                    p.ComputeMoves(Pieces, true);
-                    if (p.Moves.Count > 0) atLeastOneMove = true;
+                    entry.Value.ComputeMoves(WPieces, BPieces, true);
+                    if (!atLeastOneMove && entry.Value.Moves.Count > 0) 
+                        atLeastOneMove = true;
+                }
+            }
+            else
+            {
+                foreach (KeyValuePair<Coord, Piece> entry in BPieces)
+                {
+                    entry.Value.ComputeMoves(BPieces, WPieces, true);
+                    if (!atLeastOneMove && entry.Value.Moves.Count > 0)
+                        atLeastOneMove = true;
                 }
             }
 
@@ -72,17 +90,33 @@ namespace ChessEngine.GameLogic
                 else StaleMate = true;
         }
 
-        private void ComputeOpponentMoves()
+        public void ComputeOpponentMoves()
         {
             // Compute opponent's move and see if the current situation is check
-            Coord kingCoord = new Coord(-1, -1);
-            foreach (Piece p in Pieces)
+            // Separate method because it is accessed to check if a situation is possible (maybe change that ?)
+            if (PlayerTurn)
             {
-                if (p.Team == PlayerTurn && p is King)
-                    kingCoord = p.Coord;
-                if (p.Team != PlayerTurn) p.ComputeMoves(Pieces, false);
-                foreach (Move m in p.Moves)
-                    if (m.Destination == kingCoord) Check = true;
+                Coord kingCoord = new Coord();
+                foreach (KeyValuePair<Coord, Piece> entry in WPieces)
+                    if (entry.Value is King) kingCoord = entry.Value.Coord;
+                foreach (KeyValuePair<Coord, Piece> entry in BPieces)
+                {
+                    entry.Value.ComputeMoves(BPieces, WPieces, false);
+                    if (!Check)
+                        if (entry.Value.Moves.ContainsKey(kingCoord)) Check = true;
+                }
+            }
+            else
+            {
+                Coord kingCoord = new Coord();
+                foreach (KeyValuePair<Coord, Piece> entry in BPieces)
+                    if (entry.Value is King) kingCoord = entry.Value.Coord;
+                foreach (KeyValuePair<Coord, Piece> entry in WPieces)
+                {
+                    entry.Value.ComputeMoves(WPieces, BPieces, false);
+                    if (!Check)
+                        if (entry.Value.Moves.ContainsKey(kingCoord)) Check = true;
+                }
             }
         }
 

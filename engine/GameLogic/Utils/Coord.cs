@@ -48,7 +48,7 @@ namespace ChessEngine.GameLogic.Utils
         }
         public override int GetHashCode()
         {
-            return Tuple.Create(x, y).GetHashCode();
+            return 8 * y + x;
         }
 
 

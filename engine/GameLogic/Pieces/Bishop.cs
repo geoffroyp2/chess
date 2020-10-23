@@ -11,7 +11,7 @@ namespace ChessEngine.GameLogic.Pieces
         public Bishop(bool team, Coord coord)
             : base(team, coord) { }
 
-        public override void ComputeMoves(List<Piece> pieces, bool needToVerify)
+        public override void ComputeMoves(Dictionary<Coord, Piece> teamPieces, Dictionary<Coord, Piece> opponentPieces, bool needToVerify)
         {
             bool[] flags = { true, true, true, true };
 
@@ -23,20 +23,15 @@ namespace ChessEngine.GameLogic.Pieces
                         flags[flag] = false;
                     else
                     {
-                        Piece otherPiece = new Piece();
-                        foreach (Piece p in pieces)
-                            if (p.Coord == coord)
-                                otherPiece = p;
-
-                        if (!otherPiece.isDefault())
+                        if (opponentPieces.ContainsKey(coord))
                         {
-                            if (otherPiece.Team != Team)
-                            {
-                                Moves.Add(new Move('X', coord, otherPiece));
-                            }
+                            Moves.Add(coord, new Move('X', coord));
                             flags[flag] = false;
                         }
-                        else Moves.Add(new Move('M', coord));
+                        else if (!teamPieces.ContainsKey(coord))
+                            Moves.Add(coord, new Move('M', coord));
+                        else
+                            flags[flag] = false;
                     }
 
                 }
@@ -49,7 +44,8 @@ namespace ChessEngine.GameLogic.Pieces
                 Square(2, new Coord(Coord.x - i, Coord.y + i));
                 Square(3, new Coord(Coord.x + i, Coord.y + i));
             }
-            if (needToVerify) base.VerifyMoves(pieces);
+
+            if (needToVerify) base.VerifyMoves(teamPieces, opponentPieces);
         }
     }
 }
