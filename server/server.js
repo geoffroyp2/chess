@@ -1,11 +1,11 @@
 const express = require("express");
-const https = require("https");
 const favicon = require("serve-favicon");
 const path = require("path");
 const app = express();
 
 const gameHandler = require("./API/APIHandler");
 const iaHandler = require("./ia/IAHandler");
+const { getIA } = require("./ia/IAHandler");
 
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
@@ -18,27 +18,21 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.get("/api/chess", (req, res) => {
-  const APIanswer = gameHandler.request(req.query.q);
-
-  const cb = (api, ai) => {
-    const answer = {
-      id: APIanswer.id,
-      args: APIanswer.args,
-      ai: ai,
-    };
-    res.json(answer);
-  };
-
-  iaHandler.getBoard((r) => {
-    let AIanswer = "";
-    r.on("data", (d) => {
-      AIanswer += d;
-    });
-    r.on("end", () => {
-      AIanswer = JSON.parse(AIanswer);
-      cb(APIanswer, AIanswer);
-    });
-  });
+  (async () => {
+    return Promise.all([
+      await gameHandler.request(req.query.q),
+      await getIA(JSON.parse(req.query.q)),
+    ]);
+  })()
+    .then(([game, ai]) => {
+      const result = {
+        id: game.id,
+        args: game.args,
+        ai: ai,
+      };
+      res.json(result);
+    })
+    .catch((e) => console.error(e.code));
 });
 
 app.listen(app.get("port"), () => {

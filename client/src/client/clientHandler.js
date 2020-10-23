@@ -3,10 +3,9 @@
 import Client from "./client";
 
 export default class ClientHandler {
-  newGame({ mode, totalTime, increment }, callback) {
+  newGame({ mode, totalTime, increment, FEN }, callback) {
     const receiveAnswer = ({ id, args, ai }) => {
-      console.log("API answer status", id, "    args:", args);
-      console.log(ai);
+      console.log("API answer status", id, "\nargs:", args, "\nai: ", ai);
       callback(id, args.gameId, args.time);
     };
 
@@ -17,15 +16,16 @@ export default class ClientHandler {
           mode: mode,
           time: totalTime,
           inc: increment,
+          fen: FEN,
         },
       }),
       receiveAnswer
     );
   }
 
-  sendMove({ move, promotion }, callback) {
-    const receiveAnswer = ({ id, args }) => {
-      console.log("API answer status", id, "    args:", args);
+  sendMove({ move, promotion, FEN }, callback) {
+    const receiveAnswer = ({ id, args, ai }) => {
+      console.log("API answer status", id, "\nargs:", args, "\nai: ", ai);
       callback(id, args.gameId, args.time);
     };
 
@@ -36,6 +36,7 @@ export default class ClientHandler {
           from: move.piece.coord.getString(),
           to: move.destination.getString(),
           more: promotion,
+          fen: FEN,
         },
       }),
       receiveAnswer

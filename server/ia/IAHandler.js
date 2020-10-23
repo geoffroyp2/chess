@@ -1,32 +1,24 @@
-const https = require("https");
+const axios = require("axios");
 
 class IAHandler {
-  contructor() {
-    this.BoardGETOptions = {
-      hostname: "localhost",
-      port: 44352,
-      path: "/Board",
-      method: "GET",
-      //   agentOptions: {
-      //     rejectUnauthorized: false,
-      //   },
-    };
-  }
-
-  getBoard(cb) {
-    const req = https.request(
-      {
-        hostname: "localhost",
-        port: 44352,
-        path: "/Board",
-        method: "GET",
-      },
-      cb
-    );
-
-    req.on("error", (e) => console.error(e));
-    req.end();
-  }
+  getIA = async (query) => {
+    const r = await axios
+      .get("https://localhost:44352/engine/move", {
+        params: {
+          fen: query.args.fen,
+          move: query.args.from ? query.args.from + query.args.to : "init",
+        },
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((e) => {
+        console.error("request path: ", e.request.path);
+        // console.error("Request config:\n", e.config);
+        console.error("Response error code: ", e.response.status);
+      });
+    return Promise.resolve(r);
+  };
 }
 
 module.exports = new IAHandler();

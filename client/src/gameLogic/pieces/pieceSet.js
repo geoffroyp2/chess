@@ -134,7 +134,13 @@ export default class PieceSet {
     // Format pieces in a simpler way for the UI
     let pieces = [];
     this.pieces.forEach((p) => {
-      pieces.push({ type: p.type + p.team, coord: p.coord, id: p.id });
+      pieces.push({
+        type: p.type + p.team,
+        coord: p.coord,
+        id: p.id,
+        ep: p.type === "P" && p.enPassant === 1,
+        castle: (p.type === "R" || p.type === "K") && p.canCastle,
+      });
     });
     return pieces;
   }

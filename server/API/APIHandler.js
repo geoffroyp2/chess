@@ -25,7 +25,7 @@ class GameHandler {
   }
 
   handleMove(argsI) {
-    console.log("new move: ", argsI.from, argsI.to);
+    console.log("new move: ", argsI.from, argsI.to, argsI.fen);
 
     const argsO = {
       gameId: this.GameInstance.id,
@@ -35,7 +35,7 @@ class GameHandler {
   }
 
   newGame(argsI) {
-    console.log("new game: ", argsI.mode, argsI.time, argsI.inc);
+    console.log("new game: ", argsI.mode, argsI.time, argsI.inc, argsI.fen);
 
     this.GameInstance = new GameInstance(
       this.getNewId(),
