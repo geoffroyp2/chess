@@ -25,11 +25,11 @@ namespace ChessEngine.GameLogic.Pieces
                     {
                         if (opponentPieces.ContainsKey(coord))
                         {
-                            Moves.Add(coord, new Move('X', coord));
+                            Moves.Add(coord, new Move(Move.MoveTypes.Capture, coord));
                             flags[flag] = false;
                         }
                         else if (!teamPieces.ContainsKey(coord))
-                            Moves.Add(coord, new Move('M', coord));
+                            Moves.Add(coord, new Move(Move.MoveTypes.Normal, coord));
                         else
                             flags[flag] = false;
                     }

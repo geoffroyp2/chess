@@ -15,7 +15,6 @@ namespace ChessEngine.GameLogic.Pieces
             Castle = castle;
         }
 
-        public bool Castle { get; set; }
 
         public override void ComputeMoves(Dictionary<Coord, Piece> teamPieces, Dictionary<Coord, Piece> opponentPieces, bool needToVerify)
         {
@@ -31,11 +30,11 @@ namespace ChessEngine.GameLogic.Pieces
                     {
                         if (opponentPieces.ContainsKey(coord))
                         {
-                            Moves.Add(coord, new Move('X', coord));
+                            Moves.Add(coord, new Move(Move.MoveTypes.Capture, coord));
                             flags[flag] = false;
                         }
                         else if (!teamPieces.ContainsKey(coord))
-                            Moves.Add(coord, new Move('M', coord));
+                            Moves.Add(coord, new Move(Move.MoveTypes.Normal, coord));
                         else
                             flags[flag] = false;
                     }

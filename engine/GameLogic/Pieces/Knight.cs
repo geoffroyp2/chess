@@ -19,9 +19,9 @@ namespace ChessEngine.GameLogic.Pieces
                 if (coord.IsValid())
                 {
                     if (opponentPieces.ContainsKey(coord))
-                        Moves.Add(coord, new Move('X', coord));
+                        Moves.Add(coord, new Move(Move.MoveTypes.Capture, coord));
                     else if (!teamPieces.ContainsKey(coord))
-                        Moves.Add(coord, new Move('M', coord));
+                        Moves.Add(coord, new Move(Move.MoveTypes.Normal, coord));
                 }
             }
 
