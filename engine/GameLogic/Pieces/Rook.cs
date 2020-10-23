@@ -48,7 +48,7 @@ namespace ChessEngine.GameLogic.Pieces
                 }
             }
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 1; i <= 8; i++)
             {
                 Square(0, new Coord(Coord.x - i, Coord.y));
                 Square(1, new Coord(Coord.x + i, Coord.y));

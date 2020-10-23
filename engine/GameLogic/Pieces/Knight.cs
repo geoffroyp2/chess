@@ -32,17 +32,15 @@ namespace ChessEngine.GameLogic.Pieces
                 }
             }
 
-            for (int i = 0; i < 8; i++)
-            {
-                Square(new Coord(Coord.x - 1, Coord.y - 2));
-                Square(new Coord(Coord.x - 2, Coord.y - 1));
-                Square(new Coord(Coord.x + 1, Coord.y - 2));
-                Square(new Coord(Coord.x + 2, Coord.y - 1));
-                Square(new Coord(Coord.x - 1, Coord.y + 2));
-                Square(new Coord(Coord.x - 2, Coord.y + 1));
-                Square(new Coord(Coord.x + 1, Coord.y + 2));
-                Square(new Coord(Coord.x + 2, Coord.y + 1));
-            }
+            Square(new Coord(Coord.x - 1, Coord.y - 2));
+            Square(new Coord(Coord.x - 2, Coord.y - 1));
+            Square(new Coord(Coord.x + 1, Coord.y - 2));
+            Square(new Coord(Coord.x + 2, Coord.y - 1));
+            Square(new Coord(Coord.x - 1, Coord.y + 2));
+            Square(new Coord(Coord.x - 2, Coord.y + 1));
+            Square(new Coord(Coord.x + 1, Coord.y + 2));
+            Square(new Coord(Coord.x + 2, Coord.y + 1));
+
             if (needToVerify) base.VerifyMoves(pieces);
         }
     }

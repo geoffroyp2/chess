@@ -9,15 +9,15 @@ namespace ChessEngine.GameLogic
     public class Piece
     {
         public Piece()
+            : this(false, new Coord())
         {
-            Team = false;
-            Coord = new Coord();
         }
 
         public Piece(bool team, Coord coord)
         {
             Team = team;
             Coord = coord;
+            Moves = new List<Move>();
         }
 
         public bool isDefault()
@@ -27,7 +27,7 @@ namespace ChessEngine.GameLogic
 
         public bool Team { get; set; }
         public Coord Coord { get; set; }
-        public List<Move> Moves { get; }
+        public List<Move> Moves { get; set; }
 
         public void VerifyMoves(List<Piece> pieces)
         {

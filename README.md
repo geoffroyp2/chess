@@ -24,5 +24,5 @@ server created with Express
 assets from lichess.org
 
 client runs on http://localhost:3000/  
-server runs on http://localhost:3001/
-ai-API runs on http://localhost:44352/
+server runs on http://localhost:3001/  
+engine runs on http://localhost:44352/

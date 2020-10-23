@@ -81,8 +81,8 @@ namespace ChessEngine.GameLogic
                 if (p.Team == PlayerTurn && p is King)
                     kingCoord = p.Coord;
                 if (p.Team != PlayerTurn) p.ComputeMoves(Pieces, false);
-                foreach (Coord m in p.Moves)
-                    if (m == kingCoord) Check = true;
+                foreach (Move m in p.Moves)
+                    if (m.Destination == kingCoord) Check = true;
             }
         }
 
