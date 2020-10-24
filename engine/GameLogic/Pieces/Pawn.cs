@@ -15,10 +15,10 @@ namespace ChessEngine.GameLogic.Pieces
         }
 
 
-
-
-        public override void ComputeMoves(Dictionary<Coord, Piece> teamPieces, Dictionary<Coord, Piece> opponentPieces, bool needToVerify)
+        public override void ComputeMoves(Dictionary<Coord, Piece> teamPieces, Dictionary<Coord, Piece> opponentPieces)
         {
+            Moves.Clear();
+
             // Move Forward
             int teamDirection = Team ? -1 : +1;
             Coord oneSquare = new Coord(Coord.x, Coord.y + teamDirection);
@@ -77,8 +77,6 @@ namespace ChessEngine.GameLogic.Pieces
                             Moves.Add(captureEPRight, new Move(Move.MoveTypes.EnPassant, captureEPRight));
                 }
             }
-
-            if (needToVerify) base.VerifyMoves(teamPieces, opponentPieces);
         }
     }
 }

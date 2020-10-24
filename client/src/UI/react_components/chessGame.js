@@ -20,12 +20,13 @@ const ChessGame = () => {
   // Give the UIUpdate callback to the GameLogic instance
   useEffect(() => {
     game.giveUICallback(() => setGameData(game.getGameInfos()));
+    game.newGame(300, 5);
   }, []);
 
   //UI data
   // TODO: make boardSize scale with the window size (+ rescalable by hand ?)
   const [boardOrientation, setBoardOrientation] = useState(true);
-  const [gameData, setGameData] = useState(game.getInitialData());
+  const [gameData, setGameData] = useState(game.getGameInfos());
   const boardSize = 744;
 
   // TODO css with material-ui
@@ -34,8 +35,8 @@ const ChessGame = () => {
   // Actions that are triggered by user interaction
   const resetGame = useCallback(() => {
     game.reset();
-    setGameData(game.getInitialData());
-  }, [game]);
+    // setGameData(game.getGameInfos());
+  }, []);
 
   const flipBoard = useCallback(() => {
     setBoardOrientation(!boardOrientation);

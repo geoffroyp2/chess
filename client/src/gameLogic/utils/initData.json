@@ -1,0 +1,660 @@
+{
+  "PlayerTurn": true,
+  "Check": false,
+  "Checkmate": false,
+  "Stalemate": false,
+  "Pieces": [
+    {
+      "Type": "P",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 0,
+        "y": 6
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 0,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 0,
+            "y": 4
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 1,
+        "y": 6
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 1,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 1,
+            "y": 4
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 2,
+        "y": 6
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 2,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 2,
+            "y": 4
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 3,
+        "y": 6
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 3,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 3,
+            "y": 4
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 4,
+        "y": 6
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 4,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 4,
+            "y": 4
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 5,
+        "y": 6
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 5,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 5,
+            "y": 4
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 6,
+        "y": 6
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 6,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 6,
+            "y": 4
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 7,
+        "y": 6
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 7,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 7,
+            "y": 4
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "R",
+      "Team": true,
+      "EP": false,
+      "Castle": true,
+      "Coord": {
+        "x": 0,
+        "y": 7
+      },
+      "Moves": []
+    },
+    {
+      "Type": "N",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 1,
+        "y": 7
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 0,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 2,
+            "y": 5
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "B",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 2,
+        "y": 7
+      },
+      "Moves": []
+    },
+    {
+      "Type": "Q",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 3,
+        "y": 7
+      },
+      "Moves": []
+    },
+    {
+      "Type": "K",
+      "Team": true,
+      "EP": false,
+      "Castle": true,
+      "Coord": {
+        "x": 4,
+        "y": 7
+      },
+      "Moves": []
+    },
+    {
+      "Type": "B",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 5,
+        "y": 7
+      },
+      "Moves": []
+    },
+    {
+      "Type": "N",
+      "Team": true,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 6,
+        "y": 7
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 5,
+            "y": 5
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 7,
+            "y": 5
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "R",
+      "Team": true,
+      "EP": false,
+      "Castle": true,
+      "Coord": {
+        "x": 7,
+        "y": 7
+      },
+      "Moves": []
+    },
+    {
+      "Type": "R",
+      "Team": false,
+      "EP": false,
+      "Castle": true,
+      "Coord": {
+        "x": 0,
+        "y": 0
+      },
+      "Moves": []
+    },
+    {
+      "Type": "N",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 1,
+        "y": 0
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 0,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 2,
+            "y": 2
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "B",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 2,
+        "y": 0
+      },
+      "Moves": []
+    },
+    {
+      "Type": "Q",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 3,
+        "y": 0
+      },
+      "Moves": []
+    },
+    {
+      "Type": "K",
+      "Team": false,
+      "EP": false,
+      "Castle": true,
+      "Coord": {
+        "x": 4,
+        "y": 0
+      },
+      "Moves": []
+    },
+    {
+      "Type": "B",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 5,
+        "y": 0
+      },
+      "Moves": []
+    },
+    {
+      "Type": "N",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 6,
+        "y": 0
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 5,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 7,
+            "y": 2
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "R",
+      "Team": false,
+      "EP": false,
+      "Castle": true,
+      "Coord": {
+        "x": 7,
+        "y": 0
+      },
+      "Moves": []
+    },
+    {
+      "Type": "P",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 0,
+        "y": 1
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 0,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 0,
+            "y": 3
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 1,
+        "y": 1
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 1,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 1,
+            "y": 3
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 2,
+        "y": 1
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 2,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 2,
+            "y": 3
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 3,
+        "y": 1
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 3,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 3,
+            "y": 3
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 4,
+        "y": 1
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 4,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 4,
+            "y": 3
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 5,
+        "y": 1
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 5,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 5,
+            "y": 3
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 6,
+        "y": 1
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 6,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 6,
+            "y": 3
+          },
+          "Type": "M"
+        }
+      ]
+    },
+    {
+      "Type": "P",
+      "Team": false,
+      "EP": false,
+      "Castle": false,
+      "Coord": {
+        "x": 7,
+        "y": 1
+      },
+      "Moves": [
+        {
+          "To": {
+            "x": 7,
+            "y": 2
+          },
+          "Type": "M"
+        },
+        {
+          "To": {
+            "x": 7,
+            "y": 3
+          },
+          "Type": "M"
+        }
+      ]
+    }
+  ]
+}

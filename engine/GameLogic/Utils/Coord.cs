@@ -19,6 +19,18 @@ namespace ChessEngine.GameLogic.Utils
             y = _y;
         }
 
+        public Coord(string s)
+        {
+            x = s[0] - 97;
+            y = 49 - s[1] + 7;
+        }
+
+        public Coord(Coord other)
+        {
+            x = other.x;
+            y = other.y;
+        }
+
         public int x { get; set; }
         public int y { get; set; }
 

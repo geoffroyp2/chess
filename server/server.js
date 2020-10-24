@@ -3,7 +3,7 @@ const favicon = require("serve-favicon");
 const path = require("path");
 const app = express();
 
-const gameHandler = require("./API/APIHandler");
+const gameHandler = require("./API/gameHandler");
 const iaHandler = require("./ia/IAHandler");
 const { getIA } = require("./ia/IAHandler");
 
@@ -19,20 +19,10 @@ if (process.env.NODE_ENV === "production") {
 
 app.get("/api/chess", (req, res) => {
   (async () => {
-    return Promise.all([
-      await gameHandler.request(req.query.q),
-      await getIA(JSON.parse(req.query.q)),
-    ]);
-  })()
-    .then(([game, ai]) => {
-      const result = {
-        id: game.id,
-        args: game.args,
-        ai: ai,
-      };
-      res.json(result);
-    })
-    .catch((e) => console.error(e.code));
+    return gameHandler.request(req.query.q);
+  })().then((result) => {
+    res.json(result);
+  });
 });
 
 app.listen(app.get("port"), () => {

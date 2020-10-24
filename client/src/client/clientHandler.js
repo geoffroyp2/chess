@@ -23,6 +23,34 @@ export default class ClientHandler {
     );
   }
 
+  requestNewGame({ mode, totalTime, increment }, callback) {
+    const onReceive = ({ id, args }) => {
+      console.log("API answer status", id, "\nargs:", args);
+      callback(args);
+    };
+
+    let FEN;
+    switch (mode) {
+      case "D":
+      default:
+        FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        break;
+    }
+
+    Client.sendRequest(
+      JSON.stringify({
+        id: "NG",
+        args: {
+          mode: mode,
+          time: totalTime,
+          inc: increment,
+          fen: FEN,
+        },
+      }),
+      onReceive
+    );
+  }
+
   sendMove({ move, promotion, FEN }, callback) {
     const receiveAnswer = ({ id, args, ai }) => {
       console.log("API answer status", id, "\nargs:", args, "\nai: ", ai);
@@ -40,6 +68,27 @@ export default class ClientHandler {
         },
       }),
       receiveAnswer
+    );
+  }
+
+  playMove({ move, promotion, FEN }, callback) {
+    const onReceive = ({ id, args }) => {
+      // console.log("API answer status", id, "\nargs:", args);
+      console.log(args.board);
+      callback(args);
+    };
+
+    Client.sendRequest(
+      JSON.stringify({
+        id: "M",
+        args: {
+          from: move.from,
+          to: move.to,
+          prom: promotion || null,
+          fen: FEN,
+        },
+      }),
+      onReceive
     );
   }
 }

@@ -34,7 +34,7 @@ namespace ChessEngine.GameLogic.Utils
                 ep.y = 7 - (infos[3][1] - '1');
             }
 
-            BoardState state = new BoardState(fen, infos[1] == "w");
+            BoardState state = new BoardState(infos[1] == "w");
 
             for (int y = 0; y < 8; y++)
             {

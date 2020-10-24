@@ -11,8 +11,9 @@ namespace ChessEngine.GameLogic.Pieces
         public Queen(bool team, Coord coord)
             : base(team, coord) { }
 
-        public override void ComputeMoves(Dictionary<Coord, Piece> teamPieces, Dictionary<Coord, Piece> opponentPieces, bool needToVerify)
+        public override void ComputeMoves(Dictionary<Coord, Piece> teamPieces, Dictionary<Coord, Piece> opponentPieces)
         {
+            Moves.Clear();
             bool[] flags = { true, true, true, true, true, true, true, true };
 
             void Square(int flag, Coord coord)
@@ -48,8 +49,6 @@ namespace ChessEngine.GameLogic.Pieces
                 Square(6, new Coord(Coord.x - i, Coord.y + i));
                 Square(7, new Coord(Coord.x + i, Coord.y + i));
             }
-
-            if (needToVerify) base.VerifyMoves(teamPieces, opponentPieces);
         }
     }
 }

@@ -6,18 +6,16 @@ using ChessEngine.GameLogic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace ChessEngine.Controllers
 {
     [Route("engine")]
     [ApiController]
     public class EngineController : ControllerBase
     {
-        private Engine engine = new Engine();
-
-
-
-
-
+       
         [HttpGet]
         public IEnumerable<string> GetDefault()
         {
@@ -31,8 +29,27 @@ namespace ChessEngine.Controllers
         [HttpGet("move")]
         public IActionResult Move(string fen, string move)
         {
-            bool validMove = engine.verifyMove(fen, move);
-            return new OkObjectResult(validMove);
+            // creating an instance of engine here to deal with multiple calls ?
+            Engine engine = new Engine();
+            BoardState currentState = engine.GetCurrentState(fen);
+            if (move != "null")
+            {
+                if (engine.VerifyMove(currentState, move))
+                {
+                    engine.PlayMove(currentState, move);
+                    string serializedBoard = JsonSerializer.Serialize(new SerializedBoardState(currentState));
+                    return new OkObjectResult(serializedBoard);
+                }
+                else
+                {
+                    return new ConflictObjectResult("Invalid Move");
+                }
+            }
+            else
+            {
+                string serializedBoard = JsonSerializer.Serialize(new SerializedBoardState(currentState));
+                return new OkObjectResult(serializedBoard);
+            }
         }
 
     }

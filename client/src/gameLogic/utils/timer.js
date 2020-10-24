@@ -1,6 +1,6 @@
 // Simple timer wrapper
 
-export default class timer {
+export default class Timer {
   constructor() {
     this.lastRecord = new Date();
     this.w = 0;
@@ -16,15 +16,19 @@ export default class timer {
   getTime() {
     //update the current counter and returns the time
     // this method is called from the React timer element every 100ms
+
     const now = new Date();
     const ellapsed = now - this.lastRecord;
 
     this.playerTurn ? (this.w -= ellapsed) : (this.b -= ellapsed);
     this.lastRecord = now;
 
+    if (this.w < 0) this.w = 0;
+    if (this.b < 0) this.b = 0;
+
     return {
-      w: Math.floor(this.w),
-      b: Math.floor(this.b),
+      w: this.w,
+      b: this.b,
     };
   }
 

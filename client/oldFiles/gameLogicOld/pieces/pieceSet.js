@@ -19,6 +19,12 @@ export default class PieceSet {
 
   initPieces(mode) {
     if (mode === "STANDARD") {
+      // test
+      // this.pieces.push(new King("W", "WK", new Coord(4, 7)));
+      // this.pieces.push(new King("B", "BK", new Coord(4, 0)));
+      // this.pieces.push(new Queen("W", "WQ", new Coord(3, 7)));
+      // this.pieces.push(new Rook("W", "WR1", new Coord(0, 7)));
+
       // White set
       this.pieces.push(new King("W", "WK", new Coord(4, 7)));
       this.pieces.push(new Queen("W", "WQ", new Coord(3, 7)));

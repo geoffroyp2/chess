@@ -42,7 +42,7 @@ const Board = ({ size, data, sendClick, boardOrientation }) => {
       // true = mouseDown
       setLastMouseDown([sX, sY]);
       const pieceToDrag = pieces.find(
-        (p) => p.coord.x === sX && p.coord.y === sY && p.id[0] === playerTurn
+        (p) => p.coord.x === sX && p.coord.y === sY && p.type[1] === playerTurn
       );
       if (pieceToDrag) {
         //begin drag

@@ -1,5 +1,5 @@
 module.exports = class GameInstance {
-  constructor(id, mode, totalTime, increment) {
+  constructor(id, mode, totalTime, increment, initFen) {
     this.id = id;
     this.mode = mode;
     this.totalTime = totalTime * 1000; //in ms
@@ -8,6 +8,8 @@ module.exports = class GameInstance {
 
     this.status = null;
 
+    this.fen = [];
+    this.fen.push(initFen);
     this.moves = [];
 
     this.playerTurn = true; //true = white, false = black
@@ -19,10 +21,12 @@ module.exports = class GameInstance {
     return this.status;
   }
 
-  nextMove(from, to) {
+  nextMove(from, to, fen) {
     // TODO: check if the move is valid => call to ia API
 
-    this.moves.push({ from: from, to: to });
+    this.fen.push(fen);
+    if (from) this.moves.push({ from: from, to: to });
+
     const now = new Date();
     const ellapsedTime = now - this.lastRecordedTime;
     const remainingTime = this.playerTurn
