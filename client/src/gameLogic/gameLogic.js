@@ -88,7 +88,10 @@ export default class GameLogic {
 
     this.client.playMove(
       {
-        move: move,
+        move: {
+          from: coordToString(move.from),
+          to: coordToString(move.to),
+        },
         promotion: promotionTarget || null,
         FEN: FEN.createFEN(this.board, this.moveClock, this.moveCount + 1),
       },
@@ -124,8 +127,8 @@ export default class GameLogic {
             } else {
               this.playMove(
                 {
-                  from: coordToString(this.pieceSelected.Coord),
-                  to: coordToString(moveSelected.To),
+                  from: this.pieceSelected.Coord,
+                  to: moveSelected.To,
                 },
                 null
               );
@@ -166,8 +169,8 @@ export default class GameLogic {
 
       this.playMove(
         {
-          from: coordToString(this.pieceSelected.Coord),
-          to: coordToString(this.promotionMove.To),
+          from: this.pieceSelected.Coord,
+          to: this.promotionMove.To,
         },
         promotionTarget
       );
@@ -252,10 +255,10 @@ export default class GameLogic {
 
     // Highlight last move played
     // need debugging
-    // if (this.lastMove) {
-    //   highlights.push({ type: "HLM", coord: this.lastMove.From, id: "HLM1" });
-    //   highlights.push({ type: "HLM", coord: this.lastMove.To, id: "HLM2" });
-    // }
+    if (this.lastMove) {
+      highlights.push({ type: "HLM", coord: this.lastMove.from, id: "HLM1" });
+      highlights.push({ type: "HLM", coord: this.lastMove.to, id: "HLM2" });
+    }
 
     return highlights;
   }
