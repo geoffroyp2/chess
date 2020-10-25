@@ -89,11 +89,13 @@ export default class GameLogic {
     this.client.playMove(
       {
         move: {
-          from: coordToString(move.from),
-          to: coordToString(move.to),
+          Type: move.Type,
+          From: move.from,
+          To: move.to,
         },
         promotion: promotionTarget || null,
-        FEN: FEN.createFEN(this.board, this.moveClock, this.moveCount + 1),
+        fen: FEN.createFEN(this.board, this.moveClock, this.moveCount + 1),
+        board: this.board,
       },
       callBack
     );

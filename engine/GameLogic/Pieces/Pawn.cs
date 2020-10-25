@@ -32,7 +32,7 @@ namespace ChessEngine.GameLogic.Pieces
                 {
                     Coord twoSquares = new Coord(Coord.x, Coord.y + 2 * teamDirection);
                     if (!(teamPieces.ContainsKey(twoSquares) || opponentPieces.ContainsKey(twoSquares)))
-                        Moves.Add(twoSquares, new Move(Move.MoveTypes.Normal, twoSquares)); // Move 2 squares
+                        Moves.Add(twoSquares, new Move(Move.MoveTypes.Pawntwo, twoSquares)); // Move 2 squares
                 }
             }
 

@@ -1,14 +1,12 @@
 const axios = require("axios");
 
 class IAHandler {
-  getNewBoard = async (fen) => {
+  getNewBoard = async (board) => {
     const r = await axios
-      .get("https://localhost:44352/engine/move", {
-        params: {
-          fen: fen,
-          move: "null",
-          prom: "null",
-        },
+      .post("https://localhost:44352/engine/move", {
+        Board: board,
+        Move: { Type: "0", From: { x: -1, y: -1 }, To: { x: -1, y: -1 } },
+        Prom: "0",
       })
       .then((res) => {
         return res.data;
@@ -16,43 +14,23 @@ class IAHandler {
       .catch((e) => {
         console.error("request path: ", e.request.path);
         console.error("Response error code: ", e.response.status);
+        console.error(e.response.config);
       });
     return Promise.resolve(r);
   };
 
-  sendMove = async (from, to, prom, fen) => {
+  sendMove = async (move, prom, board) => {
     const r = await axios
-      .get("https://localhost:44352/engine/move", {
-        params: {
-          fen: fen,
-          move: from + to,
-          prom: prom || "null",
-        },
+      .post("https://localhost:44352/engine/move", {
+        Board: board,
+        Move: move,
+        Prom: prom || "null",
       })
       .then((res) => {
         return res.data;
       })
       .catch((e) => {
         console.error("request path: ", e.request.path);
-        console.error("Response error code: ", e.response.status);
-      });
-    return Promise.resolve(r);
-  };
-
-  getIA = async (query) => {
-    const r = await axios
-      .get("https://localhost:44352/engine/move", {
-        params: {
-          fen: query.args.fen,
-          move: query.args.from ? query.args.from + query.args.to : "null",
-        },
-      })
-      .then((res) => {
-        return res.data;
-      })
-      .catch((e) => {
-        console.error("request path: ", e.request.path);
-        // console.error("Request config:\n", e.config);
         console.error("Response error code: ", e.response.status);
       });
     return Promise.resolve(r);

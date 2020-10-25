@@ -81,7 +81,7 @@ namespace ChessEngine.GameLogic
         public void ComputeMovesVerify(Dictionary<Coord, Piece> teamPieces, Dictionary<Coord, Piece> opponentPieces, BoardState boardCopy)
         {
             ComputeMoves(teamPieces, opponentPieces);
-            VerifyMoves(teamPieces, opponentPieces, boardCopy);
+            //VerifyMoves(teamPieces, opponentPieces, boardCopy);
         }
 
         public void ComputeMovesNormal(Dictionary<Coord, Piece> teamPieces, Dictionary<Coord, Piece> opponentPieces)

@@ -1,6 +1,7 @@
 // class wrapper for the client with simpler methods that are called from gameLogic
 
 import Client from "./client";
+import initData from "../gameLogic/utils/initData.json";
 
 export default class ClientHandler {
   newGame({ mode, totalTime, increment, FEN }, callback) {
@@ -25,15 +26,16 @@ export default class ClientHandler {
 
   requestNewGame({ mode, totalTime, increment }, callback) {
     const onReceive = ({ id, args }) => {
-      console.log("API answer status", id, "\nargs:", args);
+      console.log(args.board);
       callback(args);
     };
 
-    let FEN;
+    let fen, board;
     switch (mode) {
       case "D":
       default:
-        FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        board = initData;
         break;
     }
 
@@ -44,7 +46,8 @@ export default class ClientHandler {
           mode: mode,
           time: totalTime,
           inc: increment,
-          fen: FEN,
+          fen: fen,
+          board: board,
         },
       }),
       onReceive
@@ -71,7 +74,7 @@ export default class ClientHandler {
     );
   }
 
-  playMove({ move, promotion, FEN }, callback) {
+  playMove({ move, promotion, fen, board }, callback) {
     const onReceive = ({ id, args }) => {
       // console.log("API answer status", id, "\nargs:", args);
       console.log(args.board);
@@ -82,10 +85,10 @@ export default class ClientHandler {
       JSON.stringify({
         id: "M",
         args: {
-          from: move.from,
-          to: move.to,
+          move: move,
           prom: promotion || null,
-          fen: FEN,
+          fen: fen,
+          board: board,
         },
       }),
       onReceive

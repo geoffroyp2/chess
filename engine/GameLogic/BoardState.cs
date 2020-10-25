@@ -29,6 +29,31 @@ namespace ChessEngine.GameLogic
                 BPieces.Add(entry.Key, CopyPiece(entry.Value));
         }
 
+        public BoardState(SerializedBoardState other)
+        {
+            PlayerTurn = other.PlayerTurn;
+            WPieces = new Dictionary<Coord, Piece>();
+            BPieces = new Dictionary<Coord, Piece>();
+            foreach (SerializedPiece p in other.Pieces)
+            {
+                Coord c = new Coord(p.Coord);
+                Piece newPiece = new Piece();
+                switch (p.Type)
+                {
+                    case 'K': newPiece = new King(p.Team, c, p.Castle); break;
+                    case 'Q': newPiece = new Queen(p.Team, c); break;
+                    case 'N': newPiece = new Knight(p.Team, c); break;
+                    case 'R': newPiece = new Rook(p.Team, c, p.Castle); break;
+                    case 'B': newPiece = new Bishop(p.Team, c); break;
+                    case 'P': newPiece = new Pawn(p.Team, c, p.EP); break;
+                }
+                if (p.Team)
+                    WPieces.Add(c, newPiece);
+                else
+                    BPieces.Add(c, newPiece);
+            }
+        }
+
         // params
         public bool PlayerTurn { get; set; }
         public Dictionary<Coord, Piece> BPieces { get; set; }

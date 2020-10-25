@@ -27,16 +27,16 @@ namespace ChessEngine.GameLogic.Utils
             Destination = destination;
         }
 
-        [Flags]
         public enum MoveTypes
         {
-            Normal = 0x1,
-            Capture = 0x2,
-            Promote = 0x4,
-            EnPassant = 0x8,
-            PromoteCapture = Promote | Capture,
-            LongCastle = 0x10,
-            ShortCastle = 0x20
+            Normal,
+            Pawntwo,
+            Capture,
+            EnPassant,
+            Promote,
+            PromoteCapture,
+            LongCastle,
+            ShortCastle,
         }
 
         public MoveTypes MoveType { get; }

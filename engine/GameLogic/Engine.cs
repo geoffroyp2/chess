@@ -8,67 +8,90 @@ namespace ChessEngine.GameLogic
 {
     public class Engine
     {
-        private FenHandler fenHandler = new FenHandler();
-
         public BoardState GetCurrentState(string fen)
         {
+            FenHandler fenHandler = new FenHandler();
             BoardState newState = fenHandler.ParseFEN(fen);
             newState.ComputeMoves();
             return newState;
         }
 
-        public bool VerifyMove(BoardState board, string move)
+        public BoardState GetCurrentState(SerializedBoardState board)
+        {
+            BoardState newState = new BoardState(board);
+            newState.ComputeMoves();
+            return newState;
+        }
+
+        public bool VerifyMove(BoardState board, SerializedSelectedMove move)
         {
             return true;
         }
 
-        public void PlayMove(BoardState board, string move)
+        public bool PlayMove(BoardState board, SerializedSelectedMove move, string prom)
         {
-            if (move == "OO" || move == "OOO")
+
+            Coord from = new Coord(move.From);
+            Coord to = new Coord(move.To);
+
+            if (board.PlayerTurn)
             {
-                // TODO maybe useless ?
+                // Remove entry, Remove captured piece, change coord, re-add entry
+                if (!board.WPieces.ContainsKey(from)) return false;
+                Piece pieceSelected = board.WPieces[from];
+                if (!pieceSelected.Moves.ContainsKey(to)) return false;
+                Move moveSelected = pieceSelected.Moves[to];
+
+                board.WPieces.Remove(from);
+                if (board.BPieces.ContainsKey(to))
+                    board.BPieces.Remove(to);
+
+                if (moveSelected.MoveType == Move.MoveTypes.Pawntwo)
+                    pieceSelected.Ep = true;
+                else if (moveSelected.MoveType == Move.MoveTypes.Promote || moveSelected.MoveType == Move.MoveTypes.PromoteCapture)
+                {
+                    //TODO
+                }
+                else if (moveSelected.MoveType == Move.MoveTypes.ShortCastle || moveSelected.MoveType == Move.MoveTypes.LongCastle)
+                {
+                    //TODO
+                }
+
+                pieceSelected.Coord = to;
+                board.WPieces.Add(to, pieceSelected);
+
             }
             else
             {
-                Coord from = new Coord(move.Substring(0, 2));
-                Coord to = new Coord(move.Substring(2, 2));
+                if (!board.BPieces.ContainsKey(from)) return false;
+                Piece pieceSelected = board.BPieces[from];
+                if (!pieceSelected.Moves.ContainsKey(to)) return false;
+                Move moveSelected = pieceSelected.Moves[to];
 
-                if (move.Length > 4)
+                board.BPieces.Remove(from);
+                if (board.WPieces.ContainsKey(to))
+                    board.WPieces.Remove(to);
+
+                if (moveSelected.MoveType == Move.MoveTypes.Pawntwo)
+                    pieceSelected.Ep = true;
+                else if (moveSelected.MoveType == Move.MoveTypes.Promote || moveSelected.MoveType == Move.MoveTypes.PromoteCapture)
                 {
-                    char PromoteType = move[move.Length - 2];
-                    // TODO
+                    //TODO
+                }
+                else if (moveSelected.MoveType == Move.MoveTypes.ShortCastle || moveSelected.MoveType == Move.MoveTypes.LongCastle)
+                {
+                    //TODO
                 }
 
-                if (board.PlayerTurn)
-                {
-                    // Remove entry, Remove captured piece, change coord, re-add entry
-                    Piece movePiece = board.WPieces[from];
-                    board.WPieces.Remove(from);
+                pieceSelected.Coord = to;
+                board.BPieces.Add(to, pieceSelected);
 
-                    if (board.BPieces.ContainsKey(to))
-                        board.BPieces.Remove(to);
-
-                    movePiece.Coord = to;
-                    board.WPieces.Add(to, movePiece);
-
-
-                }
-                else
-                {
-                    Piece movePiece = board.BPieces[from];
-                    board.BPieces.Remove(from);
-
-                    if (board.WPieces.ContainsKey(to))
-                        board.WPieces.Remove(to);
-
-                    movePiece.Coord = to;
-                    board.BPieces.Add(to, movePiece);
-                }
             }
+
 
             board.PlayerTurn = !board.PlayerTurn;
             board.ComputeMoves();
+            return true;
         }
-
     }
 }

@@ -15,7 +15,7 @@ class GameHandler {
     if (id === "NG") {
       console.log("new game: ", args.mode, args.time, args.inc, args.fen);
       const r = await (async () => {
-        return iaHandler.getNewBoard(args.fen);
+        return iaHandler.getNewBoard(args.board);
       })()
         .then((newBoard) => {
           // console.log(newBoard);
@@ -25,6 +25,7 @@ class GameHandler {
             args.time,
             args.inc,
             args.fen
+            // args.board
           );
 
           const argsO = {
@@ -40,10 +41,10 @@ class GameHandler {
 
     // Send move
     else if (id === "M") {
-      console.log("Move sent: ", args.from, args.to, "//", args.fen);
+      console.log("Move sent: ", args.move.From, args.move.To, args.fen);
 
       const r = await (async () => {
-        return iaHandler.sendMove(args.from, args.to, args.prom, args.fen);
+        return iaHandler.sendMove(args.move, args.prom, args.board);
       })()
         .then((newBoard) => {
           const argsO = {
@@ -57,77 +58,6 @@ class GameHandler {
       return Promise.resolve(r);
     }
   };
-
-  // newGame = async (argsI) => {
-  //   console.log("new game: ", argsI.mode, argsI.time, argsI.inc, argsI.fen);
-  //   (async () => {
-  //     return iaHandler.getNewBoard(argsI.fen);
-  //   })()
-  //     .then((newBoard) => {
-  //       // console.log(newBoard);
-  //       this.GameInstance = new GameInstance(
-  //         this.getNewId(),
-  //         argsI.mode,
-  //         argsI.time,
-  //         argsI.inc,
-  //         argsI.fen
-  //       );
-
-  //       const argsO = {
-  //         gameId: this.GameInstance.id,
-  //         time: this.GameInstance.nextMove(null, null, argsI.fen),
-  //         board: newBoard,
-  //       };
-  //       return Promise.resolve(new answer(true, argsO));
-  //     })
-  //     .catch((e) => console.error(e));
-  // };
-
-  // sendMove(argsI) {
-  //   console.log("Move sent: ", argsI.from, argsI.to, "//", argsI.fen);
-
-  //   (async () => {
-  //     return new Promise(
-  //       await iaHandler.sendMove(argsI.from, argsI.to, argsI.prom, argsI.fen)
-  //     );
-  //   })()
-  //     .then((newBoard) => {
-  //       const argsO = {
-  //         gameId: this.GameInstance.id,
-  //         time: this.GameInstance.nextMove(argsI.from, argsI.to),
-  //         board: newBoard,
-  //       };
-  //       return new answer(true, argsO);
-  //     })
-  //     .catch((e) => console.error(e));
-  // }
-
-  move(argsI) {
-    console.log("new move: ", argsI.from, argsI.to, argsI.fen);
-
-    const argsO = {
-      gameId: this.GameInstance.id,
-      time: this.GameInstance.nextMove(argsI.from, argsI.to),
-    };
-    return new answer(true, argsO);
-  }
-
-  ngame(argsI) {
-    console.log("new game: ", argsI.mode, argsI.time, argsI.inc, argsI.fen);
-
-    this.GameInstance = new GameInstance(
-      this.getNewId(),
-      argsI.mode,
-      argsI.time,
-      argsI.inc
-    );
-
-    const argsO = {
-      gameId: this.GameInstance.id,
-      time: this.GameInstance.time,
-    };
-    return new answer(true, argsO);
-  }
 
   getNewId() {
     // TODO: find existing ids in db and return a new unused one

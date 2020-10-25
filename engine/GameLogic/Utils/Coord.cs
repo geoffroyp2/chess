@@ -31,6 +31,12 @@ namespace ChessEngine.GameLogic.Utils
             y = other.y;
         }
 
+        public Coord(SerializedCoord other)
+        {
+            x = other.x;
+            y = other.y;
+        }
+
         public int x { get; set; }
         public int y { get; set; }
 

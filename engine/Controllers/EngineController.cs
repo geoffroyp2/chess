@@ -15,7 +15,7 @@ namespace ChessEngine.Controllers
     [ApiController]
     public class EngineController : ControllerBase
     {
-       
+
         [HttpGet]
         public IEnumerable<string> GetDefault()
         {
@@ -26,17 +26,18 @@ namespace ChessEngine.Controllers
             return arr;
         }
 
-        [HttpGet("move")]
-        public IActionResult Move(string fen, string move)
+        [HttpPost("move")]
+        public IActionResult Move(BoardData data)
         {
             // creating an instance of engine here to deal with multiple calls ?
             Engine engine = new Engine();
-            BoardState currentState = engine.GetCurrentState(fen);
-            if (move != "null")
+            BoardState currentState = engine.GetCurrentState(data.Board);
+
+            if (data.Move.Type != '0')
             {
-                if (engine.VerifyMove(currentState, move))
+                if (engine.VerifyMove(currentState, data.Move))
                 {
-                    engine.PlayMove(currentState, move);
+                    engine.PlayMove(currentState, data.Move, data.Prom);
                     string serializedBoard = JsonSerializer.Serialize(new SerializedBoardState(currentState));
                     return new OkObjectResult(serializedBoard);
                 }
