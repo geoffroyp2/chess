@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChessEngine
+namespace ChessEngine.DataFormats
 {
     public class BoardData
     {
@@ -12,6 +12,6 @@ namespace ChessEngine
         public SerializedBoardState Board { get; set; }
         //public SerializedMove Move { get; set; }
         public SerializedSelectedMove Move { get; set; }
-        public string Prom { get; set; }
+        public char Prom { get; set; }
     }
 }

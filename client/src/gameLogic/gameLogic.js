@@ -68,7 +68,7 @@ export default class GameLogic {
     );
   }
 
-  playMove(move, promotionTarget) {
+  playMove({ move, from }, promotionTarget) {
     const callBack = ({ gameId, time, board, moveClock, moveCount }) => {
       this.history.push(this.board);
       this.board = board;
@@ -82,16 +82,16 @@ export default class GameLogic {
       else if (this.board.Stalemate) console.log("stalemate");
       else if (this.board.Check) console.log("check");
 
-      this.lastMove = move; // for highlight
+      this.lastMove = { from: from, to: move.To }; // for highlight
       this.UIUpdate();
     };
 
     this.client.playMove(
       {
         move: {
+          From: from,
+          To: move.To,
           Type: move.Type,
-          From: move.from,
-          To: move.to,
         },
         promotion: promotionTarget || null,
         fen: FEN.createFEN(this.board, this.moveClock, this.moveCount + 1),
@@ -129,8 +129,8 @@ export default class GameLogic {
             } else {
               this.playMove(
                 {
+                  move: moveSelected,
                   from: this.pieceSelected.Coord,
-                  to: moveSelected.To,
                 },
                 null
               );
@@ -171,8 +171,8 @@ export default class GameLogic {
 
       this.playMove(
         {
+          move: this.promotionMove,
           from: this.pieceSelected.Coord,
-          to: this.promotionMove.To,
         },
         promotionTarget
       );
@@ -256,7 +256,6 @@ export default class GameLogic {
     }
 
     // Highlight last move played
-    // need debugging
     if (this.lastMove) {
       highlights.push({ type: "HLM", coord: this.lastMove.from, id: "HLM1" });
       highlights.push({ type: "HLM", coord: this.lastMove.to, id: "HLM2" });

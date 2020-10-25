@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ChessEngine.GameLogic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+using ChessEngine.GameLogic;
+using ChessEngine.DataFormats;
+
+
 
 namespace ChessEngine.Controllers
 {
@@ -15,16 +19,6 @@ namespace ChessEngine.Controllers
     [ApiController]
     public class EngineController : ControllerBase
     {
-
-        [HttpGet]
-        public IEnumerable<string> GetDefault()
-        {
-            System.Diagnostics.Debug.WriteLine("getAll");
-            string[] arr = new string[] {
-              "1","2"
-            };
-            return arr;
-        }
 
         [HttpPost("move")]
         public IActionResult Move(BoardData data)
@@ -35,9 +29,9 @@ namespace ChessEngine.Controllers
 
             if (data.Move.Type != '0')
             {
-                if (engine.VerifyMove(currentState, data.Move))
+                bool success = engine.PlayMove(currentState, data.Move, data.Prom);
+                if (success)
                 {
-                    engine.PlayMove(currentState, data.Move, data.Prom);
                     string serializedBoard = JsonSerializer.Serialize(new SerializedBoardState(currentState));
                     return new OkObjectResult(serializedBoard);
                 }

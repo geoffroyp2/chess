@@ -21,6 +21,12 @@ namespace ChessEngine.GameLogic.Utils
     public class Move
     {
 
+        public Move()
+        {
+            MoveType = 0;
+            Destination = new Coord();
+        }
+
         public Move(MoveTypes type, Coord destination)
         {
             MoveType = type;

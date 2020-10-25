@@ -5,6 +5,7 @@ using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using ChessEngine.GameLogic.Pieces;
 using ChessEngine.GameLogic.Utils;
+using ChessEngine.DataFormats;
 
 namespace ChessEngine.GameLogic
 {
@@ -178,11 +179,6 @@ namespace ChessEngine.GameLogic
                         if (entry.Value.Moves.ContainsKey(kingCoord)) Check = true;
                 }
             }
-        }
-
-        public bool ValidateMove(string move)
-        {
-            return true;
         }
     }
 }

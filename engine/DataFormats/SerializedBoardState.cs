@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 // changing types and variables to simple chars or bool and stripping them from functionalities
 // Used to be easily parsed into a json format and sent over http
 
-namespace ChessEngine
+namespace ChessEngine.DataFormats
 {
     public class SerializedCoord
     {

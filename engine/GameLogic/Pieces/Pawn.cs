@@ -53,7 +53,7 @@ namespace ChessEngine.GameLogic.Pieces
                     Coord captureEPLeft = new Coord(Coord.x - 1, Coord.y);
                     if (opponentPieces.ContainsKey(captureEPLeft))
                         if (opponentPieces[captureEPLeft].Ep)
-                            Moves.Add(captureEPLeft, new Move(Move.MoveTypes.EnPassant, captureEPLeft));
+                            Moves.Add(captureLeft, new Move(Move.MoveTypes.EnPassant, captureLeft));
                 }
             }
             
@@ -74,7 +74,7 @@ namespace ChessEngine.GameLogic.Pieces
                     Coord captureEPRight = new Coord(Coord.x + 1, Coord.y);
                     if (opponentPieces.ContainsKey(captureEPRight))
                         if (opponentPieces[captureEPRight].Ep)
-                            Moves.Add(captureEPRight, new Move(Move.MoveTypes.EnPassant, captureEPRight));
+                            Moves.Add(captureRight, new Move(Move.MoveTypes.EnPassant, captureRight));
                 }
             }
         }
