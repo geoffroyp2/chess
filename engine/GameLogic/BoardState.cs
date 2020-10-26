@@ -22,11 +22,11 @@ namespace ChessEngine.GameLogic
         {
             PlayerTurn = other.PlayerTurn;
             WPieces = new Dictionary<Coord, Piece>();
-            foreach (KeyValuePair<Coord, Piece> entry in other.WPieces) 
-                WPieces.Add(entry.Key, CopyPiece(entry.Value)); 
-            
+            foreach (KeyValuePair<Coord, Piece> entry in other.WPieces)
+                WPieces.Add(entry.Key, CopyPiece(entry.Value));
+
             BPieces = new Dictionary<Coord, Piece>();
-            foreach (KeyValuePair<Coord, Piece> entry in other.BPieces) 
+            foreach (KeyValuePair<Coord, Piece> entry in other.BPieces)
                 BPieces.Add(entry.Key, CopyPiece(entry.Value));
         }
 
@@ -101,11 +101,11 @@ namespace ChessEngine.GameLogic
             if (p is Pawn)
                 return new Pawn(p.Team, p.Coord, false);
             if (p is Rook)
-                return new Rook(p.Team, p.Coord, p.Castle);          
+                return new Rook(p.Team, p.Coord, p.Castle);
             if (p is Bishop)
-                return new Bishop(p.Team, p.Coord);        
+                return new Bishop(p.Team, p.Coord);
             if (p is Knight)
-                return new Knight(p.Team, p.Coord);   
+                return new Knight(p.Team, p.Coord);
             if (p is Queen)
                 return new Queen(p.Team, p.Coord);
             if (p is King)
@@ -125,12 +125,21 @@ namespace ChessEngine.GameLogic
 
             // 2. Compute Current player's moves and eliminate illegal moves. If there is no moves, it's either checkmate or stalemate
             bool atLeastOneMove = false;
+
+            //Create a copy of pieces to be modified (while the original is being enumerated)
+            Dictionary<Coord, Piece> WPiecesCopy = new Dictionary<Coord, Piece>();
+            foreach (KeyValuePair<Coord, Piece> entry in WPieces)
+                WPiecesCopy.Add(entry.Key, entry.Value);
+            Dictionary<Coord, Piece> BPiecesCopy = new Dictionary<Coord, Piece>();
+            foreach (KeyValuePair<Coord, Piece> entry in BPieces)
+                BPiecesCopy.Add(entry.Key, entry.Value);
+
             if (PlayerTurn)
             {
                 foreach (KeyValuePair<Coord, Piece> entry in WPieces)
                 {
-                    entry.Value.ComputeMovesVerify(WPieces, BPieces);
-                    if (!atLeastOneMove && entry.Value.Moves.Count > 0) 
+                    entry.Value.ComputeMovesVerify(WPiecesCopy, BPiecesCopy);
+                    if (!atLeastOneMove && entry.Value.Moves.Count > 0)
                         atLeastOneMove = true;
                 }
             }
@@ -138,7 +147,7 @@ namespace ChessEngine.GameLogic
             {
                 foreach (KeyValuePair<Coord, Piece> entry in BPieces)
                 {
-                    entry.Value.ComputeMovesVerify(BPieces, WPieces);
+                    entry.Value.ComputeMovesVerify(BPiecesCopy, WPiecesCopy);
                     if (!atLeastOneMove && entry.Value.Moves.Count > 0)
                         atLeastOneMove = true;
                 }

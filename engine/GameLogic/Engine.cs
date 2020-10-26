@@ -117,6 +117,7 @@ namespace ChessEngine.GameLogic
                 switch (selectedMove.MoveType)
                 {
                     case Move.MoveTypes.Normal:
+                    case Move.MoveTypes.Promote:
                         pieceToMove.Coord = selectedMove.Destination;
                         break;
                     case Move.MoveTypes.Pawntwo:

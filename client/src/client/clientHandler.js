@@ -1,12 +1,12 @@
 // class wrapper for the client with simpler methods that are called from gameLogic
 
 import Client from "./client";
-import initData from "../gameLogic/utils/initData.json";
+import generatePosition from "../gameLogic/utils/generatePosition";
 
 export default class ClientHandler {
   requestNewGame({ mode, totalTime, increment }, callback) {
     const onReceive = ({ id, args }) => {
-      console.log(args.board);
+      // console.log(args.board);
       callback(args);
     };
 
@@ -15,7 +15,8 @@ export default class ClientHandler {
       case "D":
       default:
         fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        board = initData;
+        board = generatePosition("DEFAULT");
+        // board = generatePosition("TEST");
         break;
     }
 
@@ -37,7 +38,7 @@ export default class ClientHandler {
   playMove({ move, promotion, fen, board }, callback) {
     const onReceive = ({ id, args }) => {
       // console.log("API answer status", id, "\nargs:", args);
-      console.log(args.board);
+      // console.log(args.board);
       callback(args);
     };
 

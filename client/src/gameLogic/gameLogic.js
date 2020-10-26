@@ -1,7 +1,7 @@
 import Timer from "./utils/timer";
 import FEN from "./utils/fenCreator";
 import coordToString from "./utils/coordToString";
-import initData from "./utils/initData.json";
+import initData from "./utils/boardPositionsInit/initData.json";
 
 export default class GameLogic {
   // ------------------------------
