@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace ChessEngine.DataFormats
 {
+
+
     public class SerializedCoord
     {
         public SerializedCoord() { }
@@ -30,6 +32,15 @@ namespace ChessEngine.DataFormats
     {
         public SerializedSelectedMove() { }
 
+        public SerializedSelectedMove(Coord from, Coord to, Move.MoveTypes type)
+        {
+            From = new SerializedCoord(from);
+            To = new SerializedCoord(to);
+            if (SerializedMove.moveTypeDic.ContainsKey(type))
+                Type = SerializedMove.moveTypeDic[type];
+            else Type = '0';
+        }
+
         public SerializedCoord From { get; set; }
         public SerializedCoord To { get; set; }
         public char Type { get; set; }
@@ -38,23 +49,26 @@ namespace ChessEngine.DataFormats
 
     public class SerializedMove
     {
+        public static Dictionary<Move.MoveTypes, char> moveTypeDic = new Dictionary<Move.MoveTypes, char> {
+            { Move.MoveTypes.Capture, 'X' },
+            { Move.MoveTypes.EnPassant, 'E' },
+            { Move.MoveTypes.LongCastle, 'L' },
+            { Move.MoveTypes.ShortCastle, 'S' },
+            { Move.MoveTypes.Normal, 'M' },
+            { Move.MoveTypes.Promote, 'P' },
+            { Move.MoveTypes.PromoteCapture, 'Q' },
+            { Move.MoveTypes.Pawntwo, 'N' }
+        };
+
         public SerializedMove() { }
 
         public SerializedMove(Move move)
         {
             To = new SerializedCoord(move.Destination);
-            switch (move.MoveType)
-            {
-                case Move.MoveTypes.Capture: Type = 'X'; break;
-                case Move.MoveTypes.EnPassant: Type = 'E'; break;
-                case Move.MoveTypes.LongCastle: Type = 'L'; break;
-                case Move.MoveTypes.ShortCastle: Type = 'S'; break;
-                case Move.MoveTypes.Normal: Type = 'M'; break;
-                case Move.MoveTypes.Promote: Type = 'P'; break;
-                case Move.MoveTypes.PromoteCapture: Type = 'Q'; break;
-                case Move.MoveTypes.Pawntwo: Type = 'N'; break;
-                default: Type = '0'; break;
-            }
+
+            if (moveTypeDic.ContainsKey(move.MoveType))
+                Type = moveTypeDic[move.MoveType];
+            else Type = '0';
         }
 
         public SerializedCoord To { get; set; }

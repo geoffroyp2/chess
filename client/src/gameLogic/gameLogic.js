@@ -1,7 +1,8 @@
 import Timer from "./utils/timer";
 import FEN from "./utils/fenCreator";
 import coordToString from "./utils/coordToString";
-import initData from "./utils/boardPositionsInit/initData.json";
+import generatePosition from "./utils/generatePosition";
+// import initData from "./utils/boardPositionsInit/initData.json";
 
 export default class GameLogic {
   // ------------------------------
@@ -12,7 +13,7 @@ export default class GameLogic {
     this.client = client;
 
     // Game tracking
-    this.board = initData;
+    this.board = generatePosition("DEFAULT");
     this.time = new Timer();
     this.history = [];
     this.moveClock = 0; // moves since last capture or pawn moves
@@ -29,7 +30,7 @@ export default class GameLogic {
   }
 
   reset() {
-    this.board = initData;
+    this.board = generatePosition("DEFAULT");
     this.history = [];
     this.time = new Timer();
     this.newGame(300, 5);

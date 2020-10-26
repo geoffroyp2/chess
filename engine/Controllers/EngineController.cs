@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-using ChessEngine.GameLogic;
 using ChessEngine.DataFormats;
-
-
+using ChessEngine.GameLogic;
+using ChessEngine.GameLogic.Utils;
+using ChessEngine.AI;
+using ChessEngine.AI.utils;
 
 namespace ChessEngine.Controllers
 {
@@ -20,18 +21,20 @@ namespace ChessEngine.Controllers
     public class EngineController : ControllerBase
     {
 
+        private Engine engine = new Engine();
+        private AIHandler ai = new AIHandler();
+
         [HttpPost("move")]
         public IActionResult Move(BoardData data)
         {
-            // creating an instance of engine here to deal with multiple calls ?
-            Engine engine = new Engine();
             BoardState currentState = engine.GetCurrentState(data.Board);
 
             if (data.Move.Type != '0')
             {
-                bool success = engine.PlayMove(currentState, data.Move, data.Prom);
-                if (success)
+                bool moveIsValid = engine.ValidateMove(currentState, data.Move);
+                if (moveIsValid)
                 {
+                    engine.PlayMove(currentState, data.Move, data.Prom);
                     string serializedBoard = JsonSerializer.Serialize(new SerializedBoardState(currentState));
                     return new OkObjectResult(serializedBoard);
                 }
@@ -45,6 +48,21 @@ namespace ChessEngine.Controllers
                 string serializedBoard = JsonSerializer.Serialize(new SerializedBoardState(currentState));
                 return new OkObjectResult(serializedBoard);
             }
+        }
+
+        [HttpPost("ia")]
+        public IActionResult GetAIMove(BoardData data)
+        {
+            BoardState currentState = engine.GetCurrentState(data.Board);
+
+            StateEvaluation bestState = ai.PlayAIMove(currentState);
+
+            BoardData newData = new BoardData();
+            newData.Board = new SerializedBoardState(bestState.Board);
+            newData.Move = bestState.Move;
+            newData.Prom = '0';
+
+            return new OkObjectResult(newData);
         }
 
     }

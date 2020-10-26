@@ -11,6 +11,16 @@ namespace ChessEngine.GameLogic
 {
     public class BoardState
     {
+        // params
+        public bool PlayerTurn { get; set; }
+        public Dictionary<Coord, Piece> BPieces { get; set; }
+        public Dictionary<Coord, Piece> WPieces { get; set; }
+        public bool Check { get; set; }
+        public bool Checkmate { get; set; }
+        public bool Stalemate { get; set; }
+
+
+        // constructors
         public BoardState(bool playerTurn)
         {
             PlayerTurn = playerTurn;
@@ -55,13 +65,7 @@ namespace ChessEngine.GameLogic
             }
         }
 
-        // params
-        public bool PlayerTurn { get; set; }
-        public Dictionary<Coord, Piece> BPieces { get; set; }
-        public Dictionary<Coord, Piece> WPieces { get; set; }
-        public bool Check { get; set; }
-        public bool Checkmate { get; set; }
-        public bool Stalemate { get; set; }
+
 
 
         // Methods

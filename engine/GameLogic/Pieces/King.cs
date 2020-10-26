@@ -56,11 +56,12 @@ namespace ChessEngine.GameLogic.Pieces
                     {
                         foreach (KeyValuePair<Coord, Piece> entry in opponentPieces)
                         {
-                            if (isCheck)
-                                break;
                             foreach (int i in check)
                                 if (entry.Value.Moves.ContainsKey(new Coord(i, Coord.y)))
+                                {
                                     isCheck = true;
+                                    break;
+                                }
                         }
                         if (!isCheck)
                         {
@@ -71,8 +72,11 @@ namespace ChessEngine.GameLogic.Pieces
                 }
             }
 
-            CastleSquare(2, 0, new List<int> { 1, 2, 3 }, new List<int> { 1, 2, 4 }, Move.MoveTypes.LongCastle);    // long castle
-            CastleSquare(6, 7, new List<int> { 5, 6 }, new List<int> { 4, 5, 6 }, Move.MoveTypes.ShortCastle);       // short castle
+            if (Castle)
+            {
+                CastleSquare(2, 0, new List<int> { 1, 2, 3 }, new List<int> { 2, 3, 4 }, Move.MoveTypes.LongCastle);    // long castle
+                CastleSquare(6, 7, new List<int> { 5, 6 }, new List<int> { 4, 5, 6 }, Move.MoveTypes.ShortCastle);      // short castle
+            }
         }
     }
 }

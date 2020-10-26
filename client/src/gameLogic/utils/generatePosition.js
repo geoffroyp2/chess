@@ -46,10 +46,13 @@ const generatePosition = (mode) => {
 
   // TEST
   else if (mode === "TEST") {
-    position.Pieces.push(generatePiece("K", true, 0, 0, true));
+    position.Pieces.push(generatePiece("K", true, 4, 7, true));
+    position.Pieces.push(generatePiece("Q", true, 0, 5));
+    position.Pieces.push(generatePiece("R", true, 0, 7, true));
+    position.Pieces.push(generatePiece("R", true, 7, 7, true));
 
-    position.Pieces.push(generatePiece("K", false, 7, 7, true));
-    position.Pieces.push(generatePiece("R", false, 2, 1, true));
+    position.Pieces.push(generatePiece("K", false, 7, 0, false));
+    position.Pieces.push(generatePiece("R", false, 3, 0, false));
   }
 
   return position;
