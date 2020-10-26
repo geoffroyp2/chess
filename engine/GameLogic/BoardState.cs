@@ -125,12 +125,11 @@ namespace ChessEngine.GameLogic
 
             // 2. Compute Current player's moves and eliminate illegal moves. If there is no moves, it's either checkmate or stalemate
             bool atLeastOneMove = false;
-            BoardState boardCopy = new BoardState(this);
             if (PlayerTurn)
             {
                 foreach (KeyValuePair<Coord, Piece> entry in WPieces)
                 {
-                    entry.Value.ComputeMovesVerify(WPieces, BPieces, boardCopy);
+                    entry.Value.ComputeMovesVerify(WPieces, BPieces);
                     if (!atLeastOneMove && entry.Value.Moves.Count > 0) 
                         atLeastOneMove = true;
                 }
@@ -139,7 +138,7 @@ namespace ChessEngine.GameLogic
             {
                 foreach (KeyValuePair<Coord, Piece> entry in BPieces)
                 {
-                    entry.Value.ComputeMovesVerify(BPieces, WPieces, boardCopy);
+                    entry.Value.ComputeMovesVerify(BPieces, WPieces);
                     if (!atLeastOneMove && entry.Value.Moves.Count > 0)
                         atLeastOneMove = true;
                 }

@@ -79,7 +79,7 @@ namespace ChessEngine.GameLogic
                 return false;
             }
 
-            // PLAY MOVE
+            // PLAY MOVE : todo -> give that responsibility to the board to be able to verify moves more easily
             void play(Dictionary<Coord, Piece> alliedPieces, Dictionary<Coord, Piece> opponentPieces)
             {
 
