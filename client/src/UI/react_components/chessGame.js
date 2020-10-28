@@ -43,9 +43,7 @@ const ChessGame = () => {
   }, [boardOrientation]);
 
   const sendClick = (x, y) => {
-    game.click(getCoord({ x, y }, boardOrientation), () =>
-      setGameData(game.getGameInfos())
-    );
+    game.click(getCoord({ x, y }, boardOrientation), () => setGameData(game.getGameInfos()));
   };
 
   return (
@@ -56,21 +54,12 @@ const ChessGame = () => {
 
       <Grid item className={styles.board} align="center">
         <Box>
-          <Board
-            size={boardSize}
-            data={gameData}
-            sendClick={sendClick}
-            boardOrientation={boardOrientation}
-          />
+          <Board size={boardSize} data={gameData} sendClick={sendClick} boardOrientation={boardOrientation} />
         </Box>
       </Grid>
 
       <Grid item>
-        <Timer
-          game={game}
-          boardSize={boardSize}
-          boardOrientation={boardOrientation}
-        />
+        <Timer game={game} boardSize={boardSize} boardOrientation={boardOrientation} />
         <PGN />
       </Grid>
     </Grid>
