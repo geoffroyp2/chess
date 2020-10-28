@@ -8,6 +8,7 @@ const generatePiece = (type, team, x, y, castle, ep) => {
       x: x,
       y: y,
     },
+    Moves: [],
   };
 };
 

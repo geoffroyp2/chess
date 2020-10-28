@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ui+iyoPvC792gnme/jpc0yzzywwkvbzY2pj4xmKf5Gtv3Dv4z44Y1jvKPVvcKPnTbp1W2XCy8uI1EJwzKlW2rA==",
+  "dgSpecHash": "d1XBPLb6RNUMiYh+CCw9ITOYbR+p8N8UnnLFHMbixmWwgj519gmdQ3ny9G4JeQXVpNKwyfgKnMVoT3rHCuZo7A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Geoffroy\\Documents\\GitHub\\chess\\engine\\chess-engine.csproj",
+  "projectFilePath": "C:\\Users\\marie\\Documents\\Geoffroy\\chess\\engine\\chess-engine.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -60,6 +60,18 @@ namespace ChessEngine.DataFormats
             { Move.MoveTypes.Pawntwo, 'N' }
         };
 
+        enum MoveType
+        {
+            Capture,
+            EnPassant,
+            LongCastle,
+            ShortCastle,
+            Normal,
+            Promote,
+            PromoteCapture,
+            PawnTwo
+        }
+
         public SerializedMove() { }
 
         public SerializedMove(Move move)
@@ -78,6 +90,17 @@ namespace ChessEngine.DataFormats
     public class SerializedPiece
     {
         public SerializedPiece() { }
+
+        enum PieceType
+        {
+            King,
+            Queen,
+            Rook,
+            Knight,
+            Bishop,
+            Pawn
+        }
+    
 
         public SerializedPiece(Piece p)
         {
