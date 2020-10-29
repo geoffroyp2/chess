@@ -1,5 +1,5 @@
-import { ClockTime, Coordinate, GameState, Move, MoveType, Piece, PieceType } from "../../../sharedResources/TSInterfaces/boardData";
-import { BoardUI, Highlight, PromotionArea, HighlightType } from "../../../sharedResources/TSInterfaces/reactInterfaces";
+import { ClockTime, Coordinate, GameState, Move, MoveType, Piece, PieceType } from "../TSInterfaces/boardData";
+import { BoardUI, Highlight, PromotionAreaInfos, HighlightType } from "../TSInterfaces/reactInterfaces";
 
 import client from "./client/client";
 
@@ -8,7 +8,7 @@ import Timer from "./timer";
 
 import generateInitialState from "./utils/stateGenerator";
 
-class GameLogic {
+export class GameLogic {
   // ------------------------------
   //     Fields & Initialization
   // ------------------------------
@@ -63,11 +63,10 @@ class GameLogic {
     const callback = (state: GameState) => {
       this.currentState = state;
       this.history.add(this.currentState);
-
       this.timer.synchronize(state.GameData.Time, state.BoardState.PlayerTurn);
 
-      console.log("New Game");
       this.UIRefresh();
+      console.log("New Game");
     };
 
     client.newGame(mode || "DEFAULT", totalTime, increment, callback);
@@ -173,6 +172,7 @@ class GameLogic {
 
   getTime(): ClockTime {
     // called from the UI
+
     return this.timer.getTime();
   }
 
@@ -238,8 +238,10 @@ class GameLogic {
     return highlights;
   }
 
-  getPromotionArea(): PromotionArea {
-    return { Coord: this.moveSelected ? this.moveSelected.To : null };
+  getPromotionArea(): PromotionAreaInfos | null {
+    if (this.promotionMode && this.moveSelected && this.pieceSelected)
+      return { Coord: this.moveSelected.To, Team: this.pieceSelected.Team };
+    return null;
   }
 }
 

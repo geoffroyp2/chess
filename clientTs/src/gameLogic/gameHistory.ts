@@ -1,14 +1,13 @@
-import { GameState } from "../../../sharedResources/TSInterfaces/boardData";
+import { GameState } from "../TSInterfaces/boardData";
 
 export default class GameHistory {
-    states: GameState[];
+  states: GameState[];
 
-    constructor() {
-        this.states = [];
-    }
+  constructor() {
+    this.states = [];
+  }
 
-    add(state: GameState): void {
-        this.states.push(state);
-    }
-
+  add(state: GameState): void {
+    this.states.push(state);
+  }
 }

@@ -4,7 +4,7 @@ export interface BoardUI {
   PlayerTurn: boolean;
   Pieces: Piece[];
   Highlights: Highlight[];
-  PromotionArea: PromotionArea | null;
+  PromotionArea: PromotionAreaInfos | null;
 }
 
 export enum HighlightType {
@@ -20,6 +20,7 @@ export interface Highlight {
   Coord: Coordinate;
 }
 
-export interface PromotionArea {
-  Coord: Coordinate | null;
+export interface PromotionAreaInfos {
+  Coord: Coordinate;
+  Team: boolean;
 }

@@ -9,10 +9,7 @@ import BoardSVG from "../assets/svgboard/board_darkBlue.svg";
 import handleData from "../helpers/handleData";
 
 const Board = ({ size, data, sendClick, boardOrientation }) => {
-  const [pieces, highlights, promotionArea, playerTurn] = handleData(
-    data,
-    boardOrientation
-  );
+  const [pieces, highlights, promotionArea, playerTurn] = handleData(data, boardOrientation);
 
   const boardSize = size;
   const pieceSize = boardSize / 8;
@@ -24,12 +21,7 @@ const Board = ({ size, data, sendClick, boardOrientation }) => {
   const [lastMouseDown, setLastMouseDown] = useState(null);
 
   const getHoverSquare = (x, y) => {
-    const hovered = highlights.find(
-      (h) =>
-        h.coord.x === x &&
-        h.coord.y === y &&
-        (h.type === "HM" || h.type === "HX")
-    );
+    const hovered = highlights.find((h) => h.coord.x === x && h.coord.y === y && (h.type === "HM" || h.type === "HX"));
     setHighlightHovered(hovered && x >= 0 && y >= 0 ? hovered.id : null);
   };
 
@@ -41,9 +33,7 @@ const Board = ({ size, data, sendClick, boardOrientation }) => {
     if (mouseAction) {
       // true = mouseDown
       setLastMouseDown([sX, sY]);
-      const pieceToDrag = pieces.find(
-        (p) => p.coord.x === sX && p.coord.y === sY && p.type[1] === playerTurn
-      );
+      const pieceToDrag = pieces.find((p) => p.coord.x === sX && p.coord.y === sY && p.type[1] === playerTurn);
       if (pieceToDrag) {
         //begin drag
         setIsDragging(true);
@@ -52,8 +42,7 @@ const Board = ({ size, data, sendClick, boardOrientation }) => {
       }
       sendClick(sX, sY);
     } else {
-      if (lastMouseDown && (lastMouseDown[0] !== sX || lastMouseDown[1] !== sY))
-        sendClick(sX, sY);
+      if (lastMouseDown && (lastMouseDown[0] !== sX || lastMouseDown[1] !== sY)) sendClick(sX, sY);
       //release drag
       setIsDragging(false);
       setDragPosition([]);
@@ -71,25 +60,10 @@ const Board = ({ size, data, sendClick, boardOrientation }) => {
         height: boardSize,
         backgroundImage: `url(${BoardSVG})`,
         zIndex: 1,
-      }}
-    >
-      <MouseControl
-        size={boardSize}
-        click={processClick}
-        hoverSquare={getHoverSquare}
-        dragPosition={getDragPosition}
-      />
-      <PiecesContainer
-        data={pieces}
-        size={pieceSize}
-        pieceDragged={pieceDragged}
-        dragPosition={dragPosition}
-      />
-      <HighlightsContainer
-        data={highlights}
-        size={pieceSize}
-        highlightHovered={highlightHovered}
-      />
+      }}>
+      <MouseControl size={boardSize} click={processClick} hoverSquare={getHoverSquare} dragPosition={getDragPosition} />
+      <PiecesContainer data={pieces} size={pieceSize} pieceDragged={pieceDragged} dragPosition={dragPosition} />
+      <HighlightsContainer data={highlights} size={pieceSize} highlightHovered={highlightHovered} />
       {promotionArea && <PromotionArea data={promotionArea} size={pieceSize} />}
     </div>
   );

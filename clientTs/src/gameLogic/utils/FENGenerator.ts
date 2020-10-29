@@ -1,5 +1,5 @@
-import { GameState } from "../../../../sharedResources/TSInterfaces/boardData";
+import { GameState } from "../../TSInterfaces/boardData";
 
 export default function generateFEN(state: GameState): string {
-    return "";
+  return "";
 }

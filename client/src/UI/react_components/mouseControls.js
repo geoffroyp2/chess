@@ -52,8 +52,7 @@ const MouseControl = memo(({ size, click, hoverSquare, dragPosition }) => {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
-      style={{ position: "absolute", width: size, height: size, zIndex: 100 }}
-    ></div>
+      style={{ position: "absolute", width: size, height: size, zIndex: 100 }}></div>
   );
 });
 
