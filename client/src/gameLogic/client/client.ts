@@ -1,10 +1,10 @@
-import { Response } from "../../TSInterfaces/APIRequest";
+import { APIResponse } from "../../TSInterfaces/APIRequest";
 import { GameState, Move, PieceType } from "../../TSInterfaces/boardData";
 import generateFEN from "../utils/FENGenerator";
 import { sendRequest } from "./sendRequest";
 
 const newGame = (mode: string, totalTime: number, increment: number, callback: (state: GameState) => void): void => {
-  const onReceive = (res: Response): void => {
+  const onReceive = (res: APIResponse): void => {
     if (res.ResId > 0) callback(res.GameState);
     else console.error("New game error, ID:", res.ResId);
   };
@@ -21,7 +21,7 @@ const newGame = (mode: string, totalTime: number, increment: number, callback: (
 };
 
 const sendMove = (state: GameState, move: Move, promotionTarget: PieceType | null, callback: (state: GameState) => void): void => {
-  const onReceive = (res: Response): void => {
+  const onReceive = (res: APIResponse): void => {
     if (res.ResId > 0) callback(res.GameState);
     else console.error("Move send error, ID:", res.ResId);
   };

@@ -7,7 +7,7 @@ interface Props {
   pieceType: PieceType;
   pieceTeam: boolean;
   coord: Coordinate;
-  dragPosition?: Coordinate | null;
+  dragPosition?: Coordinate | null; // optional because of promotionArea
 }
 
 const PieceComponent = memo(({ pieceSize, pieceType, pieceTeam, coord, dragPosition }: Props) => {

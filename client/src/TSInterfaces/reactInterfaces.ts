@@ -1,10 +1,18 @@
-import { Coordinate, Piece } from "./boardData";
+import { Coordinate, PieceType } from "./boardData";
+
+// interfaces with simplified data to be passed to the UI
 
 export interface BoardUI {
   PlayerTurn: boolean;
-  Pieces: Piece[];
-  Highlights: Highlight[];
+  Pieces: PieceUI[];
+  Highlights: HighlightUI[];
   PromotionArea: PromotionAreaInfos | null;
+}
+
+export interface PieceUI {
+  Team: boolean;
+  Type: PieceType;
+  Coord: Coordinate;
 }
 
 export enum HighlightType {
@@ -15,7 +23,7 @@ export enum HighlightType {
   LastMove,
 }
 
-export interface Highlight {
+export interface HighlightUI {
   Type: HighlightType;
   Coord: Coordinate;
 }

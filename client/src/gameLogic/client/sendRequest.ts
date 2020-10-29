@@ -1,7 +1,7 @@
 import axios from "axios";
-import { NGRequest, MRequest, Response } from "../../TSInterfaces/APIRequest";
+import { NGRequest, MRequest, APIResponse } from "../../TSInterfaces/APIRequest";
 
-export const sendRequest = (req: NGRequest | MRequest, callback: (res: Response) => void): void => {
+export const sendRequest = (req: NGRequest | MRequest, callback: (res: APIResponse) => void): void => {
   const body = JSON.stringify(req);
 
   axios

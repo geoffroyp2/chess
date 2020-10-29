@@ -1,3 +1,5 @@
+// TypeScript interfaces that define all the data structures used by the app
+
 export interface GameState {
   GameData: GameData;
   BoardState: BoardState;

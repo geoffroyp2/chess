@@ -1,5 +1,5 @@
 import { ClockTime, Coordinate, GameState, Move, MoveType, Piece, PieceType } from "../TSInterfaces/boardData";
-import { BoardUI, Highlight, PromotionAreaInfos, HighlightType } from "../TSInterfaces/reactInterfaces";
+import { BoardUI, HighlightUI, PromotionAreaInfos, HighlightType, PieceUI } from "../TSInterfaces/reactInterfaces";
 
 import client from "./client/client";
 
@@ -7,6 +7,13 @@ import GameHistory from "./gameHistory";
 import Timer from "./timer";
 
 import generateInitialState from "./utils/stateGenerator";
+
+/* TODO:
+
+-- Test everything
+-- Function RequestComputerMove()
+  
+*/
 
 export class GameLogic {
   // ------------------------------
@@ -179,14 +186,26 @@ export class GameLogic {
   getGameInfos(): BoardUI {
     return {
       PlayerTurn: this.currentState.BoardState.PlayerTurn,
-      Pieces: this.currentState.BoardState.Pieces,
+      Pieces: this.getPieces(),
       Highlights: this.getHighlights(),
       PromotionArea: this.getPromotionArea(),
     };
   }
 
-  getHighlights(): Highlight[] {
-    let highlights: Highlight[] = [];
+  getPieces(): PieceUI[] {
+    let pieces: PieceUI[] = [];
+    this.currentState.BoardState.Pieces.forEach((p) => {
+      pieces.push({
+        Team: p.Team,
+        Coord: { x: p.Coord.x, y: p.Coord.y },
+        Type: p.Type,
+      });
+    });
+    return pieces;
+  }
+
+  getHighlights(): HighlightUI[] {
+    let highlights: HighlightUI[] = [];
 
     // If a piece is selected, highlight that piece and it's valid moves
     if (this.pieceSelected) {

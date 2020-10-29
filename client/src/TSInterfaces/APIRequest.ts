@@ -1,5 +1,7 @@
 import { BoardState, Move, GameState, PieceType } from "./boardData";
 
+// interfaces used to communicate with the API
+
 export interface NGRequest {
   ReqType: string;
   GameMode: string;
@@ -20,7 +22,7 @@ export interface BoardData {
   Prom: PieceType | null;
 }
 
-export interface Response {
+export interface APIResponse {
   ResId: number;
   GameState: GameState;
 }

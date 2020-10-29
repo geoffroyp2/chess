@@ -20,8 +20,6 @@ const ChessGame = () => {
   const [gameData, setGameData] = useState(game.getGameInfos());
   const boardSize = 744;
 
-  // console.log("here", game.getTime);
-
   const resetGame = useCallback((): void => {
     game.reset();
   }, []);

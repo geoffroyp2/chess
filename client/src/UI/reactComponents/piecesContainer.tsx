@@ -1,12 +1,13 @@
 import React, { memo } from "react";
-import { Coordinate, Piece } from "../../TSInterfaces/boardData";
+import { Coordinate } from "../../TSInterfaces/boardData";
+import { PieceUI } from "../../TSInterfaces/reactInterfaces";
 
 import PieceComponent from "./pieceComponent";
 
 interface Props {
-  pieces: Piece[];
+  pieces: PieceUI[];
   pieceSize: number;
-  pieceDragged: Piece | null;
+  pieceDragged: PieceUI | null;
   dragPosition: Coordinate | null;
 }
 

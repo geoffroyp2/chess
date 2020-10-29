@@ -20,7 +20,7 @@ import PawnWhite from "../../assets/lichess/pawn_white.svg";
 import { PieceType } from "../../TSInterfaces/boardData";
 import { HighlightType } from "../../TSInterfaces/reactInterfaces";
 
-// Get SVG files from id
+// Get SVG files from PieceType or HighlightType
 
 const pieceSVG = [
   { white: KingWhite, black: KingBlack },

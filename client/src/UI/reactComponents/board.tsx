@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Coordinate, Piece } from "../../TSInterfaces/boardData";
-import { BoardUI, Highlight, HighlightType } from "../../TSInterfaces/reactInterfaces";
+import { Coordinate } from "../../TSInterfaces/boardData";
+import { BoardUI, PieceUI, HighlightUI, HighlightType } from "../../TSInterfaces/reactInterfaces";
 
 import MouseControl from "./mouseControl";
 import PiecesContainer from "./piecesContainer";
@@ -21,9 +21,9 @@ const Board = ({ boardSize, boardData, sendClick, boardOrientation }: Props) => 
   const { PlayerTurn, Pieces, Highlights, PromotionArea } = handleData(boardData, boardOrientation);
   const pieceSize = boardSize / 8;
 
-  const [highlightHovered, setHighlightHovered] = useState<Highlight | null>(null);
+  const [highlightHovered, setHighlightHovered] = useState<HighlightUI | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [pieceDragged, setPieceDragged] = useState<Piece | null>(null);
+  const [pieceDragged, setPieceDragged] = useState<PieceUI | null>(null);
   const [dragPosition, setDragPosition] = useState<Coordinate | null>(null);
   const [lastMouseDown, setLastMouseDown] = useState<Coordinate | null>(null);
 

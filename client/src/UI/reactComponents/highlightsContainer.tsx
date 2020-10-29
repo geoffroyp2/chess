@@ -1,12 +1,12 @@
 import React, { memo } from "react";
-import { Highlight } from "../../TSInterfaces/reactInterfaces";
+import { HighlightUI } from "../../TSInterfaces/reactInterfaces";
 
 import HighlightComponent from "./highlightComponent";
 
 interface Props {
-  highlights: Highlight[];
+  highlights: HighlightUI[];
   pieceSize: number;
-  highlightHovered: Highlight | null;
+  highlightHovered: HighlightUI | null;
 }
 
 const HighlightsContainer = memo(({ highlights, pieceSize, highlightHovered }: Props) => {

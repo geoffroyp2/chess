@@ -1,7 +1,7 @@
-// converts all coordinates in the board data if the board is flipped
-
 import { BoardUI } from "../../TSInterfaces/reactInterfaces";
 import { getOrientedCoord } from "./getOrientedCoord";
+
+// converts all coordinates in the board data if the board is flipped
 
 export default function handleData(data: BoardUI, boardOrientation: boolean): BoardUI {
   if (!boardOrientation) {
@@ -17,10 +17,7 @@ export default function handleData(data: BoardUI, boardOrientation: boolean): Bo
       newData.Pieces.push({
         Type: p.Type,
         Team: p.Team,
-        EP: p.EP,
-        Castle: p.Castle,
         Coord: getOrientedCoord(p.Coord, boardOrientation),
-        Moves: [],
       });
     });
     data.Highlights.forEach((h) => {

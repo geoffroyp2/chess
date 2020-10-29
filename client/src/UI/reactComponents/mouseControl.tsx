@@ -41,9 +41,9 @@ const MouseControl = memo(({ boardSize, sendClick, updateHoverSquare, updateDrag
   };
 
   const onMouseLeave = (): void => {
+    // TODO: maybe find a better solution ?
     updateHoverSquare(null);
     setLastHoverSquare(null);
-    // sendClick({ x: -1, y: -1 }, { x: -1, y: -1 }, false);
   };
 
   return (
