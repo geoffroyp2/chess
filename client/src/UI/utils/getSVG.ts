@@ -22,35 +22,21 @@ import { HighlightType } from "../../TSInterfaces/reactInterfaces";
 
 // Get SVG files from id
 
+const pieceSVG = [
+  { white: KingWhite, black: KingBlack },
+  { white: QueenWhite, black: QueenBlack },
+  { white: RookWhite, black: RookBlack },
+  { white: KnightWhite, black: KnightBlack },
+  { white: BishopWhite, black: BishopBlack },
+  { white: PawnWhite, black: PawnBlack },
+];
+
 export const getPieceSVG = (type: PieceType, team: boolean): string => {
-  if (team && type === PieceType.King) return KingWhite;
-  else if (!team && type === PieceType.King) return KingBlack;
-  else if (team && type === PieceType.Queen) return QueenWhite;
-  else if (!team && type === PieceType.Queen) return QueenBlack;
-  else if (team && type === PieceType.Rook) return RookWhite;
-  else if (!team && type === PieceType.Rook) return RookBlack;
-  else if (team && type === PieceType.Bishop) return BishopWhite;
-  else if (!team && type === PieceType.Bishop) return BishopBlack;
-  else if (team && type === PieceType.Knight) return KnightWhite;
-  else if (!team && type === PieceType.Knight) return KnightBlack;
-  else if (team && type === PieceType.Pawn) return PawnWhite;
-  else if (!team && type === PieceType.Pawn) return PawnBlack;
-  else return "";
+  return pieceSVG[type][team ? "white" : "black"];
 };
 
+const highlightSVG = [HSelection, HMove, HCapture, HCheck, HLastMove];
+
 export const getHighlightSVG = (type: HighlightType): string => {
-  switch (type) {
-    case HighlightType.Capture:
-      return HCapture;
-    case HighlightType.Check:
-      return HCheck;
-    case HighlightType.LastMove:
-      return HLastMove;
-    case HighlightType.Move:
-      return HMove;
-    case HighlightType.Select:
-      return HSelection;
-    default:
-      return "";
-  }
+  return highlightSVG[type];
 };

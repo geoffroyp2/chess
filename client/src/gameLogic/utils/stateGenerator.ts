@@ -1,7 +1,7 @@
 import { GameState } from "../../TSInterfaces/boardData";
 import generatePosition from "./positionGenerator";
 
-export default function generateInitialState(): GameState {
+export default function generateInitialState(mode: string): GameState {
   return {
     GameData: {
       GameId: -1,
@@ -9,7 +9,6 @@ export default function generateInitialState(): GameState {
       TotalMoves: 0,
       Time: { white: 300000, black: 300000 },
     },
-    BoardState: generatePosition("DEFAULT"),
-    // BoardState: generatePosition("TEST"),
+    BoardState: generatePosition(mode),
   };
 }

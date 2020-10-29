@@ -26,7 +26,7 @@ export class GameLogic {
   UIRefresh: () => void; // callback to refresh the UI
 
   constructor() {
-    this.currentState = generateInitialState();
+    this.currentState = generateInitialState("DEFAULT");
     this.pieceSelected = null;
     this.moveSelected = null;
     this.lastMove = null;
@@ -43,7 +43,7 @@ export class GameLogic {
   }
 
   reset(): void {
-    this.currentState = generateInitialState();
+    this.currentState = generateInitialState("DEFAULT");
     this.pieceSelected = null;
     this.moveSelected = null;
     this.lastMove = null;
@@ -102,7 +102,7 @@ export class GameLogic {
   // ------------------------------
 
   click(coord: Coordinate, isMouseDown: boolean): void {
-    //handle clicks coming from the UI
+    //handle clicks coming from the UI isMouseDown differentiates end-of-drag mouse clicks from real ones
 
     if (this.promotionMode) {
       this.handlePromotion(coord);
@@ -129,7 +129,7 @@ export class GameLogic {
               this.pieceSelected = null;
             }
           } else if (pieceClicked) {
-            if (pieceClicked.Team === this.currentState.BoardState.PlayerTurn) {
+            if (pieceClicked.Team === this.currentState.BoardState.PlayerTurn && isMouseDown) {
               this.pieceSelected = pieceClicked;
             } else {
               this.pieceSelected = null;
