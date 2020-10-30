@@ -18,8 +18,7 @@ const Timer = ({ game, boardSize, boardOrientation }) => {
           position: "absolute",
           top: `${boardOrientation ? boardSize - 50 : 10}px`,
           left: `20px`,
-        }}
-      >
+        }}>
         White:
         <div>{formatTime(time.w)}</div>
       </div>
@@ -28,8 +27,7 @@ const Timer = ({ game, boardSize, boardOrientation }) => {
           position: "absolute",
           top: `${boardOrientation ? 10 : boardSize - 50}px`,
           left: `20px`,
-        }}
-      >
+        }}>
         Black:
         <div>{formatTime(time.b)}</div>
       </div>

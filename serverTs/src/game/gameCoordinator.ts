@@ -1,14 +1,10 @@
 import { NGRequest, MRequest, APIResponse } from "../../../client/src/TSInterfaces/APIRequest";
 import generatePosition from "../../../client/src/gameLogic/utils/positionGenerator";
+import gameSessions from "./gameSessions";
+import gameManager from "./gameManager";
 
 class GameCoordinator {
-  post(data: NGRequest | MRequest) {
-    console.log(data);
-
-    return { coucou: "coucoucou" };
-  }
-
-  newGame(data: NGRequest): APIResponse {
+  public newGame(data: NGRequest): APIResponse {
     // TODO
     console.log("New game", data);
 
@@ -20,7 +16,7 @@ class GameCoordinator {
           GameId: 1,
           MoveClock: 0,
           TotalMoves: 0,
-          Time: { white: data.Time, black: data.Time },
+          Time: { white: data.Time * 1000, black: data.Time * 1000 },
         },
       },
     };
@@ -28,7 +24,7 @@ class GameCoordinator {
     return res;
   }
 
-  sendMove(data: MRequest): APIResponse {
+  public sendMove(data: MRequest): APIResponse {
     //TODO
     console.log("New move", data);
 

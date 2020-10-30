@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import game from "../../gameLogic/gameLogic";
 
 import formatTime from "../utils/formatTime";
+import { ClockTime } from "../../TSInterfaces/boardData";
 
 interface Props {
   boardSize: number;
@@ -10,13 +11,15 @@ interface Props {
 }
 
 const Timer = ({ boardSize, boardOrientation }: Props) => {
-  const [time, setTime] = useState({ white: 0, black: 0 });
+  const [time, setTime] = useState<ClockTime>({ white: 0, black: 0 });
 
   // call the getTime function every 100ms to refresh the timer component
+
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setTime(game.getTime());
     }, 100);
+    return () => clearTimeout(timer);
   });
 
   return (

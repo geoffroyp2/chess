@@ -26,7 +26,6 @@ export default class Timer {
   getTime(): ClockTime {
     // update the current time and returns it
     // this method is called from the React timer element every 100ms
-
     const now: Date = new Date();
     const ellapsed: number = now.getTime() - this.lastRecord.getTime();
 
@@ -36,6 +35,7 @@ export default class Timer {
     if (this.time.white < 0) this.time.white = 0;
     if (this.time.black < 0) this.time.black = 0;
 
-    return this.time;
+    // return a copy so that the UI knows it's a different object (force update)
+    return { white: this.time.white, black: this.time.black };
   }
 }

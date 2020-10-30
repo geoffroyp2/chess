@@ -60,6 +60,7 @@ export class GameLogic {
     this.timer = new Timer();
 
     this.UIRefresh();
+    this.newGame(300, 5, "DEFAULT");
   }
 
   // ------------------------------
