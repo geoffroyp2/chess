@@ -4,6 +4,7 @@
 /node_modules
 /client/node_modules
 /+oldFiles/clientJs/node_modules
+/+oldFiles/serverJs/node_modules
 /server/node_modules
 /serverTs/node_modules
 /engine/bin
