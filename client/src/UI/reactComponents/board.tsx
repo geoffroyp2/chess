@@ -29,6 +29,7 @@ const Board = ({ boardSize, boardData, sendClick, boardOrientation }: Props) => 
 
   const updateHoverSquare = (coord: Coordinate | null): void => {
     // called from the mouseControl zone
+
     if (coord) {
       const hovered = Highlights.find(
         (h) => h.Coord.x === coord.x && h.Coord.y === coord.y && (h.Type === HighlightType.Move || h.Type === HighlightType.Capture)

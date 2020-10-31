@@ -5,14 +5,18 @@ export interface GameRecord {
   Infos: {
     StartTime: Date;
     GameMode: string;
-    TimeControl: string;
+    TimeControl: {
+      time: number;
+      increment: number;
+    };
     Players: {
       white: string;
       black: string;
     };
     Pgn: string;
   };
-  BoardStates?: BoardState[];
-  LastMove?: Date;
-  ClockTime?: ClockTime;
+  BoardStates: BoardState[];
+  LastMoveDate: Date;
+  ClockTime: ClockTime;
+  FEN: string[];
 }

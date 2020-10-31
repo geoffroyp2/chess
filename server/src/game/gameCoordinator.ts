@@ -3,17 +3,15 @@ import { BoardState } from "../../../client/src/TSInterfaces/boardData";
 import gameSessions from "./gameSessions";
 import gameManager from "./gameManager";
 import engineCom from "./engineCom";
+import { GameRecord } from "../tsInterfaces/gameRepresentation";
 
 class GameCoordinator {
-  public newGame(data: NGRequest, callback: (res: APIResponse) => void) {
+  public newGame(data: NGRequest, callback: (res: APIResponse) => void): void {
     // TODO
     console.log("New game", data);
 
-    // initialize game session
-    let g = gameManager.newGame(data.GameMode, data.Time, data.Increment);
-    gameSessions.addGame(g);
-
-    const onReceive = (res: any) => {
+    // callback for the engine
+    const onReceive = (res: any): void => {
       const board: BoardState = res.data;
 
       let response: APIResponse = {
@@ -32,26 +30,44 @@ class GameCoordinator {
       callback(response);
     };
 
-    // query the engine to calculate the board position
-    engineCom.sendPosition(g.BoardStates[0], { Type: 0, From: { x: -1, y: -1 }, To: { x: -1, y: -1 } }, 0, onReceive);
+    // initialize game session
+    let g = gameManager.newGame(data.GameMode, data.Time, data.Increment);
+    gameSessions.addGame(g);
+
+    // query the engine to calculate the new board position
+    engineCom.sendPosition(g.BoardStates[0], { Type: -1, From: { x: -1, y: -1 }, To: { x: -1, y: -1 } }, 0, onReceive);
   }
 
-  public sendMove(data: MRequest, callback: (res: APIResponse) => void) {
+  public sendMove(data: MRequest, callback: (res: APIResponse) => void): void {
     //TODO
-    console.log("New move", data.Data.Move, data.Data.Prom);
 
-    let res: APIResponse = {
-      ResId: 1,
-      GameState: {
-        BoardState: data.Data.Board,
-        GameData: {
-          GameId: 1,
-          MoveClock: 0,
-          TotalMoves: 0,
-          Time: { white: 1000, black: 1000 },
+    const { Board, Move, Prom, FEN } = data.Data;
+    console.log("New move", Move, Prom);
+
+    const onReceive = (res: any): void => {
+      const newBoard: BoardState = res.data;
+      const gameRecord: GameRecord = gameSessions.find(data.GameId);
+
+      gameManager.updateGame(gameRecord, newBoard, Move, Prom);
+      gameSessions.updateGame(gameRecord);
+
+      let response: APIResponse = {
+        ResId: 1,
+        GameState: {
+          BoardState: newBoard,
+          GameData: {
+            GameId: gameRecord.ID,
+            MoveClock: 0,
+            TotalMoves: 0,
+            Time: gameRecord.ClockTime,
+          },
         },
-      },
+      };
+      callback(response);
     };
+
+    // query the engine to calculate the new board position
+    engineCom.sendPosition(Board, Move, Prom, onReceive);
   }
 }
 

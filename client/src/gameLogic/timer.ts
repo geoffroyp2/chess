@@ -1,6 +1,6 @@
 import { ClockTime } from "../TSInterfaces/boardData";
 
-// Timer class that stores / updtates time left for each player
+// Timer class that stores / updates time left for each player
 
 export default class Timer {
   lastRecord: Date;

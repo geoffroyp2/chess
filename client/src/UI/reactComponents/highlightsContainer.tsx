@@ -17,7 +17,7 @@ const HighlightsContainer = memo(({ highlights, pieceSize, highlightHovered }: P
           pieceSize={pieceSize}
           type={h.Type}
           coord={h.Coord}
-          hover={h === highlightHovered}
+          hover={highlightHovered ? h.Coord.x === highlightHovered.Coord.x && h.Coord.y === highlightHovered.Coord.y : false}
           key={"" + h.Type + h.Coord.x + h.Coord.y}
         />
       ))}

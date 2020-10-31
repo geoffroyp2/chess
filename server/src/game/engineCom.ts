@@ -18,7 +18,10 @@ class EngineCom {
     instance
       .post("https://localhost:44352/engine/move", body)
       .then((res) => callback(res))
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e.status);
+        console.error(e.data);
+      });
   }
 }
 

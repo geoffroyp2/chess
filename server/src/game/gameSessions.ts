@@ -9,14 +9,18 @@ class GameSessions {
     this.liveGames = {};
   }
 
+  find(id: number): GameRecord {
+    return this.liveGames[id];
+  }
+
   addGame(game: GameRecord): void {
     this.liveGames[game.ID] = game;
 
     // TODO: update the database
   }
 
-  updateGame(id: number, newMove: string): void {
-    this.liveGames[id].Infos.Pgn += newMove;
+  updateGame(gameRecord: GameRecord): void {
+    this.liveGames[gameRecord.ID] = gameRecord;
     // TODO: update the database
   }
 

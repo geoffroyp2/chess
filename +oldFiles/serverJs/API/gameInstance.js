@@ -29,18 +29,13 @@ module.exports = class GameInstance {
 
     const now = new Date();
     const ellapsedTime = now - this.lastRecordedTime;
-    const remainingTime = this.playerTurn
-      ? this.time.white - ellapsedTime
-      : this.time.black - ellapsedTime;
+    const remainingTime = this.playerTurn ? this.time.white - ellapsedTime : this.time.black - ellapsedTime;
 
     if (remainingTime <= 0) {
       // lost on time
       this.playerTurn ? (this.time.white = 0) : (this.time.black = 0);
       this.status = (this.playerTurn ? "W" : "B") + "LT";
-    } else
-      this.playerTurn
-        ? (this.time.white = remainingTime + this.increment)
-        : (this.time.black = remainingTime + this.increment);
+    } else this.playerTurn ? (this.time.white = remainingTime + this.increment) : (this.time.black = remainingTime + this.increment);
 
     this.lastRecordedTime = now;
     this.playerTurn = !this.playerTurn;

@@ -95,7 +95,7 @@ export class GameLogic {
       this.UIRefresh();
     };
 
-    if (this.moveSelected) client.sendMove(this.currentState, this.moveSelected, this.promotionTarget, callback);
+    if (this.moveSelected) client.sendMove(this.currentState, this.moveSelected, this.promotionTarget ? this.promotionTarget : 0, callback);
   }
 
   handleGameStatus(): void {

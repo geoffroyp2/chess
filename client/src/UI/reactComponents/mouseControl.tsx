@@ -33,10 +33,13 @@ const MouseControl = memo(({ boardSize, sendClick, updateHoverSquare, updateDrag
     const cFine = { x: e.nativeEvent.layerX, y: e.nativeEvent.layerY };
     const cSquare = { x: Math.floor((cFine.x / boardSize) * 8), y: Math.floor((cFine.y / boardSize) * 8) };
 
-    if (isMouseDown) updateDragPosition(cFine);
-    if (lastHoverSquare && (lastHoverSquare.x !== cSquare.x || lastHoverSquare?.y !== cSquare.y)) {
-      setLastHoverSquare(cSquare);
-      updateHoverSquare(cSquare);
+    if (isMouseDown) {
+      updateDragPosition(cFine);
+      if (!lastHoverSquare) setLastHoverSquare(cSquare);
+      else if (lastHoverSquare.x !== cSquare.x || lastHoverSquare?.y !== cSquare.y) {
+        setLastHoverSquare(cSquare);
+        updateHoverSquare(cSquare);
+      }
     }
   };
 
