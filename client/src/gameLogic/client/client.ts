@@ -5,6 +5,8 @@ import { sendRequest } from "./sendRequest";
 
 const newGame = (mode: string, totalTime: number, increment: number, callback: (state: GameState) => void): void => {
   const onReceive = (res: APIResponse): void => {
+    console.log(res);
+
     if (res.ResId > 0) callback(res.GameState);
     else console.error("New game error, ID:", res.ResId);
   };

@@ -1,3 +1,5 @@
+import { BoardState, ClockTime } from "../../../client/src/TSInterfaces/boardData";
+
 export interface GameRecord {
   ID: number;
   Infos: {
@@ -8,6 +10,9 @@ export interface GameRecord {
       white: string;
       black: string;
     };
+    Pgn: string;
   };
-  Pgn: string;
+  BoardStates?: BoardState[];
+  LastMove?: Date;
+  ClockTime?: ClockTime;
 }

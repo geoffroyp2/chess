@@ -14,19 +14,21 @@ export class BaseController {
 
   public post(req: Request, res: Response) {
     const data = JSON.parse(req.body.body);
-    let resData: APIResponse;
+
+    const onReceive = (response: APIResponse) => {
+      res.json(response);
+    };
 
     switch (data.ReqType) {
       case "NG":
-        resData = gameCoordinator.newGame(data);
+        gameCoordinator.newGame(data, onReceive);
         break;
       case "M":
-        resData = gameCoordinator.sendMove(data);
+        gameCoordinator.sendMove(data, onReceive);
         break;
       default:
+        res.json("invalide query");
         break;
     }
-
-    res.json(resData);
   }
 }

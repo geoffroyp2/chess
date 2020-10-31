@@ -64,26 +64,26 @@ namespace ChessEngine.AI
                         if (move.Value.MoveType == Move.MoveTypes.Promote || move.Value.MoveType == Move.MoveTypes.PromoteCapture)
                         {
                             BoardState boardQ = new BoardState(board);
-                            engine.PlayMove(boardQ, piece.Value, move.Value, 'Q');
+                            engine.PlayMove(boardQ, piece.Value, move.Value, SerializedPiece.PieceType.Queen);
                             queue.Enqueue(new StateEvaluation(boardQ, StateEvaluator.StateValue(boardQ), piece.Value, move.Value));
 
 
                             BoardState boardR = new BoardState(board);
-                            engine.PlayMove(boardR, piece.Value, move.Value, 'R');
+                            engine.PlayMove(boardR, piece.Value, move.Value, SerializedPiece.PieceType.Rook);
                             queue.Enqueue(new StateEvaluation(boardR, StateEvaluator.StateValue(boardR), piece.Value, move.Value));
 
                             BoardState boardB = new BoardState(board);
-                            engine.PlayMove(boardB, piece.Value, move.Value, 'B');
+                            engine.PlayMove(boardB, piece.Value, move.Value, SerializedPiece.PieceType.Knight);
                             queue.Enqueue(new StateEvaluation(boardB, StateEvaluator.StateValue(boardB), piece.Value, move.Value));
 
                             BoardState boardN = new BoardState(board);
-                            engine.PlayMove(boardN, piece.Value, move.Value, 'N');
+                            engine.PlayMove(boardN, piece.Value, move.Value, SerializedPiece.PieceType.Bishop);
                             queue.Enqueue(new StateEvaluation(boardN, StateEvaluator.StateValue(boardN), piece.Value, move.Value));
                         }
                         else
                         {
                             BoardState boardCopy = new BoardState(board);
-                            engine.PlayMove(boardCopy, piece.Value, move.Value, '0');
+                            engine.PlayMove(boardCopy, piece.Value, move.Value, 0);
                             queue.Enqueue(new StateEvaluation(boardCopy, StateEvaluator.StateValue(boardCopy), piece.Value, move.Value));
                         }
                     }
@@ -98,26 +98,26 @@ namespace ChessEngine.AI
                         if (move.Value.MoveType == Move.MoveTypes.Promote || move.Value.MoveType == Move.MoveTypes.PromoteCapture)
                         {
                             BoardState boardQ = new BoardState(board);
-                            engine.PlayMove(boardQ, piece.Value, move.Value, 'Q');
+                            engine.PlayMove(boardQ, piece.Value, move.Value, SerializedPiece.PieceType.Queen);
                             queue.Enqueue(new StateEvaluation(boardQ, StateEvaluator.StateValue(boardQ), piece.Value, move.Value));
 
 
                             BoardState boardR = new BoardState(board);
-                            engine.PlayMove(boardR, piece.Value, move.Value, 'R');
+                            engine.PlayMove(boardR, piece.Value, move.Value, SerializedPiece.PieceType.Rook);
                             queue.Enqueue(new StateEvaluation(boardR, StateEvaluator.StateValue(boardR), piece.Value, move.Value));
 
                             BoardState boardB = new BoardState(board);
-                            engine.PlayMove(boardB, piece.Value, move.Value, 'B');
+                            engine.PlayMove(boardB, piece.Value, move.Value, SerializedPiece.PieceType.Knight);
                             queue.Enqueue(new StateEvaluation(boardB, StateEvaluator.StateValue(boardB), piece.Value, move.Value));
 
                             BoardState boardN = new BoardState(board);
-                            engine.PlayMove(boardN, piece.Value, move.Value, 'N');
+                            engine.PlayMove(boardN, piece.Value, move.Value, SerializedPiece.PieceType.Bishop);
                             queue.Enqueue(new StateEvaluation(boardN, StateEvaluator.StateValue(boardN), piece.Value, move.Value));
                         }
                         else
                         {
                             BoardState boardCopy = new BoardState(board);
-                            engine.PlayMove(boardCopy, piece.Value, move.Value, '0');
+                            engine.PlayMove(boardCopy, piece.Value, move.Value, 0);
                             queue.Enqueue(new StateEvaluation(boardCopy, StateEvaluator.StateValue(boardCopy), piece.Value, move.Value));
                         }
                     }

@@ -74,10 +74,11 @@ export class GameLogic {
       this.timer.synchronize(state.GameData.Time, state.BoardState.PlayerTurn);
 
       this.UIRefresh();
-      console.log("New Game");
+      console.log("New Game", this.currentState.GameData.GameId);
     };
 
-    client.newGame(mode || "DEFAULT", totalTime, increment, callback);
+    // time is converted to milliseconds
+    client.newGame(mode || "DEFAULT", totalTime * 1000, increment * 1000, callback);
   }
 
   playMove(): void {

@@ -29,12 +29,12 @@ namespace ChessEngine.Controllers
         {
             BoardState currentState = engine.GetCurrentState(data.Board);
 
-            if (data.Move.Type != '0')
+            if (data.Move.Type > 0)
             {
                 bool moveIsValid = engine.ValidateMove(currentState, data.Move);
                 if (moveIsValid)
                 {
-                    engine.PlayMove(currentState, data.Move, data.Prom);
+                    engine.PlayMove(currentState, data.Move, (SerializedPiece.PieceType)data.Prom);
                     string serializedBoard = JsonSerializer.Serialize(new SerializedBoardState(currentState));
                     return new OkObjectResult(serializedBoard);
                 }

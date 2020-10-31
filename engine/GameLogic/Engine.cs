@@ -48,8 +48,9 @@ namespace ChessEngine.GameLogic
             }
         }
 
-        public void PlayMove(BoardState board, Piece pieceToMove, Move selectedMove, char promotionTarget)
+        public void PlayMove(BoardState board, Piece pieceToMove, Move selectedMove, SerializedPiece.PieceType promotionTarget)
         {
+
             //Clear en-passant status from every Piece
             foreach (KeyValuePair<Coord, Piece> entry in board.WPieces)
                 entry.Value.Ep = false;
@@ -68,8 +69,9 @@ namespace ChessEngine.GameLogic
 
 
 
-        public void PlayMove(BoardState board, SerializedSelectedMove move, char promotionTarget)
+        public void PlayMove(BoardState board, SerializedSelectedMove move, SerializedPiece.PieceType promotionTarget)
         {
+                 
             // Prepare the state before the move is played
             Piece pieceToMove = board.PlayerTurn ? board.WPieces[new Coord(move.From)] : board.BPieces[new Coord(move.From)];
             Move selectedMove = pieceToMove.Moves[new Coord(move.To)];
@@ -90,7 +92,7 @@ namespace ChessEngine.GameLogic
             board.ComputeMoves();
         }
 
-        private void Play(Dictionary<Coord, Piece> alliedPieces, Dictionary<Coord, Piece> opponentPieces, Piece pieceToMove, Move selectedMove, char promotionTarget)
+        private void Play(Dictionary<Coord, Piece> alliedPieces, Dictionary<Coord, Piece> opponentPieces, Piece pieceToMove, Move selectedMove, SerializedPiece.PieceType promotionTarget)
         {
             // Remove moving piece from the list
             alliedPieces.Remove(pieceToMove.Coord);
@@ -105,16 +107,16 @@ namespace ChessEngine.GameLogic
                 Piece newPiece = new Piece();
                 switch (promotionTarget)
                 {
-                    case 'Q':
+                    case SerializedPiece.PieceType.Queen:
                         newPiece = new Queen(pieceToMove.Team, pieceToMove.Coord);
                         break;
-                    case 'R':
+                    case SerializedPiece.PieceType.Rook:
                         newPiece = new Rook(pieceToMove.Team, pieceToMove.Coord, false);
                         break;
-                    case 'N':
+                    case SerializedPiece.PieceType.Knight:
                         newPiece = new Knight(pieceToMove.Team, pieceToMove.Coord);
                         break;
-                    case 'B':
+                    case SerializedPiece.PieceType.Bishop:
                         newPiece = new Bishop(pieceToMove.Team, pieceToMove.Coord);
                         break;
                 }

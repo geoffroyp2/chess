@@ -26,7 +26,7 @@ export interface BoardState {
 }
 
 export enum PieceType {
-  King,
+  King = 1,
   Queen,
   Rook,
   Knight,
@@ -44,14 +44,14 @@ export interface Piece {
 }
 
 export enum MoveType {
+  Normal,
+  Pawntwo,
   Capture,
   EnPassant,
-  LongCastle,
-  ShortCastle,
-  Normal,
   Promote,
   PromoteCapture,
-  PawnTwo,
+  LongCastle,
+  ShortCastle,
 }
 
 export interface Move {

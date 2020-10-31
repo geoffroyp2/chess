@@ -10,8 +10,7 @@ namespace ChessEngine.DataFormats
         public BoardData() { }
 
         public SerializedBoardState Board { get; set; }
-        //public SerializedMove Move { get; set; }
         public SerializedSelectedMove Move { get; set; }
-        public char Prom { get; set; }
+        public int Prom { get; set; }
     }
 }

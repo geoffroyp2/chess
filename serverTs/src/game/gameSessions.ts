@@ -16,12 +16,12 @@ class GameSessions {
   }
 
   updateGame(id: number, newMove: string): void {
-    this.liveGames[id].Pgn += newMove;
-
+    this.liveGames[id].Infos.Pgn += newMove;
     // TODO: update the database
   }
 
   finishGame(game: GameRecord): void {
+    delete this.liveGames[game.ID];
     delete this.liveGames[game.ID];
   }
 }

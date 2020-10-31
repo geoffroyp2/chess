@@ -51,12 +51,12 @@ namespace ChessEngine.GameLogic
                 Piece newPiece = new Piece();
                 switch (p.Type)
                 {
-                    case 'K': newPiece = new King(p.Team, c, p.Castle); break;
-                    case 'Q': newPiece = new Queen(p.Team, c); break;
-                    case 'N': newPiece = new Knight(p.Team, c); break;
-                    case 'R': newPiece = new Rook(p.Team, c, p.Castle); break;
-                    case 'B': newPiece = new Bishop(p.Team, c); break;
-                    case 'P': newPiece = new Pawn(p.Team, c, p.EP); break;
+                    case (int)SerializedPiece.PieceType.King : newPiece = new King(p.Team, c, p.Castle); break;
+                    case (int)SerializedPiece.PieceType.Queen: newPiece = new Queen(p.Team, c); break;
+                    case (int)SerializedPiece.PieceType.Knight: newPiece = new Knight(p.Team, c); break;
+                    case (int)SerializedPiece.PieceType.Rook: newPiece = new Rook(p.Team, c, p.Castle); break;
+                    case (int)SerializedPiece.PieceType.Bishop: newPiece = new Bishop(p.Team, c); break;
+                    case (int)SerializedPiece.PieceType.Pawn: newPiece = new Pawn(p.Team, c, p.EP); break;
                 }
                 if (p.Team)
                     WPieces.Add(c, newPiece);

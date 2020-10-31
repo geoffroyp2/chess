@@ -36,71 +36,55 @@ namespace ChessEngine.DataFormats
         {
             From = new SerializedCoord(from);
             To = new SerializedCoord(to);
-            if (SerializedMove.moveTypeDic.ContainsKey(type))
-                Type = SerializedMove.moveTypeDic[type];
-            else Type = '0';
+            Type = (int)type;
         }
 
         public SerializedCoord From { get; set; }
         public SerializedCoord To { get; set; }
-        public char Type { get; set; }
+        public int Type { get; set; }
     }
 
 
     public class SerializedMove
     {
-        public static Dictionary<Move.MoveTypes, char> moveTypeDic = new Dictionary<Move.MoveTypes, char> {
-            { Move.MoveTypes.Capture, 'X' },
-            { Move.MoveTypes.EnPassant, 'E' },
-            { Move.MoveTypes.LongCastle, 'L' },
-            { Move.MoveTypes.ShortCastle, 'S' },
-            { Move.MoveTypes.Normal, 'M' },
-            { Move.MoveTypes.Promote, 'P' },
-            { Move.MoveTypes.PromoteCapture, 'Q' },
-            { Move.MoveTypes.Pawntwo, 'N' }
-        };
-
-        enum MoveType
+        /*public enum MoveTypes (from the Move class)
         {
+            Normal,
+            Pawntwo,
             Capture,
             EnPassant,
-            LongCastle,
-            ShortCastle,
-            Normal,
             Promote,
             PromoteCapture,
-            PawnTwo
-        }
+            LongCastle,
+            ShortCastle,
+        }*/
 
         public SerializedMove() { }
 
         public SerializedMove(Move move)
         {
             To = new SerializedCoord(move.Destination);
-
-            if (moveTypeDic.ContainsKey(move.MoveType))
-                Type = moveTypeDic[move.MoveType];
-            else Type = '0';
+            Type = (int)move.MoveType;
         }
 
         public SerializedCoord To { get; set; }
-        public char Type { get; set; }
+        public int Type { get; set; }
     }
 
     public class SerializedPiece
     {
         public SerializedPiece() { }
 
-        enum PieceType
+        public enum PieceType
         {
-            King,
+            King = 1,
             Queen,
             Rook,
             Knight,
             Bishop,
-            Pawn
+            Pawn,
         }
-    
+
 
         public SerializedPiece(Piece p)
         {
@@ -113,16 +97,16 @@ namespace ChessEngine.DataFormats
             EP = p.Ep;
             Castle = p.Castle;
 
-            if (p is King) Type = 'K';
-            else if (p is Queen) Type = 'Q';
-            else if (p is Rook) Type = 'R';
-            else if (p is Bishop) Type = 'B';
-            else if (p is Knight) Type = 'N';
-            else if (p is Pawn) Type = 'P';
-            else Type = '0';
+            if (p is King) Type = (int)PieceType.King;
+            else if (p is Queen) Type = (int)PieceType.Queen;
+            else if (p is Rook) Type = (int)PieceType.Rook;
+            else if (p is Bishop) Type = (int)PieceType.Bishop;
+            else if (p is Knight) Type = (int)PieceType.Knight;
+            else if (p is Pawn) Type = (int)PieceType.Pawn;
+            else Type = -1;
         }
 
-        public char Type { get; set; }
+        public int Type { get; set; }
         public bool Team { get; set; }
         public bool EP { get; set; }
         public bool Castle { get; set; }

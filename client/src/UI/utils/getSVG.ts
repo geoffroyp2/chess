@@ -23,6 +23,7 @@ import { HighlightType } from "../../TSInterfaces/reactInterfaces";
 // Get SVG files from PieceType or HighlightType
 
 const pieceSVG = [
+  { white: "", black: "" },
   { white: KingWhite, black: KingBlack },
   { white: QueenWhite, black: QueenBlack },
   { white: RookWhite, black: RookBlack },
