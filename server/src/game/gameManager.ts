@@ -51,6 +51,9 @@ class GameManager {
     else game.ClockTime.black -= ellapsed + game.Infos.TimeControl.increment;
 
     game.LastMoveDate = now;
+
+    // -> deal with end of game (stalemate, checkmate, timeout, other...)
+    // TODO
   }
 
   getNewId(): number {

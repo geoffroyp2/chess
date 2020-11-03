@@ -7,8 +7,10 @@
 /+oldFiles/serverJs/node_modules
 /server/node_modules
 /serverTs/node_modules
+/server/dist
 /engine/bin
 /engine/obj/Debug
+/engine/.vs
 /.pnp
 .pnp.js
 
