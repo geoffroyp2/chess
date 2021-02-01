@@ -1,28 +1,7 @@
-### INSTALLATION
+### Chess
+Experiments with building a chess engine and applicattion
 
-install nodeJS
+The frontend in ./client is built in JavaScript with React
+The stateless engine in ./engine is built in c# with .NET Core
+The API in ./server is a middleware with the game session logic
 
-$ npm install  
-$ cd client  
-$ npm install  
-$ cd ../server  
-$ npm install  
-$ cd ..
-
-### RUN
-
-\$ npm start
-
-or separately  
-$ node start-client  
-$ node start-server
-
-### INFOS
-
-client created with create-react-app  
-server created with Express  
-assets from lichess.org
-
-client runs on http://localhost:3000/  
-server runs on http://localhost:3001/  
-engine runs on http://localhost:44352/
